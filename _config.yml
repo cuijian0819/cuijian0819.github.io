@@ -6,7 +6,7 @@ url: "https://cuijian0819.github.io"
 
 # Build settings
 markdown: kramdown
-theme: dev-portfolio-blog
+remote_theme: rohitjain00/dev-portfolio-blog
 resume_url: "Resume.pdf"
 author_name: Rohit Jain
 
