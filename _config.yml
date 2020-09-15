@@ -10,6 +10,11 @@ remote_theme: rohitjain00/dev-portfolio-blog
 resume_url: "Resume.pdf"
 author_name: Rohit Jain
 
+# Conversion
+highlighter: rouge
+lsi: false
+excerpt_separator: "\n\n"
+incremental: false
 ############################################################
 # Site configuration for the Jekyll 3 Pagination Gem
 # The values here represent the defaults if nothing is set
