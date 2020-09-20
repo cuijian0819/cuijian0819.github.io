@@ -47,9 +47,10 @@ body {
   padding-right: 20px; }
 
 .nav-link {
-  border-left: 2px solid var(--primary-text-color);
+  margin: auto;
   width: 50%;
-  padding-left: 20px; }
+  border-left: 2px solid var(--primary-text-color);
+  padding-left: 30px; }
   .nav-link ul {
     padding-inline-start: 0; }
   .nav-link li {
