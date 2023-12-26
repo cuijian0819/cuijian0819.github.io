@@ -15,7 +15,7 @@ selected_papers: true # includes a list of papers marked as "selected={true}"
 social: false  # includes social icons at the bottom of the page
 ---
 
-Hello, I'm Jian Cui, sharing the exact same name as the the legendary [Chinese rock star](https://en.wikipedia.org/wiki/Cui_Jian).
+Hello, I'm Jian Cui, sharing the exact same name as [the legendary Chinese rock star](https://en.wikipedia.org/wiki/Cui_Jian).
 
 I'm currently in my first year of pursuing a Ph.D. at Indiana University Bloomington (IUB), under the guidance of [Prof. Xiaojing Liao](https://xiaojingliao.com).
 
