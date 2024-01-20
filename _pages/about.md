@@ -19,7 +19,7 @@ Hello, I'm Jian Cui, sharing the exact same name as [the legendary Chinese rock 
 
 I'm currently in my first year of pursuing a Ph.D. at Indiana University Bloomington (IUB), under the guidance of [Prof. Xiaojing Liao](https://xiaojingliao.com).
 
-Prior to that, I earned both my bachelor's and master's degree in EE from [KAIST](https://kaist.ac.kr/en/), advised by [Prof. Seungwon Shin](https://nss.kaist.ac.kr).
+Prior to that, I earned both my bachelor's and master's degrees in EE from [KAIST](https://kaist.ac.kr/en/), advised by [Prof. Seungwon Shin](https://nss.kaist.ac.kr).
 
 My research lies at the intersection of AI and security. I am interested in using AI techniques to solve security problems, and I am also interested in general AI security and privacy issues.
 
