@@ -13,9 +13,9 @@ nav_order: 3
 <ul class="space_list">
     <li>I was born and reared in 
         <a href="https://en.wikipedia.org/wiki/Yanbian_Korean_Autonomous_Prefecture" target="_blank">Yanbian Korean Autonomous Prefecture,</a>        
-        Jilin, China, where the Korean-Chiense community lives. 
+        Jilin, China, where the Korean-Chinese community lives. 
     </li>  
-    <li> I am Korean-Chiense (a.k.a <a href="https://en.wikipedia.org/wiki/Koreans_in_China" target="_blank">Koreans in China</a>)</li>          
+    <li> I am a Korean-Chinese (a.k.a <a href="https://en.wikipedia.org/wiki/Koreans_in_China" target="_blank">Koreans in China</a>)</li>          
     <li>
 My name in Chinese: <b>崔 健</b>; My name in Korean: <b>최 건</b></li>    
 </ul>
