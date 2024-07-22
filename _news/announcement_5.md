@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-“Malla: Detecting Rouge Accounts with Illegally-obtained NFTs using Classifiers Learned on Graphs” was accepted to USENIX Security 2024.
+“Malla: Demystifying Real-world Large Language Model Integrated Malicious Services” was accepted to USENIX Security 2024.
