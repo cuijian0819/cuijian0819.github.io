@@ -2,8 +2,6 @@
 permalink: /robots.txt
 ---
 User-agent: *
-Disallow:
+Disallow: 
 
-
-
-Sitemap: {{ site.baseurl | prepend: site.url }}/sitemap.xml
+Sitemap: https://cuijian0819.github.io/sitemap.xml
