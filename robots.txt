@@ -1,6 +1,4 @@
 User-agent: *
-Disallow:
-
-
+Disallow: 
 
 Sitemap: https://cuijian0819.github.io/sitemap.xml
