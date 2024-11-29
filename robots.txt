@@ -1,8 +1,10 @@
 ---
 permalink: /robots.txt
 ---
+
 User-agent: *
 Disallow: 
+Sitemap: https://cuijian0819.github.io/sitemap.xml
 
 User-agent: GPTBot
 Disallow: /
@@ -85,4 +87,4 @@ User-agent: Applebot-Extended
 Disallow: /
 
 
-Sitemap: https://cuijian0819.github.io/sitemap.xml
+
