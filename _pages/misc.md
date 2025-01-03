@@ -24,12 +24,12 @@ I've always been a sports enthusiast and here is my fitness journey:
 
 <ul class="space_list">
     <li> Soccer: I've been playing since I could walk, though these days it's more sporadic.</li>
-    <li> Gym: Since January 2023, I've been hitting the gym regularly.</li>
+    <li> Gym: Since January 2023, <strike>I've been hitting the gym regularly.</strike> Focus shifting to Crossfit these days though...</li>
     <li> Sports Climbing (Bouldering): From mid-2022 to early 2023, I don't climb as often now, but I still enjoy tackling the wall when I get the chance.</li>
-    <li> Crossfit: <strike>I tried CrossFit from March to June 2023, and I'm on the lookout for a good box to get back into it.</strike></li>
-    <li> Crossfit: Back to the box since December 2024!</li>
+    <li> Crossfit: I tried CrossFit from March to June 2023. <strike>and I'm on the lookout for a good box to get back into it.</strike> 
+    Back to the box since December 2024!</li>
     <li> Swimming: Since December 2023, mainly sticking to breaststroke...</li>
-    <li> Running: It's not my primary focus, just something I do occasionally.</li>
+    <li> Running: It's not my primary focus. <strike>just something I do occasionally.</strike> Trying to do a long run every week these days.</li>
 </ul>
 
 
