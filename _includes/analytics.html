@@ -1,0 +1,40 @@
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-3QFBTBNJ0M"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-3QFBTBNJ0M');
+
+  // Send user agent as a custom dimension to Google Analytics
+  gtag('set', 'user_properties', {
+    'user_agent': navigator.userAgent
+  });
+</script>
+<!-- End Google tag (gtag.js) -->
+
+<!-- Cloudflare Web Analytics -->
+<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "YOUR_TOKEN_HERE"}'></script>
+<!-- End Cloudflare Web Analytics -->
+
+<!-- User Agent Logging -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('User Agent:', navigator.userAgent);
+    
+    // Additional user agent details
+    const userAgentData = {
+      userAgent: navigator.userAgent,
+      platform: navigator.platform,
+      language: navigator.language,
+      cookieEnabled: navigator.cookieEnabled,
+      online: navigator.onLine,
+      vendor: navigator.vendor,
+      screenResolution: `${window.screen.width}x${window.screen.height}`,
+      windowSize: `${window.innerWidth}x${window.innerHeight}`
+    };
+    
+    console.log('Detailed User Agent Info:', userAgentData);
+  });
+</script> 
