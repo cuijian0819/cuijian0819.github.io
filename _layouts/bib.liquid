@@ -182,12 +182,16 @@
       {{ entry.note | strip }}
     </div>
     {% if entry.award %}
-      <div style="color: #808080; margin-left: 2px;"><b>- Award</b>: <i>{{entry.award}}</i></div>
+      <div class="award-highlight" style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+        {{entry.award}}
+      </div>
     {% endif %}
 
 
     {% if entry.media %}
-      <span style="color: #808080; margin-left: 2px;"><b>- Media Coverage</b>: <i>{{entry.media}}</i></span>
+      <div class="media-coverage" style="margin-top: 0.5rem; margin-bottom: 0.5rem;">
+        <strong>Media Coverage:</strong> {{entry.media}}
+      </div>
     {% endif %}
 
     <!-- Links/Buttons -->

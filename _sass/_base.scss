@@ -130,6 +130,53 @@ blockquote {
       color: var(--global-danger-block-title);
     }
   }
+
+  &.block-award {
+    border-color: var(--global-award-block);
+    background-color: var(--global-award-block-bg);
+
+    em,
+    li,
+    p,
+    strong {
+      color: var(--global-award-block-text);
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      color: var(--global-award-block-title);
+    }
+  }
+}
+
+// Inline award highlight span
+.award-highlight {
+  background-color: var(--global-award-block-bg);
+  border-left: 3px solid var(--global-award-block);
+  padding: 0.5rem 0.75rem;
+  display: inline-block;
+  border-radius: 4px;
+  color: var(--global-award-block-text);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+// Inline media coverage span
+.media-coverage {
+  background-color: var(--global-media-block-bg);
+  border-left: 3px solid var(--global-media-block);
+  padding: 0.5rem 0.75rem;
+  display: inline-block;
+  border-radius: 4px;
+  color: var(--global-media-block-text);
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 // Checklist

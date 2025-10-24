@@ -35,6 +35,16 @@
   --global-danger-block-text: #600;
   --global-danger-block-title: #c00;
 
+  --global-award-block: #f4a261;
+  --global-award-block-bg: #fff4e6;
+  --global-award-block-text: #6c5b4d;
+  --global-award-block-title: #e76f51;
+
+  --global-media-block: #4a9eff;
+  --global-media-block-bg: #e8f4ff;
+  --global-media-block-text: #2c5f8d;
+  --global-media-block-title: #2980b9;
+
   #light-toggle-system {
     padding-left: 10px;
     padding-top: 12px;
@@ -98,6 +108,16 @@ html[data-theme="dark"] {
   --global-danger-block-bg: #ffe0e0;
   --global-danger-block-text: #600;
   --global-danger-block-title: #c00;
+
+  --global-award-block: #ffa86a;
+  --global-award-block-bg: rgba(255, 168, 106, 0.2);
+  --global-award-block-text: #ffc299;
+  --global-award-block-title: #ff8c52;
+
+  --global-media-block: #5dadff;
+  --global-media-block-bg: rgba(93, 173, 255, 0.2);
+  --global-media-block-text: #7bbfff;
+  --global-media-block-title: #3d9eff;
 
   .repo-img-light {
     display: none;
