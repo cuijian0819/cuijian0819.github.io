@@ -6,6 +6,7 @@ body {
   padding-bottom: 70px;
   color: var(--global-text-color);
   background-color: var(--global-bg-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
 
   h1,
   h2,
@@ -15,6 +16,11 @@ body {
   h6 {
     scroll-margin-top: 66px;
   }
+}
+
+// Profile image — rounded Apple style
+.profile img {
+  border-radius: 16px;
 }
 
 body.fixed-top-nav {

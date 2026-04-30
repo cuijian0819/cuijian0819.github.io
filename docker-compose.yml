@@ -11,7 +11,7 @@ services:
       - bundle_cache:/usr/local/bundle
     environment:
       - JEKYLL_ENV=development
-    command: bash -c "bundle install && bundle exec jekyll serve --host 0.0.0.0 --port 8080 --livereload --livereload-port 35729"
+    command: bash -c "bundle install && bundle exec jekyll serve --host 0.0.0.0 --port 8080 --livereload --livereload-port 35729 --destination /tmp/_site"
 
 volumes:
   bundle_cache:
