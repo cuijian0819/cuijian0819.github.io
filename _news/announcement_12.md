@@ -5,4 +5,4 @@ inline: true
 related_posts: false
 ---
 
-Excited to join Microsoft Research as an applied science intern this summer! See you at Seattle!
+Excited to join Microsoft Research as a research intern this summer! See you at Seattle!
