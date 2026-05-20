@@ -34,7 +34,8 @@ nav_order: 3
         <li>(06/2023 - 11/2024) On the lookout for a good box to get back into it.</li>
         <li>(11/2024 - 03/2025) Returned to the box (Hoosier CrossFit)!</li>
         <li>(03/2025 - 06/2025) Dealt with a shoulder "injury" (mainly inflammation and calcification)</li>
-        <li class="active">(06/2025 - ) Training at least three times a week at <a href="https://www.universityavecrossfit.com/" target="_blank">University Avenue CrossFit</a></li>
+        <li>(06/2025 - 05/2026) Training at least three times a week at <a href="https://www.universityavecrossfit.com/" target="_blank">University Avenue CrossFit</a></li>
+        <li class="active">(06/2026 - ) Training at <a href="https://invictusfitnessseattle.com/" target="_blank">Invictus Fitness Seattle</a> during my MSR internship in Seattle</li>
     </ul>
     <div class="open-results">
         <h6>CrossFit Open 2026</h6>
