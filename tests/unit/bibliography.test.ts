@@ -68,6 +68,12 @@ describe('loadPapers', () => {
     expect(html).not.toContain('¡')
   })
 
+  it('strips the trailing comma some media fields end with', () => {
+    // The bib source has a stray "," after the last <a> in these entries.
+    expect(byKey('jin-etal-2023-darkbert').mediaHtml!.trimEnd()).not.toMatch(/,$/)
+    expect(byKey('lin2024malla').mediaHtml!.trimEnd()).not.toMatch(/,$/)
+  })
+
   it('exposes awards on the three entries that have them', () => {
     expect(byKey('cui2025doyssey').award).toBe('Distinguished Paper Award')
     expect(papers.filter((p) => p.award)).toHaveLength(3)

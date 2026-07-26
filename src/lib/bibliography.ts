@@ -30,6 +30,14 @@ function toAuthor(raw: { firstName?: string; lastName?: string }): Author {
   }
 }
 
+/** The `media` field is hand-written HTML and some entries end with a stray
+ *  comma inside the braces, which renders as a dangling ", " after the last link. */
+function tidyMedia(value?: string): string | undefined {
+  if (!value) return undefined
+  const trimmed = value.trim().replace(/,\s*$/, '')
+  return trimmed || undefined
+}
+
 function resolvePdf(value?: string): string | undefined {
   if (!value) return undefined
   return value.includes('://') ? value : `/assets/pdf/${value}`
@@ -65,7 +73,7 @@ export function loadPapers(bibPath: string): Paper[] {
       venue: toVenue(f.abbr, year),
       venueFull: f.journal ?? '',
       award: f.award || undefined,
-      mediaHtml: f.media || undefined,
+      mediaHtml: tidyMedia(f.media),
       pdfUrl: resolvePdf(f.pdf),
       codeUrl: f.code || undefined,
     }
