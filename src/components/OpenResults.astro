@@ -1,0 +1,134 @@
+---
+export interface Row {
+  workout: string
+  description: string
+  score: string
+  result: string
+}
+
+interface Props {
+  caption: string
+  rows: Row[]
+}
+
+const { caption, rows } = Astro.props
+---
+
+<div class="open-results">
+  <h4>{caption}</h4>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Workout</th>
+        <th>Description</th>
+        <th>Score</th>
+        <th>My result</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map((row) => (
+          <tr class="row-card">
+            <td class="workout" data-label="Workout">
+              <b>{row.workout}</b>
+            </td>
+            <td class="description" data-label="Description">
+              {row.description}
+            </td>
+            <td class="score" data-label="Score">
+              {row.score}
+            </td>
+            <td class="result" data-label="My result">
+              {row.result}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .open-results {
+    margin-top: 1.5rem;
+  }
+
+  .open-results h4 {
+    color: var(--muted);
+    font-family: var(--font-body);
+    font-size: var(--step--1);
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+
+  table {
+    border-collapse: collapse;
+    font-size: var(--step--1);
+    width: 100%;
+  }
+
+  th,
+  td {
+    padding: 0.6rem 0.9rem 0.6rem 0;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  thead th {
+    border-bottom: 1px solid var(--rule);
+    color: var(--muted);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  tbody tr {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  tbody tr:last-child {
+    border-bottom: 0;
+  }
+
+  /* The description column holds 150+ character workout descriptions. Four
+     columns of that cannot fit a phone, so below 640px each row becomes a
+     stacked block. Same markup, no horizontal scroll, no duplicated content. */
+  @media (max-width: 639px) {
+    thead {
+      display: none;
+    }
+
+    table,
+    tbody,
+    tbody tr,
+    td {
+      display: block;
+    }
+
+    tbody tr {
+      padding: 0.9rem 0;
+    }
+
+    td {
+      padding: 0;
+    }
+
+    .workout {
+      font-size: var(--step-0);
+    }
+
+    .description {
+      margin: 0.35rem 0 0.5rem;
+    }
+
+    .score::before,
+    .result::before {
+      color: var(--muted);
+      content: attr(data-label) ' ';
+      font-variant-caps: all-small-caps;
+      letter-spacing: 0.06em;
+      margin-right: 0.3rem;
+    }
+  }
+</style>
