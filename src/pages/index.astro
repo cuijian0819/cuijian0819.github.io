@@ -96,8 +96,8 @@ const links = [
     <NewsList limit={5} />
   </section>
 
-  <section id="publications">
-    <h2>Publications</h2>
+  <section id="papers">
+    <h2>Papers</h2>
     {papers.map((paper) => <PaperEntry paper={paper} />)}
   </section>
 </Base>
@@ -138,12 +138,12 @@ const links = [
     color: var(--accent);
   }
 
-  #publications {
+  #papers {
     margin-top: 4rem;
     scroll-margin-top: 2rem;
   }
 
-  #publications h2 {
+  #papers h2 {
     margin-bottom: 2rem;
   }
 

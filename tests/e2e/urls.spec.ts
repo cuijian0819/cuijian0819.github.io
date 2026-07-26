@@ -9,10 +9,10 @@ for (const path of LIVE) {
   })
 }
 
-test('/publications/ reaches the homepage publications anchor', async ({ page }) => {
+test('/publications/ reaches the homepage papers anchor', async ({ page }) => {
   await page.goto('/publications/')
-  await page.waitForURL(/#publications$/)
-  await expect(page.locator('#publications')).toBeVisible()
+  await page.waitForURL(/#papers$/)
+  await expect(page.locator('#papers')).toBeVisible()
 })
 
 test('/cv/ reaches the real CV pdf, not the missing example_pdf.pdf', async ({ page }) => {

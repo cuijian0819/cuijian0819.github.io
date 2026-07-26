@@ -76,8 +76,8 @@ themes.
 | `src/pages/` | one file per route |
 | `public/assets/` | pdfs and images at stable URLs |
 
-Publications live on the homepage, not a separate page. `/publications/` redirects to `/#publications`.
-The nav label reads "papers" but the anchor id must stay `publications`, because that redirect targets it.
+Papers live on the homepage, not a separate page. The section is `id="papers"`. The old `/publications/`
+URL is kept alive as a redirect to `/#papers`, because it may be linked from a CV or a paper footer.
 
 `/writing/` is intentionally unlinked from the nav while it is still thin. The page and its URL are
 live; do not delete them, and do not "fix" the missing nav entry.

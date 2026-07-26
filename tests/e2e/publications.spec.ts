@@ -7,7 +7,7 @@ test('lists all nine papers on the homepage', async ({ page }) => {
 
 test('has the anchor /publications/ redirects to', async ({ page }) => {
   await page.goto('/')
-  await expect(page.locator('#publications')).toHaveCount(1)
+  await expect(page.locator('#papers')).toHaveCount(1)
 })
 
 test('marks Jian Cui in every author list', async ({ page }) => {
