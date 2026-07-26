@@ -54,13 +54,34 @@ test('the workout description is fully readable on a phone', async ({ page }) =>
   expect(scrollWidth).toBeLessThanOrEqual(clientWidth + 1)
 })
 
-test('the portrait stacks above the bio on a phone', async ({ page }) => {
+test('the portrait sits above the bio on a phone', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 900 })
   await page.goto('/')
   const bio = await page.locator('.bio').boundingBox()
   const portrait = await page.locator('.portrait').boundingBox()
-  expect(portrait!.y).toBeGreaterThan(bio!.y)
+  expect(portrait!.y).toBeLessThan(bio!.y)
   expect(portrait!.x).toBeLessThan(100)
+})
+
+test('portrait, news and papers share one right edge on desktop', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/')
+  const right = async (selector: string) => {
+    const box = await page.locator(selector).first().boundingBox()
+    return Math.round(box!.x + box!.width)
+  }
+  const portrait = await right('.portrait')
+  expect(await right('.news')).toBe(portrait)
+  expect(await right('.paper')).toBe(portrait)
+})
+
+test('desktop is wider than a stretched phone layout', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 })
+  await page.goto('/')
+  const bio = await page.locator('.bio p').first().evaluate((el) => el.clientWidth)
+  // Regression guard: the bio column was 512px when prose and layout shared one
+  // measure. Desktop should read wider than that.
+  expect(bio).toBeGreaterThan(600)
 })
 
 test('the portrait offsets right on a desktop', async ({ page }) => {

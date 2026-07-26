@@ -25,10 +25,28 @@
   --step-3: clamp(1.73rem, 1.48rem + 1.25vw, 2.37rem);
   --step-4: clamp(2rem, 1.45rem + 2.75vw, 3.5rem);
 
+  /* --measure caps long-form prose near the readable optimum.
+     --shell is the outer container, and everything that is not prose (papers,
+     news, the misc cards) fills it, so every block shares one left and right
+     edge with the portrait above them. */
   --measure: 68ch;
+  --portrait: 300px;
+  --shell: calc(var(--measure) + 14rem);
+
   --leading: 1.75;
   --radius: 12px;
   --gutter: clamp(1rem, 5vw, 2rem);
+}
+
+/* Desktop is composed rather than being a stretched phone layout: prose widens
+   a little, the shell widens to exactly fit the text column plus the portrait,
+   and list content fills the full width instead of being held to prose measure. */
+@media (min-width: 1024px) {
+  :root {
+    --measure: 72ch;
+    --portrait: 320px;
+    --shell: calc(var(--measure) + var(--portrait) + 2.5rem);
+  }
 }
 
 [data-theme='dark'] {

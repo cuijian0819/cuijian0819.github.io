@@ -1,6 +1,8 @@
 ---
 import { Image } from 'astro:assets'
 import Base from '../layouts/Base.astro'
+import LinkChips from '../components/LinkChips.astro'
+import type { Chip } from '../components/LinkChips.astro'
 import NewsList from '../components/NewsList.astro'
 import PaperEntry from '../components/PaperEntry.astro'
 import { loadPapers } from '../lib/bibliography'
@@ -8,11 +10,15 @@ import profile from '../assets/profile_photo.png'
 
 const papers = loadPapers('_bibliography/papers.bib')
 
-const links = [
-  { href: '/assets/pdf/CV_Jian.pdf', label: 'CV' },
-  { href: 'https://scholar.google.com/citations?user=eepEd2kAAAAJ&hl=en', label: 'Google Scholar' },
-  { href: 'https://www.linkedin.com/in/jian-cui-8638ab194/', label: 'LinkedIn' },
-  { href: 'https://twitter.com/cuijian0819', label: 'Twitter' },
+const links: Chip[] = [
+  { href: '/assets/pdf/CV_Jian.pdf', label: 'CV', icon: 'cv' },
+  {
+    href: 'https://scholar.google.com/citations?user=eepEd2kAAAAJ&hl=en',
+    label: 'Google Scholar',
+    icon: 'scholar',
+  },
+  { href: 'https://www.linkedin.com/in/jian-cui-8638ab194/', label: 'LinkedIn', icon: 'linkedin' },
+  { href: 'https://twitter.com/cuijian0819', label: 'Twitter', icon: 'x' },
 ]
 ---
 
@@ -69,24 +75,15 @@ const links = [
         personal and professional journey far more than the academic accolades mentioned on this page.
       </div>
 
-      <p class="links">
-        {
-          links.map((link, i) => (
-            <>
-              {i > 0 && <span class="sep"> &middot; </span>}
-              <a href={link.href}>{link.label}</a>
-            </>
-          ))
-        }
-      </p>
+      <LinkChips chips={links} />
     </div>
 
     <Image
       class="portrait"
       src={profile}
       alt="Jian Cui"
-      widths={[260, 520]}
-      sizes="(min-width: 640px) 260px, 55vw"
+      widths={[320, 640]}
+      sizes="(min-width: 1024px) 320px, (min-width: 640px) 300px, 55vw"
       loading="eager"
     />
   </section>
@@ -114,19 +111,15 @@ const links = [
   }
 
   .portrait {
+    border: 1px solid var(--rule);
     border-radius: var(--radius);
     height: auto;
     justify-self: start;
-    width: min(55vw, 260px);
-  }
-
-  .links {
-    font-size: var(--step--1);
-    margin-top: 1.5rem;
-  }
-
-  .links .sep {
-    color: var(--muted);
+    width: min(55vw, var(--portrait));
+    /* Source order puts the portrait after the bio, which is right for the
+       desktop grid. On a phone that would bury the photo below three
+       paragraphs and a row of chips, so it moves to the top. */
+    order: -1;
   }
 
   .news-section h2 a {
@@ -164,6 +157,12 @@ const links = [
     .portrait {
       grid-column: 2;
       grid-row: 1;
+      /* Optical alignment. The h1 box starts higher than its cap height because
+         of line-height, so matching the grid row start makes the photo look like
+         it floats above the name. This drops it onto the cap line. */
+      margin-top: calc((1.15em - 0.72em) * 0.5 * var(--step-4) / 1rem);
     }
   }
+
+
 </style>
