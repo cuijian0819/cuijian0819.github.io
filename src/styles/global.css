@@ -25,11 +25,11 @@ h2,
 h3,
 h4 {
   font-family: var(--font-display);
-  /* SOFT is the axis that makes Fraunces rounded rather than sharp. It is the
-     literal implementation of the "soft and warm" requirement. WONK stays 0;
-     its quirky alternates read as playful, not warm. */
-  font-variation-settings: 'SOFT' 60, 'WONK' 0, 'opsz' 40;
-  font-weight: 600;
+  /* Literata's optical-size axis at display sizes: slightly higher contrast and
+     tighter spacing than the body setting, which is what carries the hierarchy
+     now that display and body share a family. */
+  font-variation-settings: 'opsz' 44;
+  font-weight: 650;
   line-height: 1.15;
   letter-spacing: -0.015em;
   margin: 0 0 0.5em;

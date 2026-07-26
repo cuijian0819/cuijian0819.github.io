@@ -144,7 +144,7 @@ const links: Chip[] = [
      asymmetry: text left, portrait offset right. */
   @media (min-width: 640px) {
     .intro {
-      align-items: start;
+      align-items: center;
       gap: 2.5rem;
       grid-template-columns: minmax(0, 1fr) auto;
     }
@@ -157,10 +157,10 @@ const links: Chip[] = [
     .portrait {
       grid-column: 2;
       grid-row: 1;
-      /* Optical alignment. The h1 box starts higher than its cap height because
-         of line-height, so matching the grid row start makes the photo look like
-         it floats above the name. This drops it onto the cap line. */
-      margin-top: calc((1.15em - 0.72em) * 0.5 * var(--step-4) / 1rem);
+      /* Centred against the bio block rather than pinned to the top, so the
+         leftover column height splits evenly above and below instead of
+         pooling underneath. */
+      align-self: center;
     }
   }
 

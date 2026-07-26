@@ -25,8 +25,10 @@ describe('design tokens', () => {
     expect(tokens).toContain('clamp(')
   })
 
-  it('dials Fraunces softness rather than leaving it sharp', () => {
-    expect(global).toContain("'SOFT'")
+  it('separates display from body with optical size and weight, not a second family', () => {
+    // Fraunces was dropped: its J has a hooked descender that no axis changes.
+    expect(tokens).not.toContain('fraunces')
+    expect(global).toContain("'opsz'")
   })
 
   it('caps the measure and sets warm leading', () => {
