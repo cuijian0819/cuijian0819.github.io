@@ -1,0 +1,156 @@
+---
+import SEO from '../components/SEO.astro'
+import ThemeToggle from '../components/ThemeToggle.astro'
+import '../styles/tokens.css'
+import '../styles/global.css'
+
+interface Props {
+  title?: string
+  description?: string
+  /** Markdown pages using `layout:` receive their front matter here, not as props. */
+  frontmatter?: { title?: string; description?: string }
+}
+
+const { frontmatter } = Astro.props
+const title = Astro.props.title ?? frontmatter?.title ?? 'Jian Cui'
+const description = Astro.props.description ?? frontmatter?.description ?? ''
+
+// Markdown pages get prose constraints; .astro pages style their own content.
+const isMarkdown = Boolean(frontmatter)
+
+const nav = [
+  { href: '/', label: 'about' },
+  { href: '/#publications', label: 'work' },
+  { href: '/misc/', label: 'misc' },
+  { href: '/writing/', label: 'writing' },
+]
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <SEO title={title} description={description} />
+    <script is:inline>
+      // Applied before first paint so the page never flashes the wrong theme.
+      const saved = localStorage.getItem('theme')
+      if (saved) document.documentElement.dataset.theme = saved
+    </script>
+  </head>
+
+  <body>
+    <a class="visually-hidden" href="#main">Skip to content</a>
+
+    <header class="masthead">
+      <a class="wordmark" href="/">Jian Cui</a>
+      <nav aria-label="Primary">
+        {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+      </nav>
+      <ThemeToggle />
+    </header>
+
+    <main id="main" class={isMarkdown ? 'markdown' : undefined}><slot /></main>
+
+    <footer>
+      <p>Jian Cui &middot; Urbana&ndash;Champaign</p>
+    </footer>
+
+    <style>
+      .masthead,
+      main,
+      footer {
+        margin-inline: auto;
+        max-width: calc(var(--measure) + 14rem);
+        padding-inline: var(--gutter);
+        width: 100%;
+      }
+
+      .masthead {
+        align-items: center;
+        border-bottom: 1px solid var(--rule);
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem 1.25rem;
+        padding-block: 1.25rem;
+      }
+
+      .wordmark {
+        color: var(--ink);
+        font-family: var(--font-display);
+        font-size: var(--step-1);
+        font-variation-settings: 'SOFT' 60, 'WONK' 0, 'opsz' 40;
+        font-weight: 600;
+        margin-right: auto;
+        text-decoration: none;
+      }
+
+      /* Four items fit inline down to 320px, so there is no hamburger and no
+         navigation JavaScript. */
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.1rem;
+      }
+
+      nav a {
+        color: var(--muted);
+        font-size: var(--step--1);
+        letter-spacing: 0.01em;
+        padding-block: 0.5rem;
+        text-decoration: none;
+      }
+
+      nav a:hover {
+        color: var(--accent);
+        opacity: 1;
+      }
+
+      .markdown {
+        max-width: calc(var(--measure) + 6rem);
+        padding-block: 3rem 0;
+      }
+
+      .markdown :global(h1) {
+        font-size: var(--step-3);
+        margin-bottom: 1.5rem;
+      }
+
+      .markdown :global(h2) {
+        border-bottom: 1px solid var(--rule);
+        font-size: var(--step-1);
+        margin-top: 2.75rem;
+        padding-bottom: 0.4rem;
+      }
+
+      .markdown :global(p),
+      .markdown :global(ul),
+      .markdown :global(ol) {
+        max-width: var(--measure);
+      }
+
+      .markdown :global(ul ul) {
+        margin-top: 0.35em;
+      }
+
+      footer {
+        border-top: 1px solid var(--rule);
+        color: var(--muted);
+        font-size: var(--step--1);
+        margin-top: 5rem;
+        padding-block: 2rem;
+      }
+
+      footer p {
+        margin: 0;
+      }
+
+      @media (max-width: 400px) {
+        nav {
+          gap: 0.85rem;
+        }
+      }
+    </style>
+  </body>
+</html>

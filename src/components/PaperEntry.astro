@@ -1,0 +1,101 @@
+---
+import type { Paper } from '../lib/bibliography.types'
+
+interface Props {
+  paper: Paper
+}
+
+const { paper } = Astro.props
+---
+
+<article class="paper">
+  <h3>{paper.title}</h3>
+
+  <p class="authors">
+    {
+      paper.authors.map((author, i) => (
+        <>
+          {i > 0 && ', '}
+          <span class={author.isSelf ? 'self' : undefined}>{author.display}</span>
+        </>
+      ))
+    }
+  </p>
+
+  <p class="meta">
+    <span class="venue" title={paper.venueFull}>{paper.venue}</span>
+    {paper.pdfUrl && <> &middot; <a href={paper.pdfUrl}>pdf</a></>}
+    {paper.codeUrl && <> &middot; <a href={paper.codeUrl}>code</a></>}
+  </p>
+
+  {paper.award && <p class="award">★ {paper.award}</p>}
+
+  {
+    paper.mediaHtml && (
+      <p class="media">
+        <span class="media-label">Media</span>
+        {/* Raw anchor tags straight from the bib file's `media` field. */}
+        <Fragment set:html={paper.mediaHtml} />
+      </p>
+    )
+  }
+</article>
+
+<style>
+  .paper {
+    margin: 0 0 2.5rem;
+    max-width: var(--measure);
+  }
+
+  .paper h3 {
+    font-size: var(--step-1);
+    font-variation-settings: 'SOFT' 60, 'WONK' 0, 'opsz' 24;
+    margin-bottom: 0.4rem;
+  }
+
+  .authors {
+    color: var(--muted);
+    font-size: var(--step--1);
+    margin: 0 0 0.35rem;
+  }
+
+  .authors .self {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .meta {
+    font-size: var(--step--1);
+    margin: 0;
+  }
+
+  .venue {
+    color: var(--muted);
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.06em;
+  }
+
+  .award {
+    color: var(--accent);
+    font-size: var(--step--1);
+    margin: 0.4rem 0 0;
+  }
+
+  .media {
+    color: var(--muted);
+    font-size: var(--step--1);
+    margin: 0.35rem 0 0;
+  }
+
+  .media-label {
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.06em;
+    margin-right: 0.35rem;
+  }
+
+  /* The bib file's media field ends with a trailing comma inside the braces,
+     which renders as a dangling ", " after the last link. */
+  .media :global(a:last-of-type) ~ :global(br) {
+    display: none;
+  }
+</style>

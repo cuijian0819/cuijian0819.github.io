@@ -1,0 +1,64 @@
+name: astro
+
+# Deploys by pushing the built site to the gh-pages branch, because the
+# repository's Pages config is build_type "legacy" with source branch gh-pages.
+# Switching to the artifact-based actions/deploy-pages flow would need an admin
+# to change the Pages source to "GitHub Actions" in repository settings first.
+#
+# public/.nojekyll is load-bearing: legacy Pages runs Jekyll over the branch,
+# and Jekyll ignores underscore-prefixed directories, which would strip the
+# whole of Astro's _astro/ bundle and serve the site unstyled.
+on:
+  push:
+    branches: [master]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npx playwright install --with-deps chromium
+
+      - name: Unit tests
+        run: npm run test:unit
+
+      - name: End-to-end tests
+        run: npm run test:e2e
+
+      - name: Build
+        run: npm run build
+
+      - name: Verify the build is deployable
+        run: |
+          test -f dist/.nojekyll || { echo "::error::dist/.nojekyll missing; Pages would strip _astro/"; exit 1; }
+          test -d dist/_astro   || { echo "::error::dist/_astro missing"; exit 1; }
+          test -f dist/index.html
+          test -f dist/robots.txt
+          test -f dist/sitemap.xml
+          grep -q "cuijian0819.github.io/realme" dist/sitemap.xml \
+            || { echo "::error::sitemap no longer points at /realme"; exit 1; }
+
+      - name: Deploy to gh-pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: dist
+          clean: true

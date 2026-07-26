@@ -1,0 +1,328 @@
+---
+import Base from '../layouts/Base.astro'
+import OpenResults from '../components/OpenResults.astro'
+import type { Row } from '../components/OpenResults.astro'
+
+const openResults: Row[] = [
+  {
+    workout: '26.1',
+    description:
+      '12-min cap: Wall balls (20 lb) & box jump-overs (24") pyramid, 20-30-40-66-40-30-20 wall balls w/ 18 box jump-overs or med-ball box step-overs between',
+    score: "191 reps [Rx'd]",
+    result: '47 wall balls into round of 66 (Tiebreak: 8:02)',
+  },
+  {
+    workout: '26.2',
+    description:
+      '15-min cap: 3 rounds of 80-ft DB OH lunge, 20 alt. DB snatches (50 lb), pull-ups escalating (20 pull-ups → 20 C2B → 20 ring muscle-ups)',
+    score: "75 reps [Rx'd]",
+    result: '1 round + 80-ft DB lunge, 20 DB snatches, 7 C2B pull-ups (Tiebreak: 14:14)',
+  },
+  {
+    workout: '26.3',
+    description:
+      '16-min cap: 3 phases × 2 rounds of 12 burpees over bar, 12 cleans, 12 burpees over bar, 12 thrusters, ascending weight (95/115/135 lb)',
+    score: "120 reps [Rx'd]",
+    result: '2 rounds @ 95 lb + 12 burpees over bar, 12 cleans @ 115 lb (Tiebreak: 12:25)',
+  },
+]
+---
+
+<Base
+  title="Misc · Jian Cui"
+  description="Personal notes from Jian Cui: background, fitness, volunteering, and student clubs."
+>
+  <div class="misc">
+    <h1>Misc.</h1>
+
+    <section class="misc-section">
+      <h2>Personal</h2>
+      <ul class="info-list">
+        <li>
+          Born and reared in{' '}
+          <a href="https://en.wikipedia.org/wiki/Yanbian_Korean_Autonomous_Prefecture">
+            Yanbian Korean Autonomous Prefecture,
+          </a>{' '}
+          Jilin, China, where the Korean-Chinese community lives.
+        </li>
+        <li>
+          I am a Korean-Chinese (a.k.a{' '}
+          <a href="https://en.wikipedia.org/wiki/Koreans_in_China">Koreans in China</a>)
+        </li>
+        <li>My name in Chinese: <b>崔 健</b>; My name in Korean: <b>최 건</b></li>
+      </ul>
+    </section>
+
+    <section class="misc-section">
+      <h2>Fitness journey</h2>
+      <p class="lede">
+        I've always been a sports enthusiast. My fitness motto is{' '}
+        <i>"Run faster than lifter, lift heavier than runner"</i>
+      </p>
+
+      <article class="card">
+        <header>
+          <h3>CrossFit, my all-time favorite</h3>
+          <span class="badge">Active</span>
+        </header>
+        <ul class="timeline">
+          <li>
+            (03/2023 - 06/2023) Started CrossFit at{' '}
+            <a href="https://www.instagram.com/wecrossfit_yangjae/?hl=en">We Crossfit Yangjae</a>
+          </li>
+          <li>(06/2023 - 11/2024) On the lookout for a good box to get back into it.</li>
+          <li>(11/2024 - 03/2025) Returned to the box (Hoosier CrossFit)!</li>
+          <li>
+            (03/2025 - 06/2025) Dealt with a shoulder "injury" (mainly inflammation and
+            calcification)
+          </li>
+          <li>
+            (06/2025 - 05/2026) Training at least three times a week at{' '}
+            <a href="https://www.universityavecrossfit.com/">University Avenue CrossFit</a>
+          </li>
+          <li class="current">
+            (06/2026 - ) Training at{' '}
+            <a href="https://invictusfitnessseattle.com/">Invictus Fitness Seattle</a> during my MSR
+            internship in Seattle
+          </li>
+        </ul>
+
+        <OpenResults caption="CrossFit Open 2026" rows={openResults} />
+      </article>
+
+      <article class="card">
+        <header><h3>Running</h3></header>
+        <ul class="timeline">
+          <li>Previously on and off with long runs and interval training.</li>
+          <li>
+            (01/2026 - 04/2026) Running 2-3 times per week, training for the Illinois Marathon 10K!
+          </li>
+        </ul>
+        <div class="highlight">
+          <div class="highlight-title">Christie Clinic Illinois Marathon 10K (04/2026)</div>
+          <div>
+            Finished in <b>57:18</b> (9:14/mile avg pace), 343rd/1,639 overall, 229th/639 by gender,
+            41st/103 in M 25-29
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <header><h3>Soccer, been playing since I could walk</h3></header>
+        <ul class="timeline">
+          <li>
+            It became more sporadic after 2019, following my "retirement" from KIFC (KAIST
+            International Football Club). Sometimes I played "fun" futsal with KAIST EE graduate
+            students.
+          </li>
+          <li>(09/2025 - 12/2025) Played once a week with UIUC CFA.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <header><h3>Climbing</h3></header>
+        <ul class="timeline">
+          <li>
+            (06/2022 - 03/2023) Started Bouldering at{' '}
+            <a href="https://www.instagram.com/theclimb_yangjae/">Yangjae The Climb</a>
+          </li>
+          <li>
+            (03/2023) Not as often as before, just sometimes go tackle the wall when I got time
+            (mainly after paper ddl).
+          </li>
+          <li>
+            (09/2025 - ) Sometimes climbing at{' '}
+            <a href="https://campusrec.illinois.edu/fitness/climbing">ARC UIUC</a> when time allows.
+          </li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <header><h3>Swimming</h3></header>
+        <ul class="timeline">
+          <li>(12/2023 - ) Mainly sticking to breaststroke...</li>
+          <li>(09/2025 - ) Currently working on improving my backstroke and freestyle technique.</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <header><h3>Weight training</h3></header>
+        <ul class="timeline">
+          <li>(01/2023 - 11/2024) Went to the gym regularly.</li>
+          <li>(11/2024) Focus shifted to CrossFit.</li>
+          <li>(06/2025 - ) Mainly using it for active recovery sessions when needed.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="misc-section">
+      <h2>Volunteer activities</h2>
+      <ul class="info-list">
+        <li>
+          From August 2016 to August 2018, I worked as a student assistant in the student life team
+          at KAIST.
+        </li>
+        <li>
+          I worked as a Korean language tutor for international students (KAIST Language Center) in
+          August 2018.
+        </li>
+        <li>
+          I worked as a translator for KAIST at the Smart China Expo in Chongqing, China (August
+          2018).
+        </li>
+      </ul>
+    </section>
+
+    <section class="misc-section">
+      <h2>Student club activities</h2>
+      <ul class="info-list">
+        <li>
+          I served as the president of KAIST International Football Club (KIFC) from Aug. 2015 to
+          Aug. 2017
+        </li>
+        <li>I was a member of KAIST EE Futsal Club (September 2016 to August 2017).</li>
+      </ul>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .misc {
+    margin: 3rem 0;
+    max-width: var(--measure);
+  }
+
+  .misc > h1 {
+    font-size: var(--step-3);
+    margin-bottom: 2.5rem;
+  }
+
+  .misc-section {
+    margin-bottom: 3.5rem;
+  }
+
+  .misc-section > h2 {
+    border-bottom: 1px solid var(--rule);
+    font-size: var(--step-1);
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+  }
+
+  .lede {
+    color: var(--muted);
+  }
+
+  .info-list {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .info-list li {
+    margin-bottom: 0.6rem;
+    padding-left: 1.1rem;
+    position: relative;
+  }
+
+  .info-list li::before {
+    color: var(--accent);
+    content: '·';
+    font-size: 1.4em;
+    left: 0.15rem;
+    line-height: 1;
+    position: absolute;
+    top: 0.15em;
+  }
+
+  .card {
+    background: var(--raised);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    margin-bottom: 1.25rem;
+    padding: 1.4rem 1.5rem;
+  }
+
+  .card header {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .card h3 {
+    font-size: var(--step-0);
+    margin: 0;
+  }
+
+  .badge {
+    background: color-mix(in srgb, var(--accent) 12%, transparent);
+    border-radius: 999px;
+    color: var(--accent);
+    font-size: 0.72rem;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.08em;
+    padding: 0.1rem 0.55rem;
+  }
+
+  .timeline {
+    list-style: none;
+    margin: 0;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .timeline::before {
+    background: var(--rule);
+    bottom: 0.5em;
+    content: '';
+    left: 0.15rem;
+    position: absolute;
+    top: 0.5em;
+    width: 1px;
+  }
+
+  .timeline li {
+    font-size: var(--step--1);
+    margin-bottom: 0.5rem;
+    position: relative;
+  }
+
+  .timeline li::before {
+    background: var(--rule);
+    border-radius: 50%;
+    content: '';
+    height: 5px;
+    left: -1rem;
+    position: absolute;
+    top: 0.62em;
+    width: 5px;
+  }
+
+  .timeline li.current::before {
+    background: var(--accent);
+  }
+
+  .timeline li.current {
+    color: var(--ink);
+  }
+
+  .highlight {
+    background: color-mix(in srgb, var(--accent) 7%, transparent);
+    border-left: 2px solid var(--accent);
+    border-radius: 0 8px 8px 0;
+    font-size: var(--step--1);
+    margin-top: 1rem;
+    padding: 0.85rem 1rem;
+  }
+
+  .highlight-title {
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+  }
+
+  @media (max-width: 639px) {
+    .card {
+      padding: 1.1rem 1.1rem;
+    }
+  }
+</style>

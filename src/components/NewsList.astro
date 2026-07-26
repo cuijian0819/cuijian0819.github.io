@@ -1,0 +1,86 @@
+---
+import { getCollection, render } from 'astro:content'
+
+interface Props {
+  limit?: number
+}
+
+const { limit } = Astro.props
+
+const items = (await getCollection('news')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+)
+const shown = limit ? items.slice(0, limit) : items
+
+const rendered = await Promise.all(
+  shown.map(async (item) => ({ item, Content: (await render(item)).Content })),
+)
+
+// Dates in the bib and news front matter are bare YYYY-MM-DD, which Date parses
+// as UTC midnight. Formatting in local time would shift them a day west of GMT.
+const formatter = new Intl.DateTimeFormat('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+  timeZone: 'UTC',
+})
+---
+
+<div class="news">
+  {
+    rendered.map(({ item, Content }) => (
+      <div class="news-item">
+        <time datetime={item.data.date.toISOString().slice(0, 10)}>
+          {formatter.format(item.data.date)}
+        </time>
+        <div class="body">
+          <Content />
+        </div>
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  /* A reflowing list, not a table with a fixed-percentage date column, and with
+     no inner scroll region. */
+  .news {
+    max-width: var(--measure);
+  }
+
+  .news-item {
+    border-bottom: 1px solid var(--rule);
+    padding: 0.75rem 0;
+  }
+
+  .news-item:last-child {
+    border-bottom: 0;
+  }
+
+  .news-item time {
+    color: var(--muted);
+    display: block;
+    font-size: var(--step--1);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .news-item .body :global(p) {
+    margin: 0.15rem 0 0;
+  }
+
+  .news-item .body :global(p + p) {
+    margin-top: 0.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .news-item {
+      display: grid;
+      gap: 1.25rem;
+      grid-template-columns: 7.5rem minmax(0, 1fr);
+    }
+
+    .news-item time {
+      padding-top: 0.15rem;
+    }
+  }
+</style>

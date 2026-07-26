@@ -1,0 +1,130 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: var(--leading);
+  font-variation-settings: 'opsz' 16;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  /* SOFT is the axis that makes Fraunces rounded rather than sharp. It is the
+     literal implementation of the "soft and warm" requirement. WONK stays 0;
+     its quirky alternates read as playful, not warm. */
+  font-variation-settings: 'SOFT' 60, 'WONK' 0, 'opsz' 40;
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  margin: 0 0 0.5em;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--step-4);
+}
+h2 {
+  font-size: var(--step-2);
+}
+h3 {
+  font-size: var(--step-1);
+}
+h4 {
+  font-size: var(--step-0);
+}
+
+p {
+  margin: 0 0 1em;
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: opacity 0.15s ease;
+}
+
+a:hover {
+  opacity: 0.7;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 2.5rem 0;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+ul,
+ol {
+  padding-left: 1.25rem;
+}
+
+li {
+  margin-bottom: 0.35em;
+}
+
+blockquote {
+  margin: 1.5em 0;
+  padding: 0.2em 0 0.2em 1.2em;
+  border-left: 2px solid var(--accent);
+  color: var(--muted);
+}
+
+code {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 0.9em;
+}
+
+/* Standalone controls clear the 44px touch target. Deliberately NOT applied to
+   `a` generally: making inline prose links 44px tall breaks text flow. */
+button,
+.touch-target {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+
+.prose {
+  max-width: var(--measure);
+}
+
+/* Hidden text for the robots.txt honeypot. Colour tracks --paper so it stays
+   invisible in both themes automatically; hardcoding a hex here would expose
+   the text the moment the palette or the theme changes. */
+.hidden-note {
+  color: var(--paper);
+  font-size: 0.2px;
+  line-height: 0.2px;
+  user-select: none;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}

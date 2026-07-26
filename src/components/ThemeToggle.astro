@@ -1,0 +1,59 @@
+---
+// The only client-side JavaScript on the site.
+---
+
+<button id="theme-toggle" type="button" aria-label="Toggle colour theme">
+  <span aria-hidden="true" class="icon-light">☾</span>
+  <span aria-hidden="true" class="icon-dark">☀</span>
+</button>
+
+<script is:inline>
+  ;(() => {
+    const KEY = 'theme'
+    const root = document.documentElement
+
+    const apply = (value) => {
+      root.dataset.theme = value
+      localStorage.setItem(KEY, value)
+    }
+
+    const current = () =>
+      root.dataset.theme ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+
+    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+      apply(current() === 'dark' ? 'light' : 'dark')
+    })
+  })()
+</script>
+
+<style>
+  #theme-toggle {
+    background: none;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.95rem;
+    justify-content: center;
+    line-height: 1;
+    min-width: 44px;
+    padding: 0;
+  }
+
+  #theme-toggle:hover {
+    color: var(--ink);
+  }
+
+  .icon-dark {
+    display: none;
+  }
+
+  :global([data-theme='dark']) .icon-light {
+    display: none;
+  }
+
+  :global([data-theme='dark']) .icon-dark {
+    display: inline;
+  }
+</style>
