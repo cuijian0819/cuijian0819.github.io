@@ -94,6 +94,15 @@ the title comes out as "Jian Cui", that is why.
 
 ## Deploy
 
-**Not yet cut over.** The repository's GitHub Pages source is still the `gh-pages` branch, populated by
-the old Jekyll workflow. `.github/workflows/astro.yml` builds and tests but does not deploy; its header
-comment lists the four steps to switch over, which must be done together.
+Pushing to `master` runs `.github/workflows/astro.yml`: unit tests, e2e tests, build, then a push of
+`dist/` to the `gh-pages` branch. GitHub Pages serves that branch (`build_type: legacy`), so the tests
+gate the deploy.
+
+`public/.nojekyll` is load-bearing. Legacy Pages runs Jekyll over the branch, and Jekyll ignores
+underscore-prefixed directories, so without it the whole of Astro's `_astro/` bundle is stripped and
+the site serves unstyled. The workflow asserts its presence before deploying.
+
+The artifact-based `actions/deploy-pages` flow would be tidier, but it needs an admin to switch the
+Pages source to "GitHub Actions" in repository settings first.
+
+The pre-rebuild Jekyll site is tagged `jekyll-final` if anything needs recovering.
