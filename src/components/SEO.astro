@@ -1,0 +1,52 @@
+---
+interface Props {
+  title: string
+  description: string
+  ogImage?: string
+}
+
+const { title, description, ogImage = '/assets/img/profile_photo.png' } = Astro.props
+
+const canonical = new URL(Astro.url.pathname, Astro.site).href
+const image = new URL(ogImage, Astro.site).href
+
+// schema.org Person, so a shared link resolves to a researcher rather than a
+// bare URL. The old site had serve_og_meta and serve_schema_org both false.
+const person = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Jian Cui',
+  url: 'https://cuijian0819.github.io',
+  image,
+  jobTitle: 'PhD Candidate',
+  affiliation: {
+    '@type': 'CollegeOrUniversity',
+    name: 'University of Illinois Urbana-Champaign',
+  },
+  alumniOf: { '@type': 'CollegeOrUniversity', name: 'KAIST' },
+  knowsAbout: [
+    'Security and privacy in agentic AI systems',
+    'Cyber threat intelligence',
+    'Large language model security',
+  ],
+  sameAs: ['https://scholar.google.com/citations?user=eepEd2kAAAAJ&hl=en'],
+}
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="Jian Cui" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={image} />
+<meta property="og:url" content={canonical} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={image} />
+
+<script type="application/ld+json" set:html={JSON.stringify(person)} is:inline />
