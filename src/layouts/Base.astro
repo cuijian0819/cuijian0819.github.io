@@ -18,11 +18,12 @@ const description = Astro.props.description ?? frontmatter?.description ?? ''
 // Markdown pages get prose constraints; .astro pages style their own content.
 const isMarkdown = Boolean(frontmatter)
 
+// /writing/ is deliberately absent: the page still exists and its URL still
+// resolves, it is just unlinked until there is more on it.
 const nav = [
   { href: '/', label: 'about' },
-  { href: '/#publications', label: 'work' },
+  { href: '/#publications', label: 'papers' },
   { href: '/misc/', label: 'misc' },
-  { href: '/writing/', label: 'writing' },
 ]
 ---
 

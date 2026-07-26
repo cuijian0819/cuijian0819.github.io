@@ -3,8 +3,17 @@ import { expect, test } from '@playwright/test'
 test('navigation is inline with no hamburger at 375px', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 800 })
   await page.goto('/')
-  await expect(page.locator('nav a')).toHaveCount(4)
+  await expect(page.locator('nav a')).toHaveCount(3)
+  await expect(page.locator('nav a')).toHaveText(['about', 'papers', 'misc'])
   await expect(page.locator('button.hamburger, .navbar-toggler')).toHaveCount(0)
+})
+
+test('/writing/ is unlinked but still resolves', async ({ page, request }) => {
+  for (const path of ['/', '/misc/', '/news/']) {
+    await page.goto(path)
+    await expect(page.locator('nav a[href*="writing"]')).toHaveCount(0)
+  }
+  expect((await request.get('/writing/')).status()).toBe(200)
 })
 
 test('theme toggle flips the paper colour and persists', async ({ page }) => {
