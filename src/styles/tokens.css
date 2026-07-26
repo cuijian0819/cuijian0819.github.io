@@ -1,0 +1,54 @@
+/* Fonts are self-hosted via @fontsource-variable so nothing is fetched from a
+   third party at runtime. Fraunces `full` is required rather than the default
+   subset: it is the build that carries the SOFT and WONK axes. */
+@import '@fontsource-variable/fraunces/full.css';
+@import '@fontsource-variable/literata/index.css';
+
+:root {
+  /* Warm editorial palette. Deliberately no blue anywhere. */
+  --paper: #FBF8F3;
+  --raised: #FFFDFA;
+  --ink: #33302B;
+  --muted: #7A736A;
+  --accent: #B5654A;
+  --rule: rgba(51, 48, 43, 0.10);
+
+  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
+  --font-body: 'Literata Variable', Georgia, 'Times New Roman', serif;
+
+  /* Fluid scale: minimum at 320px, maximum at 1024px. Continuous, so nothing
+     jumps at a breakpoint. */
+  --step--1: clamp(0.83rem, 0.80rem + 0.15vw, 0.92rem);
+  --step-0: clamp(1rem, 0.94rem + 0.28vw, 1.13rem);
+  --step-1: clamp(1.2rem, 1.10rem + 0.50vw, 1.45rem);
+  --step-2: clamp(1.44rem, 1.28rem + 0.80vw, 1.85rem);
+  --step-3: clamp(1.73rem, 1.48rem + 1.25vw, 2.37rem);
+  --step-4: clamp(2rem, 1.45rem + 2.75vw, 3.5rem);
+
+  --measure: 68ch;
+  --leading: 1.75;
+  --radius: 12px;
+  --gutter: clamp(1rem, 5vw, 2rem);
+}
+
+[data-theme='dark'] {
+  --paper: #1A1815;
+  --raised: #232019;
+  --ink: #EDE7DE;
+  --muted: #9C9287;
+  --accent: #E08B6B;
+  --rule: rgba(237, 231, 222, 0.12);
+}
+
+/* Respect the OS preference until the reader chooses explicitly, at which
+   point [data-theme] is stamped on <html> and wins. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper: #1A1815;
+    --raised: #232019;
+    --ink: #EDE7DE;
+    --muted: #9C9287;
+    --accent: #E08B6B;
+    --rule: rgba(237, 231, 222, 0.12);
+  }
+}
