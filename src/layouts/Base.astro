@@ -35,46 +35,98 @@ const nav = [
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <SEO title={title} description={description} />
     <script is:inline>
-      // Applied before first paint so the page never flashes the wrong theme.
+      // Both applied before first paint: the theme so the page never flashes the
+      // wrong one, and `js` so the reveal styles only apply when they can be
+      // undone. Without JavaScript nothing is ever left invisible.
       const saved = localStorage.getItem('theme')
       if (saved) document.documentElement.dataset.theme = saved
+      document.documentElement.classList.add('js')
     </script>
   </head>
 
   <body>
-    <a class="visually-hidden" href="#main">Skip to content</a>
+    <a class="skip" href="#main">Skip to content</a>
 
     <header class="masthead">
-      <a class="wordmark" href="/">Jian Cui</a>
-      <nav aria-label="Primary">
-        {nav.map((item) => <a href={item.href}>{item.label}</a>)}
-      </nav>
-      <ThemeToggle />
+      <div class="wrap masthead-inner">
+        <a class="wordmark" href="/">Jian Cui</a>
+        <nav aria-label="Primary">
+          {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+        </nav>
+        <ThemeToggle />
+      </div>
     </header>
 
-    <main id="main" class={isMarkdown ? 'markdown' : undefined}><slot /></main>
+    <main id="main">
+      {
+        isMarkdown ? (
+          <div class="wrap markdown reveal">
+            <slot />
+          </div>
+        ) : (
+          <slot />
+        )
+      }
+    </main>
 
     <footer>
-      <p>Jian Cui &middot; Urbana&ndash;Champaign</p>
+      <div class="wrap footer-inner">
+        <p>Jian Cui &middot; Urbana&ndash;Champaign</p>
+      </div>
     </footer>
 
+    <script is:inline>
+      // ~600 bytes, no framework. Reveals each marked block once as it enters
+      // the viewport, then stops observing it.
+      ;(() => {
+        const targets = document.querySelectorAll('.reveal')
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+        if (reduced || !('IntersectionObserver' in window)) {
+          targets.forEach((el) => el.classList.add('is-visible'))
+          return
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue
+              entry.target.classList.add('is-visible')
+              observer.unobserve(entry.target)
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
+        )
+
+        targets.forEach((el) => observer.observe(el))
+      })()
+    </script>
+
     <style>
-      .masthead,
-      main,
-      footer {
-        margin-inline: auto;
-        max-width: var(--shell);
-        padding-inline: var(--gutter);
-        width: 100%;
+      /* Sticky frosted masthead. The translucency needs a real background
+         underneath, which is why the hero band stays on --paper. */
+      .masthead {
+        backdrop-filter: saturate(180%) blur(20px);
+        -webkit-backdrop-filter: saturate(180%) blur(20px);
+        background: color-mix(in srgb, var(--paper) 72%, transparent);
+        border-bottom: 1px solid var(--rule);
+        position: sticky;
+        top: 0;
+        z-index: 20;
       }
 
-      .masthead {
+      @supports not (backdrop-filter: blur(1px)) {
+        .masthead {
+          background: var(--paper);
+        }
+      }
+
+      .masthead-inner {
         align-items: center;
-        border-bottom: 1px solid var(--rule);
         display: flex;
         flex-wrap: wrap;
         gap: 0.75rem 1.25rem;
-        padding-block: 1.25rem;
+        padding-block: 1rem;
       }
 
       .wordmark {
@@ -83,16 +135,17 @@ const nav = [
         font-size: var(--step-1);
         font-variation-settings: 'opsz' 44;
         font-weight: 650;
+        letter-spacing: -0.015em;
         margin-right: auto;
         text-decoration: none;
       }
 
-      /* Four items fit inline down to 320px, so there is no hamburger and no
+      /* Three items fit inline down to 320px, so there is no hamburger and no
          navigation JavaScript. */
       nav {
         display: flex;
         flex-wrap: wrap;
-        gap: 1.1rem;
+        gap: 1.35rem;
       }
 
       nav a {
@@ -100,7 +153,23 @@ const nav = [
         font-size: var(--step--1);
         letter-spacing: 0.01em;
         padding-block: 0.5rem;
+        position: relative;
         text-decoration: none;
+        transition: color 0.2s ease;
+      }
+
+      /* The underline grows from the centre rather than appearing all at once. */
+      nav a::after {
+        background: var(--accent);
+        bottom: 0.25rem;
+        content: '';
+        height: 1px;
+        left: 50%;
+        position: absolute;
+        transition:
+          width 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+          left 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+        width: 0;
       }
 
       nav a:hover {
@@ -108,9 +177,27 @@ const nav = [
         opacity: 1;
       }
 
+      nav a:hover::after {
+        left: 0;
+        width: 100%;
+      }
+
+      .skip {
+        left: -9999px;
+        position: absolute;
+      }
+
+      .skip:focus {
+        background: var(--raised);
+        border-radius: 8px;
+        left: 1rem;
+        padding: 0.75rem 1rem;
+        top: 1rem;
+        z-index: 30;
+      }
+
       .markdown {
-        max-width: var(--shell);
-        padding-block: 3rem 0;
+        padding-block: 4.5rem 0;
       }
 
       .markdown :global(h1) {
@@ -121,7 +208,7 @@ const nav = [
       .markdown :global(h2) {
         border-bottom: 1px solid var(--rule);
         font-size: var(--step-1);
-        margin-top: 2.75rem;
+        margin-top: 3rem;
         padding-bottom: 0.4rem;
       }
 
@@ -139,8 +226,11 @@ const nav = [
         border-top: 1px solid var(--rule);
         color: var(--muted);
         font-size: var(--step--1);
-        margin-top: 5rem;
-        padding-block: 2rem;
+        margin-top: 6rem;
+      }
+
+      .footer-inner {
+        padding-block: 2.5rem;
       }
 
       footer p {
@@ -149,7 +239,7 @@ const nav = [
 
       @media (max-width: 400px) {
         nav {
-          gap: 0.85rem;
+          gap: 0.95rem;
         }
       }
     </style>

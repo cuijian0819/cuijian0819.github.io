@@ -113,6 +113,47 @@ button,
   max-width: var(--measure);
 }
 
+/* The single content-width utility. `main` itself is full-bleed so that a
+   section can carry an edge-to-edge background; every block of content sits in
+   one of these. Doing it with negative margins and 100vw instead would overflow
+   by the scrollbar width and break the 320px no-horizontal-scroll rule. */
+.wrap {
+  margin-inline: auto;
+  max-width: var(--shell);
+  padding-inline: var(--gutter);
+  width: 100%;
+}
+
+/* Scroll reveal. Gated on .js so that with JavaScript disabled, or before the
+   observer runs, everything is simply visible rather than blank. */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, transform;
+}
+
+.js .reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal,
+  .js .reveal.is-visible {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
 /* Hidden text for the robots.txt honeypot. Colour tracks --paper so it stays
    invisible in both themes automatically; hardcoding a hex here would expose
    the text the moment the palette or the theme changes. */

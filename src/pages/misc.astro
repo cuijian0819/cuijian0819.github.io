@@ -32,10 +32,10 @@ const openResults: Row[] = [
   title="Misc · Jian Cui"
   description="Personal notes from Jian Cui: background, fitness, volunteering, and student clubs."
 >
-  <div class="misc">
+  <div class="misc wrap">
     <h1>Misc.</h1>
 
-    <section class="misc-section">
+    <section class="misc-section reveal">
       <h2>Personal</h2>
       <ul class="info-list">
         <li>
@@ -53,7 +53,7 @@ const openResults: Row[] = [
       </ul>
     </section>
 
-    <section class="misc-section">
+    <section class="misc-section reveal">
       <h2>Fitness journey</h2>
       <p class="lede">
         I've always been a sports enthusiast. My fitness motto is{' '}
@@ -155,7 +155,7 @@ const openResults: Row[] = [
       </article>
     </section>
 
-    <section class="misc-section">
+    <section class="misc-section reveal">
       <h2>Volunteer activities</h2>
       <ul class="info-list">
         <li>
@@ -173,7 +173,7 @@ const openResults: Row[] = [
       </ul>
     </section>
 
-    <section class="misc-section">
+    <section class="misc-section reveal">
       <h2>Student club activities</h2>
       <ul class="info-list">
         <li>
@@ -239,6 +239,22 @@ const openResults: Row[] = [
     border-radius: var(--radius);
     margin-bottom: 1.25rem;
     padding: 1.4rem 1.5rem;
+    transition:
+      border-color 0.25s ease,
+      box-shadow 0.25s ease,
+      transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .card:hover {
+    border-color: color-mix(in srgb, var(--accent) 30%, var(--rule));
+    box-shadow: 0 6px 24px -12px color-mix(in srgb, var(--ink) 30%, transparent);
+    transform: translateY(-2px);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card:hover {
+      transform: none;
+    }
   }
 
   .card header {

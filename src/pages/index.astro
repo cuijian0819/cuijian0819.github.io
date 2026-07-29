@@ -26,7 +26,7 @@ const links: Chip[] = [
   title="Jian Cui"
   description="Jian Cui is a PhD student at the University of Illinois Urbana-Champaign working on security and privacy in agentic AI systems, and on applying AI to cyber threat intelligence."
 >
-  <section class="intro">
+  <section class="intro wrap reveal">
     <div class="bio prose">
       <h1>Jian Cui</h1>
 
@@ -88,26 +88,61 @@ const links: Chip[] = [
     />
   </section>
 
-  <section class="news-section">
-    <h2><a href="/news/">News</a></h2>
-    <NewsList limit={5} />
+  <section class="band">
+    <div class="wrap reveal">
+      <h2 class="section-title"><a href="/news/">News</a></h2>
+      <NewsList limit={5} />
+    </div>
   </section>
 
-  <section id="papers">
-    <h2>Papers</h2>
-    {papers.map((paper) => <PaperEntry paper={paper} />)}
+  <section id="papers" class="wrap">
+    <h2 class="section-title reveal">Papers</h2>
+    {papers.map((paper) => <div class="reveal"><PaperEntry paper={paper} /></div>)}
   </section>
 </Base>
 
 <style>
   .intro {
     display: grid;
-    gap: 1.75rem;
-    margin: 3rem 0 4rem;
+    gap: 2rem;
+    /* Generous hero. The air above the name is the single biggest thing that
+       reads as "considered" rather than "cramped". */
+    padding-block: clamp(3.5rem, 9vw, 7rem) clamp(3rem, 7vw, 5.5rem);
   }
 
   .bio h1 {
-    margin-bottom: 0.6rem;
+    font-size: clamp(2.6rem, 1.6rem + 4.6vw, 5rem);
+    letter-spacing: -0.03em;
+    margin-bottom: 1rem;
+  }
+
+  .bio :global(p) {
+    color: color-mix(in srgb, var(--ink) 88%, var(--paper));
+  }
+
+  /* Full-bleed band. `main` is unconstrained, so this needs no negative-margin
+     or 100vw trick and cannot overflow horizontally. */
+  .band {
+    background: var(--raised);
+    border-block: 1px solid var(--rule);
+    padding-block: clamp(3rem, 6vw, 5rem);
+  }
+
+  .section-title {
+    font-size: var(--step-2);
+    letter-spacing: -0.02em;
+    margin-bottom: 1.75rem;
+  }
+
+  .section-title :global(a) {
+    color: var(--ink);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .section-title :global(a:hover) {
+    color: var(--accent);
+    opacity: 1;
   }
 
   .portrait {
@@ -122,22 +157,10 @@ const links: Chip[] = [
     order: -1;
   }
 
-  .news-section h2 a {
-    color: var(--ink);
-    text-decoration: none;
-  }
-
-  .news-section h2 a:hover {
-    color: var(--accent);
-  }
-
   #papers {
-    margin-top: 4rem;
-    scroll-margin-top: 2rem;
-  }
-
-  #papers h2 {
-    margin-bottom: 2rem;
+    padding-block: clamp(3.5rem, 7vw, 6rem);
+    /* Clears the sticky masthead when /publications/ lands on the anchor. */
+    scroll-margin-top: 5rem;
   }
 
   /* Below 640px the photo stacks above the bio. Above it, the editorial
