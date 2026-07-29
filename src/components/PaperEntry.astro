@@ -51,6 +51,12 @@ const { paper } = Astro.props
     font-size: var(--step-1);
     font-variation-settings: 'opsz' 28;
     margin-bottom: 0.4rem;
+    /* Overrides the global heading `balance`. Balancing equalises line lengths,
+       which suits a two-word section heading but wrecks a long paper title: it
+       leaves the first line half empty and breaks mid-phrase, e.g.
+       "... Measuring Convention / Implications of Web Bots ...".
+       `pretty` fills each line and only protects against a short last line. */
+    text-wrap: pretty;
   }
 
   .authors {

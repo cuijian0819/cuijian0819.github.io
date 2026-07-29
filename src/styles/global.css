@@ -33,6 +33,9 @@ h4 {
   line-height: 1.15;
   letter-spacing: -0.015em;
   margin: 0 0 0.5em;
+  /* Suits the short headings this site actually has ("News", "Papers", the misc
+     section titles). Long headings must opt out: see .paper h3, where balancing
+     leaves half a line empty and breaks mid-phrase. */
   text-wrap: balance;
 }
 

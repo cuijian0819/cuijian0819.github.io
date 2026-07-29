@@ -36,6 +36,33 @@ for (const [path, phrases] of Object.entries(EXPECTED_PHRASES)) {
   })
 }
 
+test('multi-line paper titles fill each line before wrapping', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 1000 })
+  await page.goto('/')
+
+  const lines = await page.locator('.paper h3').evaluateAll((headings) =>
+    headings.map((h) => {
+      // Each client rect of a range over the text is one rendered line box.
+      const range = document.createRange()
+      range.selectNodeContents(h)
+      const rects = [...range.getClientRects()].filter((r) => r.width > 1)
+      return {
+        text: (h.textContent ?? '').slice(0, 45),
+        container: h.clientWidth,
+        firstLine: rects.length ? Math.round(rects[0].width) : 0,
+        count: rects.length,
+      }
+    }),
+  )
+
+  for (const line of lines) {
+    if (line.count < 2) continue // single-line titles cannot be short-broken
+    const fill = line.firstLine / line.container
+    // `text-wrap: balance` produced ~0.55 here, leaving half the column empty.
+    expect(fill, `"${line.text}..." first line fills only ${Math.round(fill * 100)}%`).toBeGreaterThan(0.8)
+  }
+})
+
 test('no word is glued to the start of a link anywhere', async ({ page }) => {
   for (const path of ['/', '/misc/', '/writing/', '/news/']) {
     await page.goto(path)
