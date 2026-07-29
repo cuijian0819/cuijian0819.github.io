@@ -94,3 +94,36 @@ test('loads self-hosted fonts and contacts no third-party host', async ({ page }
   await page.waitForLoadState('networkidle')
   expect(external).toEqual([])
 })
+
+// Astro compiles a page's scoped `.foo` to `.foo[data-astro-cid-…]`, which
+// outranks the global single-class `.wrap`. A page-level `max-width` or a
+// `margin: X 0` shorthand therefore silently overrides the shell width or the
+// auto centering, and the page spills to full viewport width. That is exactly
+// how /misc/ broke.
+const CONTENT_PAGES = ['/', '/misc/', '/news/', '/writing/', '/realme/', '/real_me/']
+
+for (const path of CONTENT_PAGES) {
+  test(`content stays within the shell and stays centred on ${path}`, async ({ page }) => {
+    await page.setViewportSize({ width: 1440, height: 900 })
+    await page.goto(path)
+
+    const boxes = await page.locator('main .wrap').evaluateAll((els) =>
+      els.map((el) => {
+        const rect = el.getBoundingClientRect()
+        return {
+          left: Math.round(rect.left),
+          right: Math.round(window.innerWidth - rect.right),
+          width: Math.round(rect.width),
+          cls: el.className,
+        }
+      }),
+    )
+
+    expect(boxes.length, 'no .wrap on this page').toBeGreaterThan(0)
+    for (const box of boxes) {
+      expect(box.width, `${box.cls} spans the full viewport`).toBeLessThan(1300)
+      // Equal gutters either side means margin-inline:auto survived.
+      expect(Math.abs(box.left - box.right), `${box.cls} is not centred`).toBeLessThanOrEqual(1)
+    }
+  })
+}
