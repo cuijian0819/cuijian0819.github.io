@@ -5,7 +5,7 @@
       const saved = localStorage.getItem('theme')
       if (saved) document.documentElement.dataset.theme = saved
       document.documentElement.classList.add('js')
-    </script><link rel="stylesheet" href="/_astro/misc.DK4DXiik.css"><link rel="stylesheet" href="/_astro/Base.ojxaGamG.css"></head><body data-astro-cid-hkbrpulz><a class="skip" href="#main" data-astro-cid-hkbrpulz>Skip to content</a><header class="masthead" data-astro-cid-hkbrpulz><div class="wrap masthead-inner" data-astro-cid-hkbrpulz><a class="wordmark" href="/" data-astro-cid-hkbrpulz>Jian Cui</a><nav aria-label="Primary" data-astro-cid-hkbrpulz><a href="/" data-astro-cid-hkbrpulz>about</a><a href="/#papers" data-astro-cid-hkbrpulz>papers</a><a href="/misc/" data-astro-cid-hkbrpulz>misc</a></nav><button id="theme-toggle" type="button" aria-label="Toggle colour theme" data-astro-cid-l6lhmie6><span aria-hidden="true" class="icon-light" data-astro-cid-l6lhmie6>☾</span><span aria-hidden="true" class="icon-dark" data-astro-cid-l6lhmie6>☀</span></button><script>
+    </script><link rel="stylesheet" href="/_astro/misc.DK4DXiik.css"><link rel="stylesheet" href="/_astro/Base.CwOal7XF.css"></head><body data-astro-cid-hkbrpulz><a class="skip" href="#main" data-astro-cid-hkbrpulz>Skip to content</a><header class="masthead" data-astro-cid-hkbrpulz><div class="wrap masthead-inner" data-astro-cid-hkbrpulz><a class="wordmark" href="/" data-astro-cid-hkbrpulz>Jian Cui</a><nav aria-label="Primary" data-astro-cid-hkbrpulz><a href="/" data-astro-cid-hkbrpulz>about</a><a href="/#papers" data-astro-cid-hkbrpulz>papers</a><a href="/misc/" data-astro-cid-hkbrpulz>misc</a></nav><button id="theme-toggle" type="button" aria-label="Toggle colour theme" data-astro-cid-l6lhmie6><span aria-hidden="true" class="icon-light" data-astro-cid-l6lhmie6>☾</span><span aria-hidden="true" class="icon-dark" data-astro-cid-l6lhmie6>☀</span></button><script>
   ;(() => {
     const KEY = 'theme'
     const root = document.documentElement
@@ -27,7 +27,7 @@
       // ~600 bytes, no framework. Reveals each marked block once as it enters
       // the viewport, then stops observing it.
       ;(() => {
-        const targets = document.querySelectorAll('.reveal')
+        const targets = [...document.querySelectorAll('.reveal')]
         const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
         if (reduced || !('IntersectionObserver' in window)) {
@@ -35,17 +35,40 @@
           return
         }
 
+        const show = (el) => {
+          el.classList.add('is-visible')
+          observer.unobserve(el)
+        }
+
         const observer = new IntersectionObserver(
           (entries) => {
-            for (const entry of entries) {
-              if (!entry.isIntersecting) continue
-              entry.target.classList.add('is-visible')
-              observer.unobserve(entry.target)
-            }
+            for (const entry of entries) if (entry.isIntersecting) show(entry.target)
           },
           { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
         )
 
         targets.forEach((el) => observer.observe(el))
+
+        // Safety net. IntersectionObserver only reports a *change* in
+        // intersection, so a fast jump (an anchor link, the End key, landing on
+        // /#papers) can carry an element from below the viewport to above it
+        // without it ever intersecting, stranding it invisible forever.
+        let queued = false
+        const sweep = () => {
+          queued = false
+          for (const el of targets) {
+            if (el.classList.contains('is-visible')) continue
+            if (el.getBoundingClientRect().top < window.innerHeight) show(el)
+          }
+          if (targets.every((el) => el.classList.contains('is-visible'))) {
+            window.removeEventListener('scroll', onScroll)
+          }
+        }
+        const onScroll = () => {
+          if (queued) return
+          queued = true
+          requestAnimationFrame(sweep)
+        }
+        window.addEventListener('scroll', onScroll, { passive: true })
       })()
     </script></body></html>
