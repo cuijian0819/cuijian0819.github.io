@@ -58,8 +58,15 @@ test('multi-line paper titles fill each line before wrapping', async ({ page }) 
   for (const line of lines) {
     if (line.count < 2) continue // single-line titles cannot be short-broken
     const fill = line.firstLine / line.container
-    // `text-wrap: balance` produced ~0.55 here, leaving half the column empty.
-    expect(fill, `"${line.text}..." first line fills only ${Math.round(fill * 100)}%`).toBeGreaterThan(0.8)
+    // Measured first-line fill across all multi-line titles:
+    //   balance  57-66%   (the bug: half-empty lines, mid-phrase breaks)
+    //   pretty   77-96%   (the low end is orphan avoidance doing its job)
+    // The threshold sits in the gap. Font metrics differ between macOS and the
+    // Linux CI runner, so it must not hug either range.
+    expect(
+      fill,
+      `"${line.text}..." first line fills only ${Math.round(fill * 100)}%, which suggests balancing came back`,
+    ).toBeGreaterThan(0.72)
   }
 })
 
