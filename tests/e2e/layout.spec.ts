@@ -29,6 +29,42 @@ test('theme toggle flips the paper colour and persists', async ({ page }) => {
   expect(await bg()).toBe(after)
 })
 
+test('the masthead is sticky and actually frosted', async ({ page }) => {
+  await page.goto('/')
+  const masthead = page.locator('.masthead')
+
+  expect(await masthead.evaluate((el) => getComputedStyle(el).position)).toBe('sticky')
+
+  // Regression guard. Hand-writing `-webkit-backdrop-filter` alongside the
+  // standard property made lightningcss emit ONLY the prefixed one, which
+  // Chromium ignores, so the nav silently lost its blur while the @supports
+  // fallback also never fired. Nothing about the page looked broken.
+  const filter = await masthead.evaluate((el) => getComputedStyle(el).backdropFilter)
+  expect(filter, 'masthead lost its backdrop-filter in the build').not.toBe('none')
+  expect(filter).toContain('blur')
+})
+
+test('the masthead stays put when the page scrolls', async ({ page }) => {
+  await page.goto('/')
+  await page.evaluate(() => window.scrollTo(0, 1200))
+  await page.waitForTimeout(150)
+  const box = await page.locator('.masthead').boundingBox()
+  expect(box!.y).toBeLessThan(2)
+})
+
+test('scroll reveal shows content and never strands it hidden', async ({ page }) => {
+  await page.goto('/')
+  // Everything below the fold starts hidden...
+  const total = await page.locator('.reveal').count()
+  expect(total).toBeGreaterThan(3)
+
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight))
+  await page.waitForTimeout(900)
+
+  const stillHidden = await page.locator('.reveal:not(.is-visible)').count()
+  expect(stillHidden, 'some content never revealed after scrolling to the bottom').toBe(0)
+})
+
 test('ships no jQuery or Bootstrap', async ({ page }) => {
   const scripts: string[] = []
   page.on('request', (r) => {
