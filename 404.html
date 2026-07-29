@@ -1,9 +1,12 @@
 <!DOCTYPE html><html lang="en" data-astro-cid-hkbrpulz><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><title>Page not found · Jian Cui</title><meta name="description" content="Looks like there has been a mistake."><link rel="canonical" href="https://cuijian0819.github.io/404/"><meta property="og:type" content="website"><meta property="og:site_name" content="Jian Cui"><meta property="og:title" content="Page not found · Jian Cui"><meta property="og:description" content="Looks like there has been a mistake."><meta property="og:image" content="https://cuijian0819.github.io/assets/img/profile_photo.png"><meta property="og:url" content="https://cuijian0819.github.io/404/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Page not found · Jian Cui"><meta name="twitter:description" content="Looks like there has been a mistake."><meta name="twitter:image" content="https://cuijian0819.github.io/assets/img/profile_photo.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Jian Cui","url":"https://cuijian0819.github.io","image":"https://cuijian0819.github.io/assets/img/profile_photo.png","jobTitle":"PhD Candidate","affiliation":{"@type":"CollegeOrUniversity","name":"University of Illinois Urbana-Champaign"},"alumniOf":{"@type":"CollegeOrUniversity","name":"KAIST"},"knowsAbout":["Security and privacy in agentic AI systems","Cyber threat intelligence","Large language model security"],"sameAs":["https://scholar.google.com/citations?user=eepEd2kAAAAJ&hl=en"]}</script><script>
-      // Applied before first paint so the page never flashes the wrong theme.
+      // Both applied before first paint: the theme so the page never flashes the
+      // wrong one, and `js` so the reveal styles only apply when they can be
+      // undone. Without JavaScript nothing is ever left invisible.
       const saved = localStorage.getItem('theme')
       if (saved) document.documentElement.dataset.theme = saved
+      document.documentElement.classList.add('js')
     </script><style>.notfound[data-astro-cid-ibpinaeu]{max-width:var(--measure);margin:5rem 0}.notfound[data-astro-cid-ibpinaeu] h1[data-astro-cid-ibpinaeu]{font-size:var(--step-3)}
-</style><link rel="stylesheet" href="/_astro/Base.jQ6R470_.css"></head><body data-astro-cid-hkbrpulz><a class="visually-hidden" href="#main" data-astro-cid-hkbrpulz>Skip to content</a><header class="masthead" data-astro-cid-hkbrpulz><a class="wordmark" href="/" data-astro-cid-hkbrpulz>Jian Cui</a><nav aria-label="Primary" data-astro-cid-hkbrpulz><a href="/" data-astro-cid-hkbrpulz>about</a><a href="/#papers" data-astro-cid-hkbrpulz>papers</a><a href="/misc/" data-astro-cid-hkbrpulz>misc</a></nav><button id="theme-toggle" type="button" aria-label="Toggle colour theme" data-astro-cid-l6lhmie6><span aria-hidden="true" class="icon-light" data-astro-cid-l6lhmie6>☾</span><span aria-hidden="true" class="icon-dark" data-astro-cid-l6lhmie6>☀</span></button><script>
+</style><link rel="stylesheet" href="/_astro/Base.ojxaGamG.css"></head><body data-astro-cid-hkbrpulz><a class="skip" href="#main" data-astro-cid-hkbrpulz>Skip to content</a><header class="masthead" data-astro-cid-hkbrpulz><div class="wrap masthead-inner" data-astro-cid-hkbrpulz><a class="wordmark" href="/" data-astro-cid-hkbrpulz>Jian Cui</a><nav aria-label="Primary" data-astro-cid-hkbrpulz><a href="/" data-astro-cid-hkbrpulz>about</a><a href="/#papers" data-astro-cid-hkbrpulz>papers</a><a href="/misc/" data-astro-cid-hkbrpulz>misc</a></nav><button id="theme-toggle" type="button" aria-label="Toggle colour theme" data-astro-cid-l6lhmie6><span aria-hidden="true" class="icon-light" data-astro-cid-l6lhmie6>☾</span><span aria-hidden="true" class="icon-dark" data-astro-cid-l6lhmie6>☀</span></button><script>
   ;(() => {
     const KEY = 'theme'
     const root = document.documentElement
@@ -21,4 +24,29 @@
       apply(current() === 'dark' ? 'light' : 'dark')
     })
   })()
-</script></header><main id="main" data-astro-cid-hkbrpulz><section class="notfound" data-astro-cid-ibpinaeu><h1 data-astro-cid-ibpinaeu>Page not found</h1><p data-astro-cid-ibpinaeu>Looks like there has been a mistake. Nothing exists here.</p><p data-astro-cid-ibpinaeu><a href="/" data-astro-cid-ibpinaeu>Back to the homepage</a></p></section></main><footer data-astro-cid-hkbrpulz><p data-astro-cid-hkbrpulz>Jian Cui &middot; Urbana&ndash;Champaign</p></footer></body></html>
+</script></div></header><main id="main" data-astro-cid-hkbrpulz><section class="notfound wrap" data-astro-cid-ibpinaeu><h1 data-astro-cid-ibpinaeu>Page not found</h1><p data-astro-cid-ibpinaeu>Looks like there has been a mistake. Nothing exists here.</p><p data-astro-cid-ibpinaeu><a href="/" data-astro-cid-ibpinaeu>Back to the homepage</a></p></section></main><footer data-astro-cid-hkbrpulz><div class="wrap footer-inner" data-astro-cid-hkbrpulz><p data-astro-cid-hkbrpulz>Jian Cui &middot; Urbana&ndash;Champaign</p></div></footer><script>
+      // ~600 bytes, no framework. Reveals each marked block once as it enters
+      // the viewport, then stops observing it.
+      ;(() => {
+        const targets = document.querySelectorAll('.reveal')
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+        if (reduced || !('IntersectionObserver' in window)) {
+          targets.forEach((el) => el.classList.add('is-visible'))
+          return
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (!entry.isIntersecting) continue
+              entry.target.classList.add('is-visible')
+              observer.unobserve(entry.target)
+            }
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
+        )
+
+        targets.forEach((el) => observer.observe(el))
+      })()
+    </script></body></html>
