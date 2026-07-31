@@ -9,6 +9,10 @@ const { paper } = Astro.props
 ---
 
 <article class="paper">
+  <p class="venue-row">
+    <span class="venue" title={paper.venueFull}>{paper.venue}</span>
+  </p>
+
   <h3>{paper.title}</h3>
 
   <p class="authors">
@@ -22,20 +26,21 @@ const { paper } = Astro.props
     }
   </p>
 
-  <p class="meta">
-    <span class="venue" title={paper.venueFull}>{paper.venue}</span>
-    {paper.pdfUrl && <> &middot; <a href={paper.pdfUrl}>pdf</a></>}
-    {paper.codeUrl && <> &middot; <a href={paper.codeUrl}>code</a></>}
-  </p>
+  {paper.award && <p class="award"><span class="star">★</span>{paper.award}</p>}
 
-  {paper.award && <p class="award">★ {paper.award}</p>}
+  <p class="meta">
+    {paper.pdfUrl && <a href={paper.pdfUrl}>pdf</a>}
+    {paper.codeUrl && <a href={paper.codeUrl}>code</a>}
+  </p>
 
   {
     paper.mediaHtml && (
       <p class="media">
         <span class="media-label">Media</span>
         {/* Raw anchor tags straight from the bib file's `media` field. */}
-        <Fragment set:html={paper.mediaHtml} />
+        <span class="outlets">
+          <Fragment set:html={paper.mediaHtml} />
+        </span>
       </p>
     )
   }
@@ -43,14 +48,35 @@ const { paper } = Astro.props
 
 <style>
   .paper {
-    margin: 0 0 2.5rem;
+    margin: 0 0 3rem;
     max-width: none;
+  }
+
+  .venue-row {
+    margin: 0 0 0.55rem;
+  }
+
+  /* A badge rather than muted inline text. Venue plus year is how a reader
+     scans a publication list, so it leads the entry instead of trailing it. */
+  .venue {
+    background: color-mix(in srgb, var(--accent) 9%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+    border-radius: 999px;
+    color: var(--accent);
+    display: inline-block;
+    font-size: 0.72rem;
+    font-variant-caps: all-small-caps;
+    font-weight: 650;
+    letter-spacing: 0.1em;
+    line-height: 1;
+    padding: 0.32rem 0.7rem 0.26rem;
+    white-space: nowrap;
   }
 
   .paper h3 {
     font-size: var(--step-1);
     font-variation-settings: 'opsz' 28;
-    margin-bottom: 0.4rem;
+    margin-bottom: 0.45rem;
     /* Overrides the global heading `balance`. Balancing equalises line lengths,
        which suits a two-word section heading but wrecks a long paper title: it
        leaves the first line half empty and breaks mid-phrase, e.g.
@@ -62,46 +88,98 @@ const { paper } = Astro.props
   .authors {
     color: var(--muted);
     font-size: var(--step--1);
-    margin: 0 0 0.35rem;
+    margin: 0 0 0.5rem;
   }
 
+  /* Marker-pen highlight. Finding your own name in an eight-author list should
+     not require reading it, and a bolder weight alone was not enough. */
   .authors .self {
+    background-image: linear-gradient(
+      to top,
+      color-mix(in srgb, var(--accent) 24%, transparent) 0.32em,
+      transparent 0.32em
+    );
     color: var(--ink);
-    font-weight: 600;
+    font-weight: 650;
+    padding: 0 0.1em;
+  }
+
+  .award {
+    align-items: baseline;
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    border-radius: 8px;
+    color: color-mix(in srgb, var(--accent) 88%, var(--ink));
+    display: inline-flex;
+    font-size: var(--step--1);
+    gap: 0.45rem;
+    margin: 0 0 0.55rem;
+    padding: 0.35rem 0.7rem;
+  }
+
+  .star {
+    color: var(--accent);
+    flex: none;
   }
 
   .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     font-size: var(--step--1);
     margin: 0;
   }
 
-  .venue {
+  /* Small outlined buttons rather than bare inline links, so the row reads as
+     actions and lines up with the venue badge's shape. */
+  .meta a {
+    border: 1px solid var(--rule);
+    border-radius: 6px;
     color: var(--muted);
-    font-variant-caps: all-small-caps;
-    letter-spacing: 0.06em;
+    line-height: 1;
+    padding: 0.32rem 0.6rem;
+    text-decoration: none;
+    transition:
+      border-color 0.2s ease,
+      color 0.2s ease,
+      background-color 0.2s ease;
   }
 
-  .award {
+  .meta a:hover {
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    border-color: color-mix(in srgb, var(--accent) 40%, transparent);
     color: var(--accent);
-    font-size: var(--step--1);
-    margin: 0.4rem 0 0;
+    opacity: 1;
   }
 
   .media {
+    align-items: baseline;
     color: var(--muted);
+    display: flex;
+    flex-wrap: wrap;
     font-size: var(--step--1);
-    margin: 0.35rem 0 0;
+    gap: 0.15rem 0.5rem;
+    margin: 0.7rem 0 0;
   }
 
   .media-label {
+    color: color-mix(in srgb, var(--muted) 80%, var(--paper));
+    flex: none;
+    font-size: 0.7rem;
     font-variant-caps: all-small-caps;
-    letter-spacing: 0.06em;
-    margin-right: 0.35rem;
+    font-weight: 650;
+    letter-spacing: 0.12em;
   }
 
-  /* The bib file's media field ends with a trailing comma inside the braces,
-     which renders as a dangling ", " after the last link. */
-  .media :global(a:last-of-type) ~ :global(br) {
-    display: none;
+  .outlets :global(a) {
+    color: var(--muted);
+    text-decoration-color: color-mix(in srgb, var(--muted) 40%, transparent);
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+  }
+
+  .outlets :global(a:hover) {
+    color: var(--accent);
+    opacity: 1;
+    text-decoration-color: var(--accent);
   }
 </style>
