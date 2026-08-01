@@ -8,4 +8,12 @@ const news = defineCollection({
   }),
 })
 
-export const collections = { news }
+const thoughts = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/thoughts' }),
+  schema: z.object({
+    title: z.string(),
+    date: z.coerce.date(),
+  }),
+})
+
+export const collections = { news, thoughts }

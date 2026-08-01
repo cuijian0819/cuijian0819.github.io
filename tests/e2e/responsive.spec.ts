@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test'
 
-const PAGES = ['/', '/misc/', '/news/', '/realme/']
+const PAGES = ['/', '/misc/', '/news/', '/thoughts/', '/realme/']
 const WIDTHS = [320, 375, 768, 1024, 1440]
 
 for (const path of PAGES) {

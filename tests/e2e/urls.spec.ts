@@ -1,7 +1,7 @@
 import { expect, test } from '@playwright/test'
 
 // Every path here is live on the current site. None may 404 after the rebuild.
-const LIVE = ['/', '/misc/', '/news/', '/realme/', '/real_me/']
+const LIVE = ['/', '/misc/', '/news/', '/thoughts/', '/realme/', '/real_me/']
 
 for (const path of LIVE) {
   test(`${path} returns 200`, async ({ request }) => {

@@ -71,7 +71,7 @@ test('multi-line paper titles fill each line before wrapping', async ({ page }) 
 })
 
 test('no word is glued to the start of a link anywhere', async ({ page }) => {
-  for (const path of ['/', '/misc/', '/news/']) {
+  for (const path of ['/', '/misc/', '/news/', '/thoughts/']) {
     await page.goto(path)
     const glued = await page.locator('main').evaluate((main) => {
       const bad: string[] = []

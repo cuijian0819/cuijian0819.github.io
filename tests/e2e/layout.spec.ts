@@ -103,7 +103,7 @@ test('loads self-hosted fonts and contacts no third-party host', async ({ page }
 // `margin: X 0` shorthand therefore silently overrides the shell width or the
 // auto centering, and the page spills to full viewport width. That is exactly
 // how /misc/ broke.
-const CONTENT_PAGES = ['/', '/misc/', '/news/', '/realme/', '/real_me/']
+const CONTENT_PAGES = ['/', '/misc/', '/news/', '/thoughts/', '/realme/', '/real_me/']
 
 for (const path of CONTENT_PAGES) {
   test(`content stays within the shell and stays centred on ${path}`, async ({ page }) => {
@@ -130,3 +130,11 @@ for (const path of CONTENT_PAGES) {
     }
   })
 }
+
+test('/thoughts/ is live but unlinked from the nav', async ({ page, request }) => {
+  expect((await request.get('/thoughts/')).status()).toBe(200)
+  for (const path of ['/', '/misc/', '/news/']) {
+    await page.goto(path)
+    await expect(page.locator('nav a[href*="thoughts"]')).toHaveCount(0)
+  }
+})
