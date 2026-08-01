@@ -8,12 +8,15 @@ test('navigation is inline with no hamburger at 375px', async ({ page }) => {
   await expect(page.locator('button.hamburger, .navbar-toggler')).toHaveCount(0)
 })
 
-test('/writing/ is unlinked but still resolves', async ({ page, request }) => {
+test('/writing/ is retired but does not 404', async ({ page, request }) => {
   for (const path of ['/', '/misc/', '/news/']) {
     await page.goto(path)
     await expect(page.locator('nav a[href*="writing"]')).toHaveCount(0)
   }
-  expect((await request.get('/writing/')).status()).toBe(200)
+  const html = await (await request.get('/writing/')).text()
+  expect(html).toContain('http-equiv="refresh"')
+  await page.goto('/writing/')
+  await page.waitForURL((url) => url.pathname === '/')
 })
 
 test('theme toggle flips the paper colour and persists', async ({ page }) => {
@@ -100,7 +103,7 @@ test('loads self-hosted fonts and contacts no third-party host', async ({ page }
 // `margin: X 0` shorthand therefore silently overrides the shell width or the
 // auto centering, and the page spills to full viewport width. That is exactly
 // how /misc/ broke.
-const CONTENT_PAGES = ['/', '/misc/', '/news/', '/writing/', '/realme/', '/real_me/']
+const CONTENT_PAGES = ['/', '/misc/', '/news/', '/realme/', '/real_me/']
 
 for (const path of CONTENT_PAGES) {
   test(`content stays within the shell and stays centred on ${path}`, async ({ page }) => {

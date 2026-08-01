@@ -12,5 +12,9 @@ export default defineConfig({
     '/cv/': '/assets/pdf/CV_Jian.pdf',
     '/blog/': '/',
     '/projects/': '/',
+    // The writing page is retired; its content is archived in docs/archive/.
+    // Redirected rather than 404'd because it sat in the nav until recently and
+    // may be indexed. Change to a real 404 if you want it gone completely.
+    '/writing/': '/',
   },
 })
