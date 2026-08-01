@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-hkbrpulz><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><title>Thoughts · Jian Cui</title><meta name="description" content="Notes from Jian Cui on agentic AI security, prompt injection, and where the defences actually belong."><link rel="canonical" href="https://cuijian0819.github.io/thoughts/"><meta property="og:type" content="website"><meta property="og:site_name" content="Jian Cui"><meta property="og:title" content="Thoughts · Jian Cui"><meta property="og:description" content="Notes from Jian Cui on agentic AI security, prompt injection, and where the defences actually belong."><meta property="og:image" content="https://cuijian0819.github.io/assets/img/profile_photo.png"><meta property="og:url" content="https://cuijian0819.github.io/thoughts/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Thoughts · Jian Cui"><meta name="twitter:description" content="Notes from Jian Cui on agentic AI security, prompt injection, and where the defences actually belong."><meta name="twitter:image" content="https://cuijian0819.github.io/assets/img/profile_photo.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Jian Cui","url":"https://cuijian0819.github.io","image":"https://cuijian0819.github.io/assets/img/profile_photo.png","jobTitle":"PhD Candidate","affiliation":{"@type":"CollegeOrUniversity","name":"University of Illinois Urbana-Champaign"},"alumniOf":{"@type":"CollegeOrUniversity","name":"KAIST"},"knowsAbout":["Security and privacy in agentic AI systems","Cyber threat intelligence","Large language model security"],"sameAs":["https://scholar.google.com/citations?user=eepEd2kAAAAJ&hl=en"]}</script><script>
+      // Both applied before first paint: the theme so the page never flashes the
+      // wrong one, and `js` so the reveal styles only apply when they can be
+      // undone. Without JavaScript nothing is ever left invisible.
+      const saved = localStorage.getItem('theme')
+      if (saved) document.documentElement.dataset.theme = saved
+      document.documentElement.classList.add('js')
+    </script><style>.page[data-astro-cid-bovrxbq2]{padding-block:4rem 0}.page-head[data-astro-cid-bovrxbq2]{border-bottom:1px solid var(--rule);margin-bottom:3rem;padding-bottom:2rem}.page[data-astro-cid-bovrxbq2] h1[data-astro-cid-bovrxbq2]{font-size:var(--step-3);margin-bottom:.75rem}.standfirst[data-astro-cid-bovrxbq2]{color:var(--muted);max-width:var(--measure);margin:0}.entry[data-astro-cid-bovrxbq2]{max-width:var(--measure);margin-bottom:4rem}.entry[data-astro-cid-bovrxbq2] time[data-astro-cid-bovrxbq2]{color:var(--muted);letter-spacing:.12em;margin-bottom:.5rem;font-size:.72rem;font-variant-caps:all-small-caps;font-weight:650;display:block}.entry[data-astro-cid-bovrxbq2] h2[data-astro-cid-bovrxbq2]{font-size:var(--step-2);text-wrap:pretty;margin-bottom:1.25rem}.entry[data-astro-cid-bovrxbq2] .body[data-astro-cid-bovrxbq2] p{margin-bottom:1.35em}.entry[data-astro-cid-bovrxbq2] .body[data-astro-cid-bovrxbq2] p:last-child{margin-bottom:0}
+</style><link rel="stylesheet" href="/_astro/Base.CwOal7XF.css"></head><body data-astro-cid-hkbrpulz><a class="skip" href="#main" data-astro-cid-hkbrpulz>Skip to content</a><header class="masthead" data-astro-cid-hkbrpulz><div class="wrap masthead-inner" data-astro-cid-hkbrpulz><a class="wordmark" href="/" data-astro-cid-hkbrpulz>Jian Cui</a><nav aria-label="Primary" data-astro-cid-hkbrpulz><a href="/" data-astro-cid-hkbrpulz>about</a><a href="/#papers" data-astro-cid-hkbrpulz>papers</a><a href="/misc/" data-astro-cid-hkbrpulz>misc</a></nav><button id="theme-toggle" type="button" aria-label="Toggle colour theme" data-astro-cid-l6lhmie6><span aria-hidden="true" class="icon-light" data-astro-cid-l6lhmie6>☾</span><span aria-hidden="true" class="icon-dark" data-astro-cid-l6lhmie6>☀</span></button><script>
+  ;(() => {
+    const KEY = 'theme'
+    const root = document.documentElement
+
+    const apply = (value) => {
+      root.dataset.theme = value
+      localStorage.setItem(KEY, value)
+    }
+
+    const current = () =>
+      root.dataset.theme ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+
+    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+      apply(current() === 'dark' ? 'light' : 'dark')
+    })
+  })()
+</script></div></header><main id="main" data-astro-cid-hkbrpulz><section class="page wrap" data-astro-cid-bovrxbq2><header class="page-head reveal" data-astro-cid-bovrxbq2><h1 data-astro-cid-bovrxbq2>Thoughts</h1><p class="standfirst" data-astro-cid-bovrxbq2>Working notes on agentic AI security. Half-formed on purpose; I would rather write these down than wait until they are papers.</p></header><article class="entry reveal" data-astro-cid-bovrxbq2><time datetime="2026-08-01" data-astro-cid-bovrxbq2>August 1, 2026</time><h2 data-astro-cid-bovrxbq2>Guarantees, not guardrails</h2><div class="body" data-astro-cid-bovrxbq2><p>In our work on multi-tool agents, the attack begins with a tool provider advertising a capability that sounds genuinely useful, more precise data or a better result, so the model comes to depend on it, and from there the tool can hijack the control flow to harvest or pollute what passes through. What makes this hard is that the model is arguably behaving correctly: if a tool really does offer more precise information, calling it is the right decision. That is why I have stopped treating prompt injection as a category with a clean boundary. There is no reliable distinction between an injected instruction and legitimate information arriving from an external source, and alignment can raise the odds that a model notices, but it cannot guarantee it. Worse, we often want external content to influence behaviour, since ignoring it defeats the point of giving an agent tools at all. So the useful question is not how to detect the bad instruction, because in the general case that detection is not decidable.</p>
+<p>The analogy I keep returning to is the phishing email with a malicious attachment. You should absolutely teach people not to open it, and that work is worth doing, but the reason modern systems survive is that the machine assumes the attachment will sometimes be opened and then constrains what it can reach: no sensitive files, no outbound connections. Agents need the same shift, from filtering the input to providing guarantees on the action space, which is what usage control for agentic systems means to me: a policy that holds regardless of what the model was persuaded to believe. That reframing suggests two concrete moves. Stop handing web agents raw click and type primitives, and instead expose higher-level actions defined by the site’s own developer, so that “search for a flight” becomes one auditable operation a user can see and authorise rather than a hundred opaque clicks. And for coding agents, which write and execute a great deal of Python, have the code carry a proof of the security properties we care about, checked before it is translated down to the code that actually runs. In both cases the model stays untrusted, and the guarantee lives somewhere it cannot argue with.</p>
+</div></article></section></main><footer data-astro-cid-hkbrpulz><div class="wrap footer-inner" data-astro-cid-hkbrpulz><p data-astro-cid-hkbrpulz>Jian Cui &middot; Urbana&ndash;Champaign</p></div></footer><script>
+      // ~600 bytes, no framework. Reveals each marked block once as it enters
+      // the viewport, then stops observing it.
+      ;(() => {
+        const targets = [...document.querySelectorAll('.reveal')]
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+        if (reduced || !('IntersectionObserver' in window)) {
+          targets.forEach((el) => el.classList.add('is-visible'))
+          return
+        }
+
+        const show = (el) => {
+          el.classList.add('is-visible')
+          observer.unobserve(el)
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) if (entry.isIntersecting) show(entry.target)
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
+        )
+
+        targets.forEach((el) => observer.observe(el))
+
+        // Safety net. IntersectionObserver only reports a *change* in
+        // intersection, so a fast jump (an anchor link, the End key, landing on
+        // /#papers) can carry an element from below the viewport to above it
+        // without it ever intersecting, stranding it invisible forever.
+        let queued = false
+        const sweep = () => {
+          queued = false
+          for (const el of targets) {
+            if (el.classList.contains('is-visible')) continue
+            if (el.getBoundingClientRect().top < window.innerHeight) show(el)
+          }
+          if (targets.every((el) => el.classList.contains('is-visible'))) {
+            window.removeEventListener('scroll', onScroll)
+          }
+        }
+        const onScroll = () => {
+          if (queued) return
+          queued = true
+          requestAnimationFrame(sweep)
+        }
+        window.addEventListener('scroll', onScroll, { passive: true })
+      })()
+    </script></body></html>
