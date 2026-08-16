@@ -14,6 +14,8 @@ export type Paper = {
   year: number
   /** Short venue plus year, e.g. "NDSS 2026". */
   venue: string
+  /** The bare abbr code, e.g. "NDSS". Stable key for the venue glyph. */
+  venueKey: string
   /** Full conference name, used as the venue's title attribute. */
   venueFull: string
   award?: string

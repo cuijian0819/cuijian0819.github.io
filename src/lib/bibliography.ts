@@ -43,9 +43,14 @@ function resolvePdf(value?: string): string | undefined {
   return value.includes('://') ? value : `/assets/pdf/${value}`
 }
 
+/** "NDSS'26" -> "NDSS". The display string carries the year, this does not. */
+function toVenueKey(abbr: string | undefined): string {
+  return abbr ? abbr.split("'")[0] : ''
+}
+
 function toVenue(abbr: string | undefined, year: number): string {
-  if (!abbr) return String(year)
-  const short = abbr.split("'")[0]
+  const short = toVenueKey(abbr)
+  if (!short) return String(year)
   return `${VENUE_NAMES[short] ?? short} ${year}`
 }
 
@@ -71,6 +76,7 @@ export function loadPapers(bibPath: string): Paper[] {
       authors: (f.author ?? []).map(toAuthor),
       year,
       venue: toVenue(f.abbr, year),
+      venueKey: toVenueKey(f.abbr),
       venueFull: f.journal ?? '',
       award: f.award || undefined,
       mediaHtml: tidyMedia(f.media),

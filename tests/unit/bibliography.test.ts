@@ -84,6 +84,16 @@ describe('loadPapers', () => {
     expect(byKey('lin2024malla').venue).toBe('USENIX Security 2024')
   })
 
+  // venueKey drives the badge glyph, so it must stay the bare abbr: no year, and
+  // not the expanded display name ("Security", never "USENIX Security").
+  it('exposes a bare venue key for the badge glyph', () => {
+    expect(byKey('li2025dissonances').venueKey).toBe('NDSS')
+    expect(byKey('lin2024malla').venueKey).toBe('Security')
+    for (const paper of papers) {
+      expect(paper.venueKey, `${paper.key} venueKey has a year in it`).not.toMatch(/\d/)
+    }
+  })
+
   it('finds Jian Cui in every paper', () => {
     for (const paper of papers) {
       expect(paper.authors.some((a) => a.isSelf), `${paper.key} has no self author`).toBe(true)

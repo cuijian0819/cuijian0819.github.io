@@ -1,0 +1,68 @@
+---
+/**
+ * A small glyph for the venue badge, marking the field rather than the
+ * conference. Real conference logos are trademarked artwork we do not hold, and
+ * the site may not fetch anything from a third-party host — tests/e2e/layout.spec.ts
+ * asserts zero external requests — so a logo redrawn from memory would be both
+ * inaccurate and unfetchable.
+ *
+ * Two fields only: security and AI. That is the split that actually means
+ * something on this list. An unmapped venue renders nothing, so adding a paper
+ * never breaks the badge.
+ */
+interface Props {
+  venueKey: string
+}
+
+const { venueKey } = Astro.props
+
+type Field = 'security' | 'ai'
+
+const FIELD: Record<string, Field> = {
+  NDSS: 'security',
+  CCS: 'security',
+  Security: 'security',
+  ACL: 'ai',
+  NAACL: 'ai',
+  CIKM: 'ai',
+}
+
+const field = FIELD[venueKey]
+---
+
+{
+  field === 'security' && (
+    <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <path d="M8 1 1.9 3.3v4.4c0 3.6 2.4 6.6 6.1 7.3 3.7-.7 6.1-3.7 6.1-7.3V3.3z" />
+    </svg>
+  )
+}
+
+{
+  field === 'ai' && (
+    <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+      <path d="M6.5 3.4c.45 2.9 2.6 5.05 5.5 5.5-2.9.45-5.05 2.6-5.5 5.5-.45-2.9-2.6-5.05-5.5-5.5 2.9-.45 5.05-2.6 5.5-5.5z" />
+      <path d="M12.8.4c.26 1.7 1.5 2.94 3.2 3.2-1.7.26-2.94 1.5-3.2 3.2-.26-1.7-1.5-2.94-3.2-3.2 1.7-.26 2.94-1.5 3.2-3.2z" />
+    </svg>
+  )
+}
+
+<style>
+  svg {
+    /* Slightly taller than the small-caps ink (0.49em), which is what reads as
+       "same size" rather than actually matching the cap height. */
+    --glyph: 0.8em;
+
+    fill: currentColor;
+    height: var(--glyph);
+    margin-right: 0.4em;
+    width: var(--glyph);
+    /* Aligned to the baseline, not centred in the line box. Measured in the
+       browser: `all-small-caps` in Literata has an ink ascent of 0.5em and a
+       descent of 0.01em, so the visual centre of the text is 0.245em above the
+       baseline. Centring the icon in the 1em line box instead put it at 0.36em,
+       which is the gap that read as misaligned. Keeping this as a calc means it
+       stays correct if --glyph changes. */
+    vertical-align: calc(0.245em - var(--glyph) / 2);
+  }
+</style>

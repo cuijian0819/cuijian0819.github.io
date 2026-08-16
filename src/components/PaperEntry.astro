@@ -1,5 +1,6 @@
 ---
 import type { Paper } from '../lib/bibliography.types'
+import VenueIcon from './VenueIcon.astro'
 
 interface Props {
   paper: Paper
@@ -10,7 +11,9 @@ const { paper } = Astro.props
 
 <article class="paper">
   <p class="venue-row">
-    <span class="venue" title={paper.venueFull}>{paper.venue}</span>
+    {/* No whitespace between the glyph and the text: this is an inline context,
+        so a newline here would render as a space on top of the icon's margin. */}
+    <span class="venue" title={paper.venueFull}><VenueIcon venueKey={paper.venueKey} />{paper.venue}</span>
   </p>
 
   <h3>{paper.title}</h3>
@@ -53,23 +56,30 @@ const { paper } = Astro.props
   }
 
   .venue-row {
-    margin: 0 0 0.55rem;
+    margin: 0 0 0.65rem;
   }
 
   /* A badge rather than muted inline text. Venue plus year is how a reader
-     scans a publication list, so it leads the entry instead of trailing it. */
+     scans a publication list, so it leads the entry instead of trailing it,
+     and it is filled rather than tinted so the column of them reads at a
+     glance down the page.
+     The fill is the accent darkened toward the ink rather than the accent
+     itself: flat --accent against --paper is only 4.0:1, which fails AA for
+     text this small. Mixing in 12% ink clears 4.5:1, and because --ink flips
+     with the theme the same expression lightens the badge in dark mode. */
   .venue {
-    background: color-mix(in srgb, var(--accent) 9%, transparent);
-    border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+    background: color-mix(in srgb, var(--accent) 88%, var(--ink));
     border-radius: 999px;
-    color: var(--accent);
+    color: var(--paper);
+    /* inline-block, not inline-flex: the glyph is aligned to the text baseline
+       inside VenueIcon, which flex centring overrides. */
     display: inline-block;
-    font-size: 0.72rem;
+    font-size: var(--step--1);
     font-variant-caps: all-small-caps;
-    font-weight: 650;
-    letter-spacing: 0.1em;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     line-height: 1;
-    padding: 0.32rem 0.7rem 0.26rem;
+    padding: 0.4rem 0.8rem;
     white-space: nowrap;
   }
 
