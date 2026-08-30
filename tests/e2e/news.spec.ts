@@ -1,3 +1,4 @@
+import { readdirSync } from 'node:fs'
 import { expect, test } from '@playwright/test'
 
 test('homepage shows the five most recent items with no inner scrollbar', async ({ page }) => {
@@ -9,9 +10,15 @@ test('homepage shows the five most recent items with no inner scrollbar', async 
   expect(overflow).not.toBe('scroll')
 })
 
-test('/news/ lists all thirteen', async ({ page }) => {
+// Counted from the content directory rather than hardcoded: a literal broke on
+// every new post, which trains you to bump the number instead of reading the
+// failure. This still fails if an item is silently dropped from the render.
+test('/news/ lists every item in the collection', async ({ page }) => {
+  const files = readdirSync('src/content/news').filter((f) => f.endsWith('.md'))
+  expect(files.length).toBeGreaterThan(0)
+
   await page.goto('/news/')
-  await expect(page.locator('.news-item')).toHaveCount(13)
+  await expect(page.locator('.news-item')).toHaveCount(files.length)
 })
 
 test('news is ordered newest first', async ({ page }) => {
