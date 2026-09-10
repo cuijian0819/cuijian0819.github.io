@@ -1,8 +1,16 @@
+import { readFileSync } from 'node:fs'
 import { expect, test } from '@playwright/test'
 
-test('lists all nine papers on the homepage', async ({ page }) => {
+/** Counted from the bib, not hardcoded: adding a paper should not fail a test. */
+const source = readFileSync('_bibliography/papers.bib', 'utf8')
+const count = (pattern: RegExp) => (source.match(pattern) ?? []).length
+const papers = count(/^@\w+\{/gm)
+const awards = count(/^\s*award\s*=/gm)
+
+test('lists every paper in the bibliography on the homepage', async ({ page }) => {
+  expect(papers).toBeGreaterThan(0)
   await page.goto('/')
-  await expect(page.locator('.paper')).toHaveCount(9)
+  await expect(page.locator('.paper')).toHaveCount(papers)
 })
 
 test('has the anchor /publications/ redirects to', async ({ page }) => {
@@ -13,7 +21,7 @@ test('has the anchor /publications/ redirects to', async ({ page }) => {
 test('marks Jian Cui in every author list', async ({ page }) => {
   await page.goto('/')
   const selves = page.locator('.authors .self')
-  expect(await selves.count()).toBe(9)
+  expect(await selves.count()).toBe(papers)
   for (const text of await selves.allTextContents()) {
     expect(text).toMatch(/^Jian Cui\*?$/)
   }
@@ -33,10 +41,18 @@ test('keeps paper titles in title case', async ({ page }) => {
   ).toHaveCount(1)
 })
 
-test('shows awards on the three papers that have them', async ({ page }) => {
+test('shows awards on the papers that have them', async ({ page }) => {
   await page.goto('/')
-  await expect(page.locator('.paper .award')).toHaveCount(3)
+  await expect(page.locator('.paper .award')).toHaveCount(awards)
   await expect(page.locator('.award', { hasText: 'Distinguished Paper Award' })).toHaveCount(1)
+})
+
+// A preprint badge is outlined, not filled, so it cannot be read as an accepted venue.
+test('outlines the preprint badges', async ({ page }) => {
+  await page.goto('/')
+  const preprints = page.locator('.paper .venue.preprint')
+  await expect(preprints).toHaveCount(count(/^\s*abbr\s*=\s*\{arXiv/gm))
+  await expect(preprints.first()).toHaveText(/arXiv 20\d\d/)
 })
 
 test('orders papers newest first', async ({ page }) => {

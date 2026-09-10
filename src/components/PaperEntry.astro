@@ -7,13 +7,16 @@ interface Props {
 }
 
 const { paper } = Astro.props
+
+// A preprint is not a venue, so its badge is outlined rather than filled.
+const isPreprint = paper.venueKey === 'arXiv'
 ---
 
 <article class="paper">
   <p class="venue-row">
     {/* No whitespace between the glyph and the text: this is an inline context,
         so a newline here would render as a space on top of the icon's margin. */}
-    <span class="venue" title={paper.venueFull}><VenueIcon venueKey={paper.venueKey} />{paper.venue}</span>
+    <span class:list={['venue', isPreprint && 'preprint']} title={paper.venueFull}><VenueIcon venueKey={paper.venueKey} />{paper.venue}</span>
   </p>
 
   <h3>{paper.title}</h3>
@@ -81,6 +84,17 @@ const { paper } = Astro.props
     line-height: 1;
     padding: 0.4rem 0.8rem;
     white-space: nowrap;
+  }
+
+  /* Peer review is the distinction worth drawing, so a preprint keeps the badge
+     shape but loses the fill: outlined reads as "not a venue" without needing a
+     second label. The border is subtracted from the padding so the pill stays
+     the same size as a filled one and the column of them still lines up. */
+  .venue.preprint {
+    background: color-mix(in srgb, var(--accent) 7%, transparent);
+    border: 1px solid color-mix(in srgb, var(--accent) 42%, transparent);
+    color: color-mix(in srgb, var(--accent) 88%, var(--ink));
+    padding: calc(0.4rem - 1px) calc(0.8rem - 1px);
   }
 
   .paper h3 {

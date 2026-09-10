@@ -1,18 +1,27 @@
+import { readFileSync } from 'node:fs'
 import { describe, expect, it } from 'vitest'
 import { loadPapers } from '../../src/lib/bibliography'
 
-const papers = loadPapers('_bibliography/papers.bib')
+const BIB = '_bibliography/papers.bib'
+const source = readFileSync(BIB, 'utf8')
+const papers = loadPapers(BIB)
 const byKey = (k: string) => papers.find((p) => p.key === k)!
+
+/** Counted from the source, not hardcoded: adding a paper should not fail a test. */
+const count = (pattern: RegExp) => (source.match(pattern) ?? []).length
 
 describe('loadPapers', () => {
   it('parses every entry', () => {
-    expect(papers).toHaveLength(9)
+    const entries = count(/^@\w+\{/gm)
+    expect(entries).toBeGreaterThan(0)
+    expect(papers).toHaveLength(entries)
   })
 
   it('sorts year-descending, ties in file order', () => {
-    expect(papers.map((p) => p.year)).toEqual([2026, 2025, 2025, 2024, 2024, 2024, 2023, 2022, 2022])
-    expect(papers[0].key).toBe('li2025dissonances')
-    expect(papers[1].key).toBe('cui2025doyssey')
+    const years = papers.map((p) => p.year)
+    expect(years).toEqual([...years].sort((a, b) => b - a))
+    // The 2026 entries in file order: the preprint, then NDSS'26.
+    expect(papers.slice(0, 2).map((p) => p.key)).toEqual(['cui2026maris', 'li2025dissonances'])
   })
 
   it('preserves title case', () => {
@@ -74,14 +83,21 @@ describe('loadPapers', () => {
     expect(byKey('lin2024malla').mediaHtml!.trimEnd()).not.toMatch(/,$/)
   })
 
-  it('exposes awards on the three entries that have them', () => {
+  it('exposes awards on the entries that have them', () => {
     expect(byKey('cui2025doyssey').award).toBe('Distinguished Paper Award')
-    expect(papers.filter((p) => p.award)).toHaveLength(3)
+    expect(papers.filter((p) => p.award)).toHaveLength(count(/^\s*award\s*=/gm))
   })
 
   it('renders venue as short name plus year', () => {
     expect(byKey('li2025dissonances').venue).toBe('NDSS 2026')
     expect(byKey('lin2024malla').venue).toBe('USENIX Security 2024')
+  })
+
+  // PaperEntry outlines the badge on venueKey === 'arXiv', so the preprints must
+  // carry that key rather than a target venue they have not been accepted to.
+  it('keys preprints on arXiv', () => {
+    expect(byKey('cui2026maris').venueKey).toBe('arXiv')
+    expect(byKey('cui2026maris').venue).toBe('arXiv 2026')
   })
 
   // venueKey drives the badge glyph, so it must stay the bare abbr: no year, and
