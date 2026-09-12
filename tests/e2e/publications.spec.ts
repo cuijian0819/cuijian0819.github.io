@@ -55,6 +55,22 @@ test('outlines the preprint badges', async ({ page }) => {
   await expect(preprints.first()).toHaveText(/arXiv 20\d\d/)
 })
 
+// Press coverage was a grey footnote below the pdf links. It now leads them and is
+// set in ink, not --muted, because it is the signal a non-specialist recognises.
+test('weights press coverage above the pdf links', async ({ page }) => {
+  await page.goto('/')
+  const paper = page.locator('.paper', { has: page.locator('.media') }).first()
+  const media = await paper.locator('.media').boundingBox()
+  const meta = await paper.locator('.meta').boundingBox()
+  expect(media!.y).toBeLessThan(meta!.y)
+
+  const colors = await paper.evaluate((el) => ({
+    outlet: getComputedStyle(el.querySelector('.outlets a')!).color,
+    authors: getComputedStyle(el.querySelector('.authors')!).color,
+  }))
+  expect(colors.outlet).not.toBe(colors.authors)
+})
+
 test('orders papers newest first', async ({ page }) => {
   await page.goto('/')
   const venues = await page.locator('.paper .venue').allTextContents()

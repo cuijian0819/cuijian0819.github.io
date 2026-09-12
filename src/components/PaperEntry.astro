@@ -34,15 +34,10 @@ const isPreprint = paper.venueKey === 'arXiv'
 
   {paper.award && <p class="award"><span class="star">★</span>{paper.award}</p>}
 
-  <p class="meta">
-    {paper.pdfUrl && <a href={paper.pdfUrl}>pdf</a>}
-    {paper.codeUrl && <a href={paper.codeUrl}>code</a>}
-  </p>
-
   {
     paper.mediaHtml && (
       <p class="media">
-        <span class="media-label">Media</span>
+        <span class="media-label">Featured in</span>
         {/* Raw anchor tags straight from the bib file's `media` field. */}
         <span class="outlets">
           <Fragment set:html={paper.mediaHtml} />
@@ -50,6 +45,11 @@ const isPreprint = paper.venueKey === 'arXiv'
       </p>
     )
   }
+
+  <p class="meta">
+    {paper.pdfUrl && <a href={paper.pdfUrl}>pdf</a>}
+    {paper.codeUrl && <a href={paper.codeUrl}>code</a>}
+  </p>
 </article>
 
 <style>
@@ -175,28 +175,38 @@ const isPreprint = paper.venueKey === 'arXiv'
     opacity: 1;
   }
 
+  /* Press coverage is the one line on this page a reader outside security
+     recognises, so it gets the award's tinted-pill treatment instead of a grey
+     footnote, and the mastheads are set in ink rather than muted. It also sits
+     above the pdf/code row now: those are utilities, this is evidence. */
   .media {
     align-items: baseline;
-    color: var(--muted);
-    display: flex;
+    background: color-mix(in srgb, var(--accent) 8%, transparent);
+    border-radius: 8px;
+    display: inline-flex;
     flex-wrap: wrap;
     font-size: var(--step--1);
     gap: 0.15rem 0.5rem;
-    margin: 0.7rem 0 0;
+    margin: 0 0 0.55rem;
+    padding: 0.35rem 0.7rem;
   }
 
   .media-label {
-    color: color-mix(in srgb, var(--muted) 80%, var(--paper));
+    /* 75% not 88%: this label sits on the tinted pill rather than on --paper,
+       and at 0.7rem the 88% mix measures 4.18:1 there, under AA. 75% gives
+       4.83:1 in light and 7.34:1 in dark. */
+    color: color-mix(in srgb, var(--accent) 75%, var(--ink));
     flex: none;
     font-size: 0.7rem;
     font-variant-caps: all-small-caps;
-    font-weight: 650;
+    font-weight: 700;
     letter-spacing: 0.12em;
   }
 
   .outlets :global(a) {
-    color: var(--muted);
-    text-decoration-color: color-mix(in srgb, var(--muted) 40%, transparent);
+    color: var(--ink);
+    font-weight: 600;
+    text-decoration-color: color-mix(in srgb, var(--accent) 50%, transparent);
     text-underline-offset: 2px;
     transition: color 0.2s ease;
   }
