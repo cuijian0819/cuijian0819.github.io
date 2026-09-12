@@ -185,22 +185,27 @@ const isPreprint = paper.venueKey === 'arXiv'
     border-radius: 8px;
     display: inline-flex;
     flex-wrap: wrap;
-    font-size: var(--step--1);
-    gap: 0.15rem 0.5rem;
-    margin: 0 0 0.55rem;
-    padding: 0.35rem 0.7rem;
+    /* Body size, a step above the award and the author line. Twice now the row
+       has read as a footnote at --step--1; the mastheads are the point. */
+    font-size: var(--step-0);
+    gap: 0.15rem 0.55rem;
+    margin: 0 0 0.6rem;
+    padding: 0.45rem 0.8rem;
   }
 
   .media-label {
     /* 75% not 88%: this label sits on the tinted pill rather than on --paper,
-       and at 0.7rem the 88% mix measures 4.18:1 there, under AA. 75% gives
-       4.83:1 in light and 7.34:1 in dark. */
+       where the 88% mix measures 4.18:1, under AA for text this size. 75%
+       gives 4.83:1 in light and 7.34:1 in dark. */
     color: color-mix(in srgb, var(--accent) 75%, var(--ink));
     flex: none;
-    font-size: 0.7rem;
+    /* Matches the outlets rather than sitting a step under them: small-caps
+       already renders about a third shorter than its nominal size, which is
+       what kept making this label disappear. */
+    font-size: var(--step-0);
     font-variant-caps: all-small-caps;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.09em;
   }
 
   .outlets :global(a) {
