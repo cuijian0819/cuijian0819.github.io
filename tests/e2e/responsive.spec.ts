@@ -1,4 +1,16 @@
+import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
+
+/**
+ * Geometry has to be read after the webfonts land. The fallback face wraps the
+ * bio differently, which sizes the intro grid differently and puts the
+ * portrait's right edge at 1267 instead of 1245 - a real 1-in-3 flake in the
+ * deploy gate, not a layout bug.
+ */
+async function gotoSettled(page: Page, path: string) {
+  await page.goto(path)
+  await page.evaluate(() => document.fonts.ready)
+}
 
 const PAGES = ['/', '/misc/', '/news/', '/thoughts/', '/realme/']
 const WIDTHS = [320, 375, 768, 1024, 1440]
@@ -56,7 +68,7 @@ test('the workout description is fully readable on a phone', async ({ page }) =>
 
 test('the portrait sits above the bio on a phone', async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 900 })
-  await page.goto('/')
+  await gotoSettled(page, '/')
   const bio = await page.locator('.bio').boundingBox()
   const portrait = await page.locator('.portrait').boundingBox()
   expect(portrait!.y).toBeLessThan(bio!.y)
@@ -65,7 +77,7 @@ test('the portrait sits above the bio on a phone', async ({ page }) => {
 
 test('portrait, news and papers share one right edge on desktop', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
-  await page.goto('/')
+  await gotoSettled(page, '/')
   const right = async (selector: string) => {
     const box = await page.locator(selector).first().boundingBox()
     return Math.round(box!.x + box!.width)
@@ -77,7 +89,7 @@ test('portrait, news and papers share one right edge on desktop', async ({ page 
 
 test('desktop is wider than a stretched phone layout', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
-  await page.goto('/')
+  await gotoSettled(page, '/')
   const bio = await page.locator('.bio p').first().evaluate((el) => el.clientWidth)
   // Regression guard: the bio column was 512px when prose and layout shared one
   // measure. Desktop should read wider than that.
@@ -86,7 +98,7 @@ test('desktop is wider than a stretched phone layout', async ({ page }) => {
 
 test('the portrait offsets right on a desktop', async ({ page }) => {
   await page.setViewportSize({ width: 1280, height: 900 })
-  await page.goto('/')
+  await gotoSettled(page, '/')
   const bio = await page.locator('.bio').boundingBox()
   const portrait = await page.locator('.portrait').boundingBox()
   expect(portrait!.x).toBeGreaterThan(bio!.x + bio!.width - 1)
@@ -94,7 +106,7 @@ test('the portrait offsets right on a desktop', async ({ page }) => {
 
 test('body text stays within the 68ch measure', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
-  await page.goto('/')
+  await gotoSettled(page, '/')
   const width = await page.locator('.bio p').first().evaluate((el) => el.clientWidth)
   const fontSize = await page.locator('body').evaluate((el) => parseFloat(getComputedStyle(el).fontSize))
   // 68ch is roughly 68 * 0.5em for a serif; assert a generous upper bound.
