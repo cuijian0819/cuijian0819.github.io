@@ -13,6 +13,8 @@ const thoughts = defineCollection({
   schema: z.object({
     title: z.string(),
     date: z.coerce.date(),
+    /** Optional one-line italic standfirst under the title, as on the index rows. */
+    summary: z.string().optional(),
   }),
 })
 
