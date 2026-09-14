@@ -30,7 +30,7 @@ test('marks Jian Cui in every author list', async ({ page }) => {
 test('renders media links as real anchors, not escaped text', async ({ page }) => {
   await page.goto('/')
   await expect(page.locator('.media a', { hasText: 'The Wall Street Journal' })).toHaveCount(1)
-  await expect(page.locator('.media a', { hasText: 'Dark Reading' })).toHaveCount(1)
+  await expect(page.locator('.media a', { hasText: 'Tom’s Hardware' })).toHaveCount(1)
   await expect(page.getByText('¡a href')).toHaveCount(0)
 })
 
