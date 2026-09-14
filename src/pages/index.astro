@@ -30,6 +30,14 @@ const links: Chip[] = [
     <div class="bio prose">
       <h1>Jian Cui</h1>
 
+      {/* The characters do three jobs: they disambiguate one of the most common
+          names in the field, they are what makes the rock-star line below land,
+          and they carry what the romanisation drops. */}
+      <p class="names">
+        <span lang="zh-Hans">崔健</span> &middot; <span lang="ko">최건</span> &middot;{' '}
+        <a href="/misc/#personal">Korean-Chinese</a>
+      </p>
+
       <p>
         Hello, I'm Jian Cui, sharing the exact same name as{' '}
         <a href="https://en.wikipedia.org/wiki/Cui_Jian">the legendary Chinese rock star</a>.
@@ -118,6 +126,32 @@ const links: Chip[] = [
 
   .bio :global(p) {
     color: color-mix(in srgb, var(--ink) 88%, var(--paper));
+  }
+
+  /* Body size, not caption size: CJK glyphs shrink faster than Latin ones, and
+     below this they stop reading as a name and start reading as a footnote.
+     Literata carries no CJK, so the stack falls through to the system serif. */
+  .bio .names {
+    color: var(--muted);
+    font-family: 'Songti SC', 'Noto Serif CJK SC', 'Hiragino Mincho ProN',
+      'Apple SD Gothic Neo', var(--font-body);
+    font-size: var(--step-0);
+    letter-spacing: 0.02em;
+    margin: -0.4rem 0 1.4rem;
+  }
+
+  /* The pointer stays quieter than the names it follows: in accent it pulled the
+     eye off the characters, which are the reason the line exists. */
+  .bio .names :global(a) {
+    color: inherit;
+    text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    text-underline-offset: 3px;
+  }
+
+  .bio .names :global(a:hover) {
+    color: var(--accent);
+    opacity: 1;
+    text-decoration-color: var(--accent);
   }
 
   /* Full-bleed band. `main` is unconstrained, so this needs no negative-margin

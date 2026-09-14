@@ -81,7 +81,9 @@ test('serves the warm paper colour, never Apple blue', async ({ page }) => {
   await page.goto('/')
   const { bg, link } = await page.evaluate(() => ({
     bg: getComputedStyle(document.body).backgroundColor,
-    link: getComputedStyle(document.querySelector('main a')!).color,
+    // The first link in the bio prose, not `main a`: that is now the muted
+    // pointer beside the name, which is deliberately not accent-coloured.
+    link: getComputedStyle(document.querySelector('main p:not(.names) a')!).color,
   }))
   expect(bg).toBe('rgb(251, 248, 243)')
   expect(link).toBe('rgb(181, 101, 74)')
