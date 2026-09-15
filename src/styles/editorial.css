@@ -18,6 +18,23 @@ html:root[data-design='editorial'] {
   --radius: 0;
 }
 
+/* One reading column connects the profile, biography, news, and publications. */
+html:root[data-design='editorial'][data-page='home'] {
+  --shell: 46rem;
+
+  .intro {
+    padding-block: clamp(2.5rem, 5vw, 3.75rem) 2.25rem;
+  }
+
+  .chips {
+    margin-top: 0.75rem;
+  }
+
+  .news-item {
+    column-gap: 2rem;
+  }
+}
+
 html:root[data-design='editorial'][data-theme='dark'] {
   --paper: #121110;
   --raised: #121110;

@@ -70,17 +70,18 @@ test('the portrait sits above the bio on a phone', async ({ page }) => {
   expect(portrait!.x).toBeLessThan(100)
 })
 
-test('portrait, bio, news and papers share the left margin on desktop', async ({ page }) => {
+test('profile, bio, news and papers share both margins on desktop', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   await gotoSettled(page, '/')
-  const left = async (selector: string) => {
+  const edges = async (selector: string) => {
     const box = await page.locator(selector).first().boundingBox()
-    return Math.round(box!.x)
+    return [Math.round(box!.x), Math.round(box!.x + box!.width)]
   }
-  const portrait = await left('.portrait')
-  expect(await left('.bio')).toBe(portrait)
-  expect(await left('.news')).toBe(portrait)
-  expect(await left('.paper')).toBe(portrait)
+  const profile = await edges('.profile-header')
+  expect(await edges('.bio')).toEqual(profile)
+  expect(await edges('.news')).toEqual(profile)
+  expect(await edges('.paper')).toEqual(profile)
+  expect((await edges('.portrait'))[0]).toBe(profile[0])
 })
 
 test('desktop gives the bio a readable column below the profile header', async ({ page }) => {
