@@ -1,12 +1,7 @@
 import type { Page } from '@playwright/test'
 import { expect, test } from '@playwright/test'
 
-/**
- * Geometry has to be read after the webfonts land. The fallback face wraps the
- * bio differently, which sizes the intro grid differently and puts the
- * portrait's right edge at 1267 instead of 1245 - a real 1-in-3 flake in the
- * deploy gate, not a layout bug.
- */
+/** Wait for webfonts before comparing positions or reading widths. */
 async function gotoSettled(page: Page, path: string) {
   await page.goto(path)
   await page.evaluate(() => document.fonts.ready)
@@ -75,33 +70,40 @@ test('the portrait sits above the bio on a phone', async ({ page }) => {
   expect(portrait!.x).toBeLessThan(100)
 })
 
-test('portrait, news and papers share one right edge on desktop', async ({ page }) => {
+test('portrait, bio, news and papers share the left margin on desktop', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   await gotoSettled(page, '/')
-  const right = async (selector: string) => {
+  const left = async (selector: string) => {
     const box = await page.locator(selector).first().boundingBox()
-    return Math.round(box!.x + box!.width)
+    return Math.round(box!.x)
   }
-  const portrait = await right('.portrait')
-  expect(await right('.news')).toBe(portrait)
-  expect(await right('.paper')).toBe(portrait)
+  const portrait = await left('.portrait')
+  expect(await left('.bio')).toBe(portrait)
+  expect(await left('.news')).toBe(portrait)
+  expect(await left('.paper')).toBe(portrait)
 })
 
-test('desktop gives the bio a readable column beside the portrait', async ({ page }) => {
+test('desktop gives the bio a readable column below the profile header', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
-  await gotoSettled(page, '/')
-  const bio = await page.locator('.bio p').first().evaluate((el) => el.clientWidth)
-  const portrait = await page.locator('.portrait').evaluate((el) => el.clientWidth)
-  expect(bio).toBeGreaterThan(portrait * 2)
-  expect(bio).toBeLessThan(700)
-})
-
-test('the portrait offsets right on a desktop', async ({ page }) => {
-  await page.setViewportSize({ width: 1280, height: 900 })
   await gotoSettled(page, '/')
   const bio = await page.locator('.bio').boundingBox()
-  const portrait = await page.locator('.portrait').boundingBox()
-  expect(portrait!.x).toBeGreaterThan(bio!.x + bio!.width - 1)
+  const header = await page.locator('.profile-header').boundingBox()
+  expect(bio!.y).toBeGreaterThan(header!.y + header!.height)
+  expect(bio!.width).toBeGreaterThan(500)
+  expect(bio!.width).toBeLessThan(700)
+})
+
+test('desktop pairs the portrait on the left with the name on the right', async ({ page }) => {
+  await page.setViewportSize({ width: 1280, height: 900 })
+  await gotoSettled(page, '/')
+  // Read both in one frame so the entrance animation cannot skew the comparison.
+  const { identity, portrait } = await page.locator('.profile-header').evaluate((el) => ({
+    identity: el.querySelector('.identity')!.getBoundingClientRect().toJSON(),
+    portrait: el.querySelector('.portrait')!.getBoundingClientRect().toJSON(),
+  }))
+  expect(identity.x).toBeGreaterThan(portrait.x + portrait.width)
+  const center = (box: { y: number; height: number }) => box.y + box.height / 2
+  expect(Math.abs(center(identity) - center(portrait))).toBeLessThan(1)
 })
 
 test('body text stays within the 68ch measure', async ({ page }) => {

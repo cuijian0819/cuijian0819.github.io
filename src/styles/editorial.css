@@ -15,7 +15,6 @@ html:root[data-design='editorial'] {
   --leading: 1.5;
   --shell: 58rem;
   --measure: 66ch;
-  --portrait: 240px;
   --radius: 0;
 }
 
@@ -52,7 +51,7 @@ html:root[data-design='editorial'] {
     padding-block: clamp(2.5rem, 6vw, 4.5rem) 3rem;
   }
 
-  .bio h1 {
+  .identity h1 {
     font-size: clamp(2.4375rem, 2rem + 1.1vw, 2.875rem);
     letter-spacing: -0.01em;
     line-height: 1.05;
@@ -63,15 +62,9 @@ html:root[data-design='editorial'] {
     color: var(--ink);
   }
 
-  .bio .names {
+  .identity .names {
     color: var(--muted);
     font-size: 1rem;
-  }
-
-  .portrait {
-    border: 0;
-    border-radius: 0;
-    width: min(55vw, var(--portrait));
   }
 
   .chips {
@@ -275,16 +268,6 @@ html:root[data-design='editorial'] {
 
 @media (min-width: 640px) {
   html:root[data-design='editorial'] {
-    .intro {
-      align-items: start;
-      gap: 2rem;
-    }
-
-    .portrait {
-      align-self: start;
-      margin-top: 0.4rem;
-    }
-
     .paper {
       display: grid;
       column-gap: 2rem;
