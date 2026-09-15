@@ -1,6 +1,7 @@
 ---
 import type { Paper } from '../lib/bibliography.types'
 import VenueIcon from './VenueIcon.astro'
+import Icon from './Icon.astro'
 
 interface Props {
   paper: Paper
@@ -8,7 +9,7 @@ interface Props {
 
 const { paper } = Astro.props
 
-// A preprint is not a venue, so its badge is outlined rather than filled.
+// Preprints keep an explicit arXiv label and italic styling.
 const isPreprint = paper.venueKey === 'arXiv'
 ---
 
@@ -37,7 +38,7 @@ const isPreprint = paper.venueKey === 'arXiv'
   {
     paper.mediaHtml && (
       <p class="media">
-        <span class="media-label">Featured in</span>
+        <span class="media-label"><Icon name="newspaper" /><span>Featured in</span></span>
         {/* Raw anchor tags straight from the bib file's `media` field. */}
         <span class="outlets">
           <Fragment set:html={paper.mediaHtml} />
@@ -47,8 +48,8 @@ const isPreprint = paper.venueKey === 'arXiv'
   }
 
   <p class="meta">
-    {paper.pdfUrl && <a href={paper.pdfUrl}>pdf</a>}
-    {paper.codeUrl && <a href={paper.codeUrl}>code</a>}
+    {paper.pdfUrl && <a href={paper.pdfUrl}><Icon name="document" /><span>pdf</span></a>}
+    {paper.codeUrl && <a href={paper.codeUrl}><Icon name="code" /><span>code</span></a>}
   </p>
 </article>
 
@@ -158,6 +159,9 @@ const isPreprint = paper.venueKey === 'arXiv'
   /* Small outlined buttons rather than bare inline links, so the row reads as
      actions and lines up with the venue badge's shape. */
   .meta a {
+    align-items: center;
+    display: inline-flex;
+    gap: 0.3em;
     border: 1px solid var(--rule);
     border-radius: 6px;
     color: var(--muted);
@@ -196,6 +200,9 @@ const isPreprint = paper.venueKey === 'arXiv'
   }
 
   .media-label {
+    align-items: baseline;
+    display: inline-flex;
+    gap: 0.4em;
     /* 75% not 88%: this label sits on the tinted pill rather than on --paper,
        where the 88% mix measures 4.18:1, under AA for text this size. 75%
        gives 4.83:1 in light and 7.34:1 in dark. */

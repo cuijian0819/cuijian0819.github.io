@@ -87,13 +87,13 @@ test('portrait, news and papers share one right edge on desktop', async ({ page 
   expect(await right('.paper')).toBe(portrait)
 })
 
-test('desktop is wider than a stretched phone layout', async ({ page }) => {
+test('desktop gives the bio a readable column beside the portrait', async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 })
   await gotoSettled(page, '/')
   const bio = await page.locator('.bio p').first().evaluate((el) => el.clientWidth)
-  // Regression guard: the bio column was 512px when prose and layout shared one
-  // measure. Desktop should read wider than that.
-  expect(bio).toBeGreaterThan(600)
+  const portrait = await page.locator('.portrait').evaluate((el) => el.clientWidth)
+  expect(bio).toBeGreaterThan(portrait * 2)
+  expect(bio).toBeLessThan(700)
 })
 
 test('the portrait offsets right on a desktop', async ({ page }) => {

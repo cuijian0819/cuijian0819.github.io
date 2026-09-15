@@ -1,17 +1,17 @@
 import { describe, expect, it } from 'vitest'
 import fs from 'node:fs'
 
-const tokens = fs.readFileSync('src/styles/tokens.css', 'utf8')
+const tokens = fs.readFileSync('src/styles/editorial.css', 'utf8')
 const global = fs.readFileSync('src/styles/global.css', 'utf8')
 
 describe('design tokens', () => {
   it('defines both themes', () => {
-    expect(tokens).toMatch(/:root\s*\{/)
+    expect(tokens).toContain("html:root[data-design='editorial']")
     expect(tokens).toMatch(/\[data-theme=["']dark["']\]/)
   })
 
-  it('uses the approved warm palette', () => {
-    for (const hex of ['#FBF8F3', '#1A1815', '#33302B', '#EDE7DE', '#B5654A', '#E08B6B']) {
+  it('uses the approved monochrome palette', () => {
+    for (const hex of ['#ffffff', '#121110', '#141414', '#edeae4', '#6a6a6a', '#9a948c']) {
       expect(tokens).toContain(hex)
     }
   })
@@ -25,14 +25,13 @@ describe('design tokens', () => {
     expect(tokens).toContain('clamp(')
   })
 
-  it('separates display from body with optical size and weight, not a second family', () => {
-    // Fraunces was dropped: its J has a hooked descender that no axis changes.
-    expect(tokens).not.toContain('fraunces')
-    expect(global).toContain("'opsz'")
+  it('uses Garamond without Literata optical-size settings', () => {
+    expect(tokens).toContain('EB Garamond Variable')
+    expect(tokens).toContain('font-variation-settings: normal')
   })
 
-  it('caps the measure and sets warm leading', () => {
-    expect(tokens).toContain('--measure: 68ch')
-    expect(tokens).toContain('--leading: 1.75')
+  it('caps the measure and uses reading-friendly leading', () => {
+    expect(tokens).toContain('--measure: 66ch')
+    expect(tokens).toContain('--leading: 1.5')
   })
 })

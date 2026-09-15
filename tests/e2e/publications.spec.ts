@@ -47,12 +47,13 @@ test('shows awards on the papers that have them', async ({ page }) => {
   await expect(page.locator('.award', { hasText: 'Distinguished Paper Award' })).toHaveCount(1)
 })
 
-// A preprint badge is outlined, not filled, so it cannot be read as an accepted venue.
-test('outlines the preprint badges', async ({ page }) => {
+// Preprints remain explicitly labeled and italic in the monochrome layout.
+test('distinguishes preprints from accepted venues', async ({ page }) => {
   await page.goto('/')
   const preprints = page.locator('.paper .venue.preprint')
   await expect(preprints).toHaveCount(count(/^\s*abbr\s*=\s*\{arXiv/gm))
   await expect(preprints.first()).toHaveText(/arXiv 20\d\d/)
+  await expect(preprints.first()).toHaveCSS('font-style', 'italic')
 })
 
 // Press coverage was a grey footnote below the pdf links. It now leads them and is
@@ -69,6 +70,16 @@ test('weights press coverage above the pdf links', async ({ page }) => {
     authors: getComputedStyle(el.querySelector('.authors')!).color,
   }))
   expect(colors.outlet).not.toBe(colors.authors)
+})
+
+test('paper action icons preserve readable link labels', async ({ page }) => {
+  await page.goto('/')
+  const paper = page.locator('.paper').filter({ has: page.locator('a', { hasText: /^code$/ }) }).first()
+  for (const label of ['pdf', 'code']) {
+    const link = paper.getByRole('link', { name: label, exact: true })
+    await expect(link).toBeVisible()
+    await expect(link.locator('svg')).toHaveAttribute('aria-hidden', 'true')
+  }
 })
 
 test('orders papers newest first', async ({ page }) => {

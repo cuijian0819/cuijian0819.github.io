@@ -44,7 +44,7 @@ for (const path of HIDDEN_PAGES) {
 
     const result = await hidden.evaluate(effectiveBackdrop)
     expect(result.colour, `visible against ${result.from}`).toBe(result.background)
-    expect(result.colour).toBe('rgb(26, 24, 21)')
+    expect(result.colour).toBe('rgb(18, 17, 16)')
   })
 }
 

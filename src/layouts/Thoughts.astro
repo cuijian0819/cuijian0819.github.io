@@ -70,24 +70,4 @@ const { title, description } = Astro.props
     font-variation-settings: normal;
   }
 
-  /* The masthead becomes the reference's tracked caps over a double rule. */
-  .masthead {
-    border-bottom: 0;
-  }
-
-  .masthead-inner {
-    border-bottom: 3px double var(--ink);
-    padding-bottom: 0.5rem;
-  }
-
-  header.masthead a.wordmark,
-  header.masthead nav a {
-    font-size: 0.86rem;
-    font-weight: 400;
-    /* Literata's opsz axis again: Garamond has none, and a stale setting leaves
-       the wordmark rendering heavy. */
-    font-variation-settings: normal;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-  }
 </style>

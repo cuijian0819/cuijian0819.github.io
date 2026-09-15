@@ -8,7 +8,9 @@ Jian Cui's personal academic website (https://cuijian0819.github.io), a custom A
 It was an al-folio Jekyll fork until July 2026; every trace of Jekyll, Ruby, and Docker has been
 removed. If you find advice referring to `_config.yml`, jekyll-scholar, or `bundle exec`, it is stale.
 
-Design intent is warm editorial: serif throughout, a terracotta accent, and deliberately no blue.
+Design intent is monochrome editorial: EB Garamond, true small caps in the masthead,
+thin rules, and restrained line icons. `src/styles/editorial.css` applies the active theme
+over the base tokens. The previous warm design is preserved on `archive/2026-09-14-warm-site`.
 The rebuild spec is `docs/superpowers/specs/2026-07-25-site-rebuild-design.md` and the implementation
 plan is `docs/superpowers/plans/2026-07-26-site-rebuild.md`.
 

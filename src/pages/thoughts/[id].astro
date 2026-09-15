@@ -1,6 +1,7 @@
 ---
 import { getCollection, render, type CollectionEntry } from 'astro:content'
 import Thoughts from '../../layouts/Thoughts.astro'
+import Icon from '../../components/Icon.astro'
 
 export async function getStaticPaths() {
   return (await getCollection('thoughts')).map((post) => ({
@@ -29,7 +30,7 @@ const date = new Intl.DateTimeFormat('en-GB', {
 >
   <div class="thought wrap">
     <article class="essay">
-      <a class="back" href="/thoughts/">← All thoughts</a>
+      <a class="back" href="/thoughts/"><Icon name="arrow-left" /><span>All thoughts</span></a>
       <header class="essay-head">
         <time datetime={post.data.date.toISOString().slice(0, 10)}>{date}</time>
         <h1>{post.data.title}</h1>
@@ -38,7 +39,7 @@ const date = new Intl.DateTimeFormat('en-GB', {
       <div class="body">
         <Content />
       </div>
-      <a class="back bottom" href="/thoughts/">← All thoughts</a>
+      <a class="back bottom" href="/thoughts/"><Icon name="arrow-left" /><span>All thoughts</span></a>
     </article>
   </div>
 </Thoughts>
@@ -54,8 +55,10 @@ const date = new Intl.DateTimeFormat('en-GB', {
   }
 
   .back {
+    align-items: center;
     color: var(--muted);
-    display: inline-block;
+    display: inline-flex;
+    gap: 0.4em;
     font-size: 0.95em;
     margin-bottom: 2rem;
   }
@@ -75,7 +78,7 @@ const date = new Intl.DateTimeFormat('en-GB', {
   }
 
   h1 {
-    font-size: clamp(2.4rem, 1.7rem + 3vw, 3rem);
+    font-size: clamp(2.4375rem, 2rem + 1.1vw, 2.875rem);
     font-weight: 400;
     letter-spacing: -0.01em;
     line-height: 1.1;

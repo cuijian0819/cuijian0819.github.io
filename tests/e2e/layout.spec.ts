@@ -77,7 +77,7 @@ test('ships no jQuery or Bootstrap', async ({ page }) => {
   expect(scripts.join(' ')).not.toMatch(/jquery|bootstrap/i)
 })
 
-test('serves the warm paper colour, never Apple blue', async ({ page }) => {
+test('serves the monochrome palette and true small caps', async ({ page }) => {
   await page.goto('/')
   const { bg, link } = await page.evaluate(() => ({
     bg: getComputedStyle(document.body).backgroundColor,
@@ -85,8 +85,11 @@ test('serves the warm paper colour, never Apple blue', async ({ page }) => {
     // pointer beside the name, which is deliberately not accent-coloured.
     link: getComputedStyle(document.querySelector('main p:not(.names) a')!).color,
   }))
-  expect(bg).toBe('rgb(251, 248, 243)')
-  expect(link).toBe('rgb(181, 101, 74)')
+  expect(bg).toBe('rgb(255, 255, 255)')
+  expect(link).toBe('rgb(20, 20, 20)')
+  await expect(page.locator('.wordmark')).toHaveCSS('font-variant-caps', 'all-small-caps')
+  await expect(page.locator('.wordmark')).toHaveCSS('font-size', '20px')
+  await expect(page.locator('.wordmark')).toHaveCSS('font-weight', '400')
 })
 
 test('loads self-hosted fonts and contacts no third-party host', async ({ page }) => {
@@ -98,6 +101,16 @@ test('loads self-hosted fonts and contacts no third-party host', async ({ page }
   await page.goto('/')
   await page.waitForLoadState('networkidle')
   expect(external).toEqual([])
+})
+
+test('reduced motion disables smooth scrolling and content reveals', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' })
+  await page.goto('/')
+  await expect(page.locator('html')).toHaveCSS('scroll-behavior', 'auto')
+  for (const block of await page.locator('.reveal').all()) {
+    await expect(block).toHaveCSS('opacity', '1')
+    await expect(block).toHaveCSS('transform', 'none')
+  }
 })
 
 // Astro compiles a page's scoped `.foo` to `.foo[data-astro-cid-…]`, which

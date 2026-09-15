@@ -29,14 +29,14 @@ test('the page palette overrides the site tokens', async ({ page }) => {
   expect(seen.family).toBe('"EB Garamond Variable"')
 })
 
-test('leaves every other page on Literata and paper', async ({ page }) => {
+test('shares Garamond and white paper with the homepage', async ({ page }) => {
   await page.goto('/')
   const seen = await page.evaluate(() => ({
     bg: getComputedStyle(document.body).backgroundColor,
     family: getComputedStyle(document.body).fontFamily.split(',')[0],
   }))
-  expect(seen.bg).toBe('rgb(251, 248, 243)')
-  expect(seen.family).toBe('"Literata Variable"')
+  expect(seen.bg).toBe('rgb(255, 255, 255)')
+  expect(seen.family).toBe('"EB Garamond Variable"')
 })
 
 test('the year hangs in the margin beside the entry, not on top of it', async ({ page }) => {
