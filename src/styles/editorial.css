@@ -136,11 +136,11 @@ html:root[data-design='editorial'] {
     background: transparent;
     border: 0;
     border-radius: 0;
-    color: var(--muted);
-    font-size: 0.82rem;
+    color: var(--ink);
+    font-size: clamp(1.125rem, 1.05rem + 0.25vw, 1.25rem);
     font-variant-caps: normal;
-    font-weight: 400;
-    letter-spacing: 0.08em;
+    font-weight: 500;
+    letter-spacing: 0.04em;
     line-height: 1.4;
     max-width: 100%;
     padding: 0;
@@ -150,6 +150,12 @@ html:root[data-design='editorial'] {
 
   .venue.preprint {
     font-style: italic;
+  }
+
+  .venue-year {
+    color: var(--muted);
+    font-size: 1rem;
+    font-weight: 400;
   }
 
   .paper h3 {
@@ -293,6 +299,11 @@ html:root[data-design='editorial'] {
       grid-column: 1;
       grid-row: 1 / span 5;
       padding-top: 0.15rem;
+    }
+
+    .venue-year {
+      display: block;
+      margin-top: 0.2rem;
     }
 
     .paper .award, .paper .media {

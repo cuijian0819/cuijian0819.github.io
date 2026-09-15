@@ -11,13 +11,16 @@ const { paper } = Astro.props
 
 // Preprints keep an explicit arXiv label and italic styling.
 const isPreprint = paper.venueKey === 'arXiv'
+// Separate the displayed year so larger venue names wrap consistently in the margin.
+const venueName = paper.venue.slice(0, -String(paper.year).length).trimEnd()
 ---
 
 <article class="paper">
   <p class="venue-row">
-    {/* No whitespace between the glyph and the text: this is an inline context,
-        so a newline here would render as a space on top of the icon's margin. */}
-    <span class:list={['venue', isPreprint && 'preprint']} title={paper.venueFull}><VenueIcon venueKey={paper.venueKey} />{paper.venue}</span>
+    <span class:list={['venue', isPreprint && 'preprint']} title={paper.venueFull}>
+      {venueName && <><span class="venue-name"><VenueIcon venueKey={paper.venueKey} />{venueName}</span>{' '}</>}
+      <span class="venue-year">{paper.year}</span>
+    </span>
   </p>
 
   <h3>{paper.title}</h3>
@@ -33,7 +36,7 @@ const isPreprint = paper.venueKey === 'arXiv'
     }
   </p>
 
-  {paper.award && <p class="award"><span class="star">★</span>{paper.award}</p>}
+  {paper.award && <p class="award"><span class="star"><Icon name="award" /></span>{paper.award}</p>}
 
   {
     paper.mediaHtml && (

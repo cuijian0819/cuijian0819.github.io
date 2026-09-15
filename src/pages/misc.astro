@@ -1,5 +1,6 @@
 ---
 import Base from '../layouts/Base.astro'
+import Icon from '../components/Icon.astro'
 import OpenResults from '../components/OpenResults.astro'
 import type { Row } from '../components/OpenResults.astro'
 
@@ -36,7 +37,7 @@ const openResults: Row[] = [
     <h1>Misc.</h1>
 
     <section class="misc-section reveal" id="personal">
-      <h2>Personal</h2>
+      <h2><Icon name="pin" /><span>Personal</span></h2>
       <ul class="info-list">
         <li>
           Born and reared in{' '}
@@ -54,7 +55,7 @@ const openResults: Row[] = [
     </section>
 
     <section class="misc-section reveal">
-      <h2>Fitness journey</h2>
+      <h2><Icon name="heartbeat" /><span>Fitness journey</span></h2>
       <p class="lede">
         I've always been a sports enthusiast. My fitness motto is{' '}
         <i>"Run faster than lifter, lift heavier than runner"</i>
@@ -62,7 +63,7 @@ const openResults: Row[] = [
 
       <article class="card">
         <header>
-          <h3>CrossFit, my all-time favorite</h3>
+          <h3><Icon name="kettlebell" /><span>CrossFit, my all-time favorite</span></h3>
           <span class="badge">Active</span>
         </header>
         <ul class="timeline">
@@ -95,7 +96,7 @@ const openResults: Row[] = [
       </article>
 
       <article class="card">
-        <header><h3>Running</h3></header>
+        <header><h3><Icon name="shoe" /><span>Running</span></h3></header>
         <ul class="timeline">
           <li>Previously on and off with long runs and interval training.</li>
           <li>
@@ -103,7 +104,7 @@ const openResults: Row[] = [
           </li>
         </ul>
         <div class="highlight">
-          <div class="highlight-title">Christie Clinic Illinois Marathon 10K (04/2026)</div>
+          <div class="highlight-title"><Icon name="award" /><span>Christie Clinic Illinois Marathon 10K (04/2026)</span></div>
           <div>
             Finished in <b>57:18</b> (9:14/mile avg pace), 343rd/1,639 overall, 229th/639 by gender,
             41st/103 in M 25-29
@@ -112,7 +113,7 @@ const openResults: Row[] = [
       </article>
 
       <article class="card">
-        <header><h3>Soccer, been playing since I could walk</h3></header>
+        <header><h3><Icon name="football" /><span>Soccer, been playing since I could walk</span></h3></header>
         <ul class="timeline">
           <li>
             It became more sporadic after 2019, following my "retirement" from KIFC (KAIST
@@ -124,7 +125,7 @@ const openResults: Row[] = [
       </article>
 
       <article class="card">
-        <header><h3>Climbing</h3></header>
+        <header><h3><Icon name="mountain" /><span>Climbing</span></h3></header>
         <ul class="timeline">
           <li>
             (06/2022 - 03/2023) Started Bouldering at{' '}
@@ -142,7 +143,7 @@ const openResults: Row[] = [
       </article>
 
       <article class="card">
-        <header><h3>Swimming</h3></header>
+        <header><h3><Icon name="swim" /><span>Swimming</span></h3></header>
         <ul class="timeline">
           <li>(12/2023 - ) Mainly sticking to breaststroke...</li>
           <li>(09/2025 - ) Currently working on improving my backstroke and freestyle technique.</li>
@@ -150,7 +151,7 @@ const openResults: Row[] = [
       </article>
 
       <article class="card">
-        <header><h3>Weight training</h3></header>
+        <header><h3><Icon name="dumbbell" /><span>Weight training</span></h3></header>
         <ul class="timeline">
           <li>(01/2023 - 11/2024) Went to the gym regularly.</li>
           <li>(11/2024) Focus shifted to CrossFit.</li>
@@ -160,7 +161,7 @@ const openResults: Row[] = [
     </section>
 
     <section class="misc-section reveal">
-      <h2>Volunteer activities</h2>
+      <h2><Icon name="helping" /><span>Volunteer activities</span></h2>
       <ul class="info-list">
         <li>
           From August 2016 to August 2018, I worked as a student assistant in the student life team
@@ -178,7 +179,7 @@ const openResults: Row[] = [
     </section>
 
     <section class="misc-section reveal">
-      <h2>Student club activities</h2>
+      <h2><Icon name="people" /><span>Student club activities</span></h2>
       <ul class="info-list">
         <li>
           I served as the president of KAIST International Football Club (KIFC) from Aug. 2015 to
@@ -202,6 +203,24 @@ const openResults: Row[] = [
 
   .misc-section {
     margin-bottom: 3.5rem;
+  }
+
+  .misc-section > h2,
+  .card h3,
+  .highlight-title {
+    align-items: baseline;
+    display: flex;
+    gap: 0.55em;
+  }
+
+  .misc-section > h2 :global(svg),
+  .card h3 :global(svg),
+  .highlight-title :global(svg) {
+    align-self: flex-start;
+    color: var(--ink);
+    height: 1em;
+    margin-top: 0.2em;
+    width: 1em;
   }
 
   .misc-section > h2 {

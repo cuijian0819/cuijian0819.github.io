@@ -1,10 +1,10 @@
 ---
-// The only client-side JavaScript on the site.
+import Icon from './Icon.astro'
 ---
 
 <button id="theme-toggle" type="button" aria-label="Toggle colour theme">
-  <span aria-hidden="true" class="icon-light">☾</span>
-  <span aria-hidden="true" class="icon-dark">☀</span>
+  <span aria-hidden="true" class="icon-light"><Icon name="moon" /></span>
+  <span aria-hidden="true" class="icon-dark"><Icon name="sun" /></span>
 </button>
 
 <script is:inline>
@@ -34,7 +34,7 @@
     border-radius: 999px;
     color: var(--muted);
     cursor: pointer;
-    font-size: 0.95rem;
+    font-size: 1.15rem;
     justify-content: center;
     line-height: 1;
     min-width: 44px;
@@ -43,6 +43,12 @@
 
   #theme-toggle:hover {
     color: var(--ink);
+  }
+
+  .icon-light,
+  .icon-dark {
+    align-items: center;
+    display: inline-flex;
   }
 
   .icon-dark {
@@ -54,6 +60,16 @@
   }
 
   :global([data-theme='dark']) .icon-dark {
-    display: inline;
+    display: inline-flex;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :global(:root:not([data-theme='light'])) .icon-light {
+      display: none;
+    }
+
+    :global(:root:not([data-theme='light'])) .icon-dark {
+      display: inline-flex;
+    }
   }
 </style>
