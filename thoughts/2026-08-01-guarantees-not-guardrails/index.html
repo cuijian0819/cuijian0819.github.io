@@ -1,0 +1,77 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-hkbrpulz><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><title>Guarantees, not guardrails · Jian Cui</title><meta name="description" content="Agent security should constrain what an agent can do, even when untrusted content persuades it to act against our intentions."><link rel="canonical" href="https://cuijian0819.github.io/thoughts/2026-08-01-guarantees-not-guardrails/"><meta property="og:type" content="website"><meta property="og:site_name" content="Jian Cui"><meta property="og:title" content="Guarantees, not guardrails · Jian Cui"><meta property="og:description" content="Agent security should constrain what an agent can do, even when untrusted content persuades it to act against our intentions."><meta property="og:image" content="https://cuijian0819.github.io/assets/img/profile_photo.png"><meta property="og:url" content="https://cuijian0819.github.io/thoughts/2026-08-01-guarantees-not-guardrails/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Guarantees, not guardrails · Jian Cui"><meta name="twitter:description" content="Agent security should constrain what an agent can do, even when untrusted content persuades it to act against our intentions."><meta name="twitter:image" content="https://cuijian0819.github.io/assets/img/profile_photo.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Jian Cui","url":"https://cuijian0819.github.io","image":"https://cuijian0819.github.io/assets/img/profile_photo.png","jobTitle":"PhD Candidate","affiliation":{"@type":"CollegeOrUniversity","name":"University of Illinois Urbana-Champaign"},"alumniOf":{"@type":"CollegeOrUniversity","name":"KAIST"},"knowsAbout":["Security and privacy in agentic AI systems","Cyber threat intelligence","Large language model security"],"sameAs":["https://scholar.google.com/citations?user=eepEd2kAAAAJ&hl=en"]}</script><script>
+      // Both applied before first paint: the theme so the page never flashes the
+      // wrong one, and `js` so the reveal styles only apply when they can be
+      // undone. Without JavaScript nothing is ever left invisible.
+      const saved = localStorage.getItem('theme')
+      if (saved) document.documentElement.dataset.theme = saved
+      document.documentElement.classList.add('js')
+    </script><style>.thought[data-astro-cid-efmd3dbn]{padding-block:clamp(2.5rem,6vw,4.5rem) 0}.essay[data-astro-cid-efmd3dbn]{margin-left:calc(var(--gutter-col) + 2rem);max-width:var(--column)}.back[data-astro-cid-efmd3dbn]{color:var(--muted);margin-bottom:2rem;font-size:.95em;display:inline-block}.essay-head[data-astro-cid-efmd3dbn]{border-bottom:1px solid var(--rule);padding-bottom:1.5rem}time[data-astro-cid-efmd3dbn]{color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.75rem;font-size:.85rem;display:block}h1[data-astro-cid-efmd3dbn]{letter-spacing:-.01em;text-wrap:pretty;margin-bottom:0;font-size:clamp(2.4rem,1.7rem + 3vw,3rem);font-weight:400;line-height:1.1}.summary[data-astro-cid-efmd3dbn]{color:var(--muted);margin:1rem 0 0;font-style:italic}.body[data-astro-cid-efmd3dbn]{margin-top:2rem}.body[data-astro-cid-efmd3dbn] p{margin-bottom:1.15em}.body[data-astro-cid-efmd3dbn] p:last-child{margin-bottom:0}.body[data-astro-cid-efmd3dbn] a{color:var(--ink);text-underline-offset:3px;text-decoration:underline 1px}.body[data-astro-cid-efmd3dbn] h3{margin:2em 0 .6em;font-size:1.1em;font-style:italic;font-weight:400}.body[data-astro-cid-efmd3dbn] blockquote{border-left:1px solid var(--rule);color:var(--muted);margin:1.6em 0;padding-left:1.4rem;font-style:italic}.bottom[data-astro-cid-efmd3dbn]{margin:2.5rem 0 0}@media (width<=639px){.essay[data-astro-cid-efmd3dbn]{margin-left:0}}
+</style><link rel="stylesheet" href="/_astro/Thoughts.zwh8VtFq.css"><link rel="stylesheet" href="/_astro/Base.CwOal7XF.css"></head><body data-astro-cid-hkbrpulz><a class="skip" href="#main" data-astro-cid-hkbrpulz>Skip to content</a><header class="masthead" data-astro-cid-hkbrpulz><div class="wrap masthead-inner" data-astro-cid-hkbrpulz><a class="wordmark" href="/" data-astro-cid-hkbrpulz>Jian Cui</a><nav aria-label="Primary" data-astro-cid-hkbrpulz><a href="/" data-astro-cid-hkbrpulz>about</a><a href="/#papers" data-astro-cid-hkbrpulz>papers</a><a href="/misc/" data-astro-cid-hkbrpulz>misc</a></nav><button id="theme-toggle" type="button" aria-label="Toggle colour theme" data-astro-cid-l6lhmie6><span aria-hidden="true" class="icon-light" data-astro-cid-l6lhmie6>☾</span><span aria-hidden="true" class="icon-dark" data-astro-cid-l6lhmie6>☀</span></button><script>
+  ;(() => {
+    const KEY = 'theme'
+    const root = document.documentElement
+
+    const apply = (value) => {
+      root.dataset.theme = value
+      localStorage.setItem(KEY, value)
+    }
+
+    const current = () =>
+      root.dataset.theme ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+
+    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+      apply(current() === 'dark' ? 'light' : 'dark')
+    })
+  })()
+</script></div></header><main id="main" data-astro-cid-hkbrpulz><div class="thought wrap" data-astro-cid-efmd3dbn><article class="essay" data-astro-cid-efmd3dbn><a class="back" href="/thoughts/" data-astro-cid-efmd3dbn>← All thoughts</a><header class="essay-head" data-astro-cid-efmd3dbn><time datetime="2026-08-01" data-astro-cid-efmd3dbn>1 August 2026</time><h1 data-astro-cid-efmd3dbn>Guarantees, not guardrails</h1><p class="summary" data-astro-cid-efmd3dbn>Agent security should constrain what an agent can do, even when untrusted content persuades it to act against our intentions.</p></header><div class="body" data-astro-cid-efmd3dbn><p>In our work on multi-tool agents, the attack begins with a tool provider advertising a capability that sounds genuinely useful, more precise data or a better result, so the model comes to depend on it, and from there the tool can hijack the control flow to harvest or pollute what passes through. What makes this hard is that the model is arguably behaving correctly: if a tool really does offer more precise information, calling it is the right decision. That is why I have stopped treating prompt injection as a category with a clean boundary. There is no reliable distinction between an injected instruction and legitimate information arriving from an external source, and alignment can raise the odds that a model notices, but it cannot guarantee it. Worse, we often want external content to influence behaviour, since ignoring it defeats the point of giving an agent tools at all. So the useful question is not how to detect the bad instruction, because in the general case that detection is not decidable.</p>
+<p>The analogy I keep returning to is the phishing email with a malicious attachment. You should absolutely teach people not to open it, and that work is worth doing, but the reason modern systems survive is that the machine assumes the attachment will sometimes be opened and then constrains what it can reach: no sensitive files, no outbound connections. Agents need the same shift, from filtering the input to providing guarantees on the action space, which is what usage control for agentic systems means to me: a policy that holds regardless of what the model was persuaded to believe. That reframing suggests two concrete moves. Stop handing web agents raw click and type primitives, and instead expose higher-level actions defined by the site’s own developer, so that “search for a flight” becomes one auditable operation a user can see and authorise rather than a hundred opaque clicks. And for coding agents, which write and execute a great deal of Python, have the code carry a proof of the security properties we care about, checked before it is translated down to the code that actually runs. In both cases the model stays untrusted, and the guarantee lives somewhere it cannot argue with.</p>
+</div><a class="back bottom" href="/thoughts/" data-astro-cid-efmd3dbn>← All thoughts</a></article></div></main><footer data-astro-cid-hkbrpulz><div class="wrap footer-inner" data-astro-cid-hkbrpulz><p data-astro-cid-hkbrpulz>Jian Cui &middot; Urbana&ndash;Champaign</p></div></footer><script>
+      // ~600 bytes, no framework. Reveals each marked block once as it enters
+      // the viewport, then stops observing it.
+      ;(() => {
+        const targets = [...document.querySelectorAll('.reveal')]
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+        if (reduced || !('IntersectionObserver' in window)) {
+          targets.forEach((el) => el.classList.add('is-visible'))
+          return
+        }
+
+        const show = (el) => {
+          el.classList.add('is-visible')
+          observer.unobserve(el)
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) if (entry.isIntersecting) show(entry.target)
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
+        )
+
+        targets.forEach((el) => observer.observe(el))
+
+        // Safety net. IntersectionObserver only reports a *change* in
+        // intersection, so a fast jump (an anchor link, the End key, landing on
+        // /#papers) can carry an element from below the viewport to above it
+        // without it ever intersecting, stranding it invisible forever.
+        let queued = false
+        const sweep = () => {
+          queued = false
+          for (const el of targets) {
+            if (el.classList.contains('is-visible')) continue
+            if (el.getBoundingClientRect().top < window.innerHeight) show(el)
+          }
+          if (targets.every((el) => el.classList.contains('is-visible'))) {
+            window.removeEventListener('scroll', onScroll)
+          }
+        }
+        const onScroll = () => {
+          if (queued) return
+          queued = true
+          requestAnimationFrame(sweep)
+        }
+        window.addEventListener('scroll', onScroll, { passive: true })
+      })()
+    </script></body></html><!-- These theme overrides are bundled only on pages using this layout. -->
