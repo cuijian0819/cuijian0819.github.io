@@ -1,0 +1,314 @@
+/* Comparison design. Kept in its own worktree; the live theme is preserved. */
+html:root[data-design='editorial'] {
+  --paper: #ffffff;
+  --raised: #ffffff;
+  --ink: #141414;
+  --muted: #6a6a6a;
+  --accent: #141414;
+  --rule: rgba(20, 20, 20, 0.16);
+  --font-display: 'EB Garamond Variable', Garamond, 'Iowan Old Style', Georgia, serif;
+  --font-body: 'EB Garamond Variable', Garamond, 'Iowan Old Style', Georgia, serif;
+  --step--1: clamp(0.95rem, 0.9rem + 0.2vw, 1rem);
+  --step-0: clamp(1.13rem, 1.02rem + 0.5vw, 1.25rem);
+  --step-1: clamp(1.4rem, 1.2rem + 0.9vw, 1.7rem);
+  --step-2: clamp(1.7rem, 1.4rem + 1vw, 2rem);
+  --leading: 1.5;
+  --shell: 58rem;
+  --measure: 66ch;
+  --portrait: 240px;
+  --radius: 0;
+}
+
+html:root[data-design='editorial'][data-theme='dark'] {
+  --paper: #121110;
+  --raised: #121110;
+  --ink: #edeae4;
+  --muted: #9a948c;
+  --accent: #edeae4;
+  --rule: rgba(237, 234, 228, 0.18);
+}
+
+@media (prefers-color-scheme: dark) {
+  html:root[data-design='editorial']:not([data-theme='light']) {
+    --paper: #121110;
+    --raised: #121110;
+    --ink: #edeae4;
+    --muted: #9a948c;
+    --accent: #edeae4;
+    --rule: rgba(237, 234, 228, 0.18);
+  }
+}
+
+html:root[data-design='editorial'] {
+  body, h1, h2, h3, h4, .wordmark {
+    font-variation-settings: normal;
+  }
+
+  h1, h2, h3, h4 {
+    font-weight: 400;
+  }
+
+  .masthead {
+    border-bottom: 0;
+  }
+
+  .masthead-inner {
+    border-bottom: 3px double var(--ink);
+    padding-bottom: 0.5rem;
+  }
+
+  .wordmark, .masthead nav a {
+    font-size: 0.86rem;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .intro {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem) 3rem;
+  }
+
+  .bio h1 {
+    font-size: clamp(3rem, 2rem + 3vw, 4rem);
+    letter-spacing: -0.01em;
+    line-height: 1.05;
+    margin-bottom: 1rem;
+  }
+
+  .bio p {
+    color: var(--ink);
+  }
+
+  .bio .names {
+    color: var(--muted);
+    font-size: 1rem;
+  }
+
+  .portrait {
+    border: 0;
+    border-radius: 0;
+    width: min(55vw, var(--portrait));
+  }
+
+  .chips {
+    gap: 0.4rem 1rem;
+    margin-top: 1.25rem;
+  }
+
+  .chip {
+    border: 0;
+    border-radius: 0;
+    color: var(--ink);
+    font-size: 1rem;
+    padding: 0;
+    text-decoration: underline;
+  }
+
+  .chip svg {
+    height: 0.9em;
+    width: 0.9em;
+  }
+
+  .chip:hover {
+    background: transparent;
+  }
+
+  .band {
+    border-block: 0;
+    padding-block: 0 2rem;
+  }
+
+  .section-title {
+    border-top: 1px solid var(--rule);
+    font-size: 2rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 1.25rem;
+    padding-top: 1.5rem;
+  }
+
+  .news-item {
+    padding-block: 0.9rem;
+  }
+
+  .news-item time {
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  #papers {
+    padding-block: 0 1rem;
+  }
+
+  .paper {
+    border-bottom: 1px solid var(--rule);
+    margin-bottom: 1.8rem;
+    padding-bottom: 1.8rem;
+  }
+
+  .venue, .venue.preprint {
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    color: var(--muted);
+    font-size: 0.82rem;
+    font-variant-caps: normal;
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+    max-width: 100%;
+    padding: 0;
+    text-transform: uppercase;
+    white-space: normal;
+  }
+
+  .venue.preprint {
+    font-style: italic;
+  }
+
+  .paper h3 {
+    font-size: clamp(1.35rem, 1.2rem + 0.6vw, 1.5rem);
+    line-height: 1.2;
+  }
+
+  .authors {
+    font-size: 1rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .authors .self {
+    background-image: none;
+    padding: 0;
+  }
+
+  .award {
+    background: transparent;
+    border-radius: 0;
+    color: var(--ink);
+    font-size: 1rem;
+    font-style: italic;
+    padding: 0;
+  }
+
+  .media {
+    background: color-mix(in srgb, var(--ink) 5%, transparent);
+    border-left: 2px solid var(--ink);
+    border-radius: 0;
+    font-size: 1.15rem;
+    padding: 0.45rem 0.7rem;
+  }
+
+  .media-label {
+    color: var(--ink);
+    font-size: 1rem;
+    font-variant-caps: normal;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .meta {
+    gap: 0.9rem;
+    margin-top: 0.3rem;
+  }
+
+  .meta a {
+    border: 0;
+    border-radius: 0;
+    color: var(--muted);
+    font-size: 1rem;
+    padding: 0;
+    text-decoration: underline;
+  }
+
+  .misc, .page {
+    padding-top: clamp(2.5rem, 6vw, 4.5rem);
+  }
+
+  .misc > h1, .page h1 {
+    font-size: clamp(2.4rem, 1.7rem + 3vw, 3rem);
+    letter-spacing: -0.01em;
+  }
+
+  .misc-section > h2 {
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .card {
+    background: transparent;
+    border: 0;
+    border-top: 1px solid var(--rule);
+    border-radius: 0;
+    margin-bottom: 0;
+    padding: 1.75rem 0;
+  }
+
+  .card:hover {
+    border-color: var(--rule);
+    box-shadow: none;
+    transform: none;
+  }
+
+  .card h3 {
+    font-size: 1.4rem;
+    font-style: italic;
+  }
+
+  .badge {
+    background: transparent;
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-variant-caps: normal;
+    text-transform: uppercase;
+  }
+
+  .timeline li, .highlight {
+    font-size: 1.1rem;
+  }
+
+  .highlight {
+    background: transparent;
+    border-left: 1px solid var(--ink);
+    border-radius: 0;
+    padding-block: 0.2rem;
+  }
+
+  footer {
+    margin-top: 3rem;
+  }
+}
+
+@media (min-width: 640px) {
+  html:root[data-design='editorial'] {
+    .intro {
+      align-items: start;
+      gap: 2rem;
+    }
+
+    .portrait {
+      align-self: start;
+      margin-top: 0.4rem;
+    }
+
+    .paper {
+      display: grid;
+      column-gap: 2rem;
+      grid-template-columns: 7.5rem minmax(0, 1fr);
+    }
+
+    .paper > * {
+      grid-column: 2;
+    }
+
+    .paper .venue-row {
+      grid-column: 1;
+      grid-row: 1 / span 5;
+      padding-top: 0.15rem;
+    }
+
+    .paper .award, .paper .media {
+      justify-self: start;
+    }
+  }
+}
