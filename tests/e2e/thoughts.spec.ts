@@ -51,6 +51,12 @@ test('the year hangs in the margin beside the entry, not on top of it', async ({
 
 const essays = [
   {
+    title: 'Why precise information-flow control is still hard for agents',
+    path: '/thoughts/2026-09-15-precise-ifc-for-agents/',
+    first: 'An agent should be able to use private information',
+    last: 'Establishing that justification, at a cost an agent can afford, is the problem I want to work on.',
+  },
+  {
     title: 'Starting with the problem',
     path: '/thoughts/2026-09-14-starting-with-the-problem/',
     first: 'Writing my teaching statement has made me ask',

@@ -111,6 +111,14 @@ const date = new Intl.DateTimeFormat('en-GB', {
     text-underline-offset: 3px;
   }
 
+  .body :global(h2) {
+    font-size: 1.35em;
+    font-weight: 400;
+    line-height: 1.2;
+    margin: 2em 0 0.7em;
+    text-wrap: pretty;
+  }
+
   .body :global(h3) {
     font-size: 1.1em;
     font-weight: 400;
@@ -124,6 +132,45 @@ const date = new Intl.DateTimeFormat('en-GB', {
     font-style: italic;
     margin: 1.6em 0;
     padding-left: 1.4rem;
+  }
+
+  .body :global(.flow-figure) {
+    border-block: 3px double var(--ink);
+    margin: 2rem 0;
+    padding-block: 0.25rem 1rem;
+  }
+
+  .body :global(.flow-case) {
+    border-bottom: 1px solid var(--rule);
+    padding-block: 1rem;
+  }
+
+  .body :global(.flow-case h3) {
+    font-size: 1em;
+    font-style: normal;
+    font-weight: 500;
+    margin: 0 0 0.6rem;
+  }
+
+  .body :global(.flow-case p) {
+    font-size: 0.95em;
+    margin: 0;
+  }
+
+  .body :global(.flow-case .flow-path) {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.15em 0.5em;
+    font-style: italic;
+    margin-bottom: 0.6rem;
+  }
+
+  .body :global(.flow-figure figcaption) {
+    color: var(--muted);
+    font-size: 0.9em;
+    line-height: 1.4;
+    padding-top: 1rem;
   }
 
   .bottom {
