@@ -1,0 +1,135 @@
+---
+import { getCollection, render, type CollectionEntry } from 'astro:content'
+import Thoughts from '../../layouts/Thoughts.astro'
+
+export async function getStaticPaths() {
+  return (await getCollection('thoughts')).map((post) => ({
+    params: { id: post.id },
+    props: { post },
+  }))
+}
+
+interface Props {
+  post: CollectionEntry<'thoughts'>
+}
+
+const { post } = Astro.props
+const { Content } = await render(post)
+const date = new Intl.DateTimeFormat('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+  timeZone: 'UTC',
+}).format(post.data.date)
+---
+
+<Thoughts
+  title={`${post.data.title} · Jian Cui`}
+  description={post.data.summary ?? post.data.title}
+>
+  <div class="thought wrap">
+    <article class="essay">
+      <a class="back" href="/thoughts/">← All thoughts</a>
+      <header class="essay-head">
+        <time datetime={post.data.date.toISOString().slice(0, 10)}>{date}</time>
+        <h1>{post.data.title}</h1>
+        {post.data.summary && <p class="summary">{post.data.summary}</p>}
+      </header>
+      <div class="body">
+        <Content />
+      </div>
+      <a class="back bottom" href="/thoughts/">← All thoughts</a>
+    </article>
+  </div>
+</Thoughts>
+
+<style>
+  .thought {
+    padding-block: clamp(2.5rem, 6vw, 4.5rem) 0;
+  }
+
+  .essay {
+    margin-left: calc(var(--gutter-col) + 2rem);
+    max-width: var(--column);
+  }
+
+  .back {
+    color: var(--muted);
+    display: inline-block;
+    font-size: 0.95em;
+    margin-bottom: 2rem;
+  }
+
+  .essay-head {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1.5rem;
+  }
+
+  time {
+    color: var(--muted);
+    display: block;
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+  }
+
+  h1 {
+    font-size: clamp(2.4rem, 1.7rem + 3vw, 3rem);
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin-bottom: 0;
+    text-wrap: pretty;
+  }
+
+  .summary {
+    color: var(--muted);
+    font-style: italic;
+    margin: 1rem 0 0;
+  }
+
+  .body {
+    margin-top: 2rem;
+  }
+
+  .body :global(p) {
+    margin-bottom: 1.15em;
+  }
+
+  .body :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .body :global(a) {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .body :global(h3) {
+    font-size: 1.1em;
+    font-weight: 400;
+    font-style: italic;
+    margin: 2em 0 0.6em;
+  }
+
+  .body :global(blockquote) {
+    border-left: 1px solid var(--rule);
+    color: var(--muted);
+    font-style: italic;
+    margin: 1.6em 0;
+    padding-left: 1.4rem;
+  }
+
+  .bottom {
+    margin: 2.5rem 0 0;
+  }
+
+  @media (max-width: 639px) {
+    .essay {
+      margin-left: 0;
+    }
+  }
+</style>

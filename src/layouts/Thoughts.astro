@@ -1,0 +1,93 @@
+---
+import Base from './Base.astro'
+// Frontmatter imports let Vite bundle the font files for every Thoughts route.
+import '@fontsource-variable/eb-garamond/index.css'
+import '@fontsource-variable/eb-garamond/wght-italic.css'
+
+interface Props {
+  title: string
+  description: string
+}
+
+const { title, description } = Astro.props
+---
+
+<Base title={title} description={description}>
+  <slot />
+</Base>
+
+<!-- These theme overrides are bundled only on pages using this layout. -->
+<style is:global>
+  :root:root {
+    --paper: #ffffff;
+    --raised: #ffffff;
+    --ink: #141414;
+    --muted: #6a6a6a;
+    /* No terracotta on this page. Emphasis comes from the type, so the accent
+       collapses onto the ink and links are underlined rather than coloured. */
+    --accent: #141414;
+    --rule: rgba(20, 20, 20, 0.16);
+
+    --font-display: 'EB Garamond Variable', Garamond, 'Iowan Old Style', Georgia, serif;
+    --font-body: 'EB Garamond Variable', Garamond, 'Iowan Old Style', Georgia, serif;
+
+    /* Garamond runs small and open, so it wants a larger size and tighter
+       leading than Literata: 20px/1.5 rather than 18px/1.75. */
+    --reading: clamp(1.13rem, 1.02rem + 0.5vw, 1.25rem);
+    --leading: 1.5;
+
+    /* One column for the masthead, the essays and the footer, with the year
+       hanging in the margin beside it. */
+    --column: 42rem;
+    --gutter-col: 6.5rem;
+    --shell: calc(var(--column) + var(--gutter-col) + 2rem);
+  }
+
+  :root:root[data-theme='dark'] {
+    --paper: #121110;
+    --raised: #121110;
+    --ink: #edeae4;
+    --muted: #9a948c;
+    --accent: #edeae4;
+    --rule: rgba(237, 234, 228, 0.18);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:root:not([data-theme='light']) {
+      --paper: #121110;
+      --raised: #121110;
+      --ink: #edeae4;
+      --muted: #9a948c;
+      --accent: #edeae4;
+      --rule: rgba(237, 234, 228, 0.18);
+    }
+  }
+
+  html body {
+    font-size: var(--reading);
+    /* Literata's optical-size axis does not exist on Garamond; leaving it set
+       makes the fallback render at the wrong weight while the font loads. */
+    font-variation-settings: normal;
+  }
+
+  /* The masthead becomes the reference's tracked caps over a double rule. */
+  .masthead {
+    border-bottom: 0;
+  }
+
+  .masthead-inner {
+    border-bottom: 3px double var(--ink);
+    padding-bottom: 0.5rem;
+  }
+
+  header.masthead a.wordmark,
+  header.masthead nav a {
+    font-size: 0.86rem;
+    font-weight: 400;
+    /* Literata's opsz axis again: Garamond has none, and a stale setting leaves
+       the wordmark rendering heavy. */
+    font-variation-settings: normal;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+</style>

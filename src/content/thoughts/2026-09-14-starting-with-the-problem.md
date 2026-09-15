@@ -1,7 +1,7 @@
 ---
 title: Starting with the problem
 date: 2026-09-14
-summary: Some thoughts on computer science education as building software becomes easier.
+summary: As AI makes building easier, CS education should help students identify worthwhile problems and develop judgment through discussion and investigation.
 ---
 
 Writing my teaching statement has made me ask what a good computer science education should offer students today. AI tools have made it easier to build software and explore unfamiliar ideas. That makes me want to give more attention to a question that can get lost in the work of implementation: what is worth building, and why?

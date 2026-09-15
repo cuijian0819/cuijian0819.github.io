@@ -48,3 +48,58 @@ test('the year hangs in the margin beside the entry, not on top of it', async ({
   expect(year!.x).toBeGreaterThan(0)
   expect(year!.x + year!.width).toBeLessThan(title!.x)
 })
+
+const essays = [
+  {
+    title: 'Starting with the problem',
+    path: '/thoughts/2026-09-14-starting-with-the-problem/',
+    first: 'Writing my teaching statement has made me ask',
+    last: 'Building becomes meaningful when we understand whom it serves and why it matters.',
+  },
+  {
+    title: 'Guarantees, not guardrails',
+    path: '/thoughts/2026-08-01-guarantees-not-guardrails/',
+    first: 'In our work on multi-tool agents, the attack begins',
+    last: 'the guarantee lives somewhere it cannot argue with.',
+  },
+]
+
+test('the index offers takeaways without loading the full essays', async ({ page }) => {
+  await page.goto('/thoughts/')
+  for (const essay of essays) {
+    const entry = page.locator('.entry').filter({ has: page.getByRole('link', { name: essay.title }) })
+    await expect(entry.locator('.summary')).not.toBeEmpty()
+    await expect(page.getByText(essay.first, { exact: false })).toHaveCount(0)
+  }
+  await expect(page.locator('.entry h2').first()).toHaveText(essays[0].title)
+})
+
+for (const essay of essays) {
+  test(`reads ${essay.title} and returns to the index`, async ({ page }) => {
+    await page.goto('/thoughts/')
+    await page.getByRole('link', { name: essay.title, exact: true }).click()
+    await expect(page).toHaveURL(essay.path)
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(essay.title)
+    await expect(page).toHaveTitle(`${essay.title} · Jian Cui`)
+    await expect(page.locator('.body p').first()).toContainText(essay.first)
+    await expect(page.locator('.body p').last()).toContainText(essay.last)
+    await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+      'href', `https://cuijian0819.github.io${essay.path}`,
+    )
+    await page.getByRole('link', { name: 'All thoughts' }).last().click()
+    await expect(page).toHaveURL('/thoughts/')
+  })
+
+  test(`${essay.title} stays readable on a narrow screen in both themes`, async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 900 })
+    await page.goto(essay.path)
+    await page.evaluate(() => document.fonts.ready)
+    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(255, 255, 255)')
+    await expect(page.locator('body')).toHaveCSS('font-family', /EB Garamond Variable/)
+    await page.getByRole('button', { name: 'Toggle colour theme' }).click()
+    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(18, 17, 16)')
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true)
+    await page.reload()
+    await expect(page.locator('body')).toHaveCSS('background-color', 'rgb(18, 17, 16)')
+  })
+}

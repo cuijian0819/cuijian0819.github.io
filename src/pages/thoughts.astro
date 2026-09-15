@@ -1,21 +1,11 @@
 ---
-import { getCollection, render } from 'astro:content'
-import Base from '../layouts/Base.astro'
-// Imported here, not with @import inside the <style> block: from there Vite
-// emits the CSS but never bundles the woff2, and the page silently renders in
-// the Georgia fallback. Frontmatter imports are page-scoped, so Garamond ships
-// only with /thoughts/.
-import '@fontsource-variable/eb-garamond/index.css'
-import '@fontsource-variable/eb-garamond/wght-italic.css'
+import { getCollection } from 'astro:content'
+import Thoughts from '../layouts/Thoughts.astro'
 
 // Deliberately unlinked from the navigation, like /writing/ was. The page and
 // its URL are live; only someone with the link finds it.
 const posts = (await getCollection('thoughts')).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-)
-
-const rendered = await Promise.all(
-  posts.map(async (post) => ({ post, Content: (await render(post)).Content })),
 )
 
 // Bare YYYY-MM-DD parses as UTC midnight; formatting in local time would shift
@@ -27,127 +17,45 @@ const yearOnly = utc({ year: 'numeric' })
 
 // The year is printed in the left margin once per year, not once per entry.
 let lastYear = ''
-const entries = rendered.map(({ post, Content }) => {
+const entries = posts.map((post) => {
   const year = yearOnly.format(post.data.date)
   const showYear = year !== lastYear
   lastYear = year
-  return { post, Content, year, showYear }
+  return { post, year, showYear }
 })
 ---
 
-<Base
+<Thoughts
   title="Thoughts · Jian Cui"
-  description="Notes from Jian Cui on agentic AI security, prompt injection, and where the defences actually belong."
+  description="Notes from Jian Cui on computer security, research, and education."
 >
   <div class="thoughts wrap">
     <header class="head reveal">
       <h1>Thoughts</h1>
       <p class="standfirst">
-        Working notes on agentic AI security. Half-formed on purpose; I would rather write these down
+        Working notes on security, research, and education. Half-formed on purpose; I would rather write these down
         than wait until they are papers.
       </p>
     </header>
 
     {
-      entries.map(({ post, Content, year, showYear }) => (
+      entries.map(({ post, year, showYear }) => (
         <article class="entry reveal">
           <div class="gutter">{showYear && <span class="year">{year}</span>}</div>
           <div class="column">
             <div class="entry-head">
-              <h2>{post.data.title}</h2>
+              <h2><a href={`/thoughts/${post.id}/`}>{post.data.title}</a></h2>
               <time datetime={post.data.date.toISOString().slice(0, 10)}>
                 {dayMonth.format(post.data.date)}
               </time>
             </div>
             {post.data.summary && <p class="summary">{post.data.summary}</p>}
-            <div class="body">
-              <Content />
-            </div>
           </div>
         </article>
       ))
     }
   </div>
-</Base>
-
-{/* Page-scoped because Astro bundles styles per page: this block ships on
-    /thoughts/ and nowhere else. Redefining the tokens rather than overriding
-    each rule means the masthead, nav, footer and theme toggle all come along,
-    so the page reads as one piece instead of a white panel in a warm site. */}
-<style is:global>
-  :root:root {
-    --paper: #ffffff;
-    --raised: #ffffff;
-    --ink: #141414;
-    --muted: #6a6a6a;
-    /* No terracotta on this page. Emphasis comes from the type, so the accent
-       collapses onto the ink and links are underlined rather than coloured. */
-    --accent: #141414;
-    --rule: rgba(20, 20, 20, 0.16);
-
-    --font-display: 'EB Garamond Variable', Garamond, 'Iowan Old Style', Georgia, serif;
-    --font-body: 'EB Garamond Variable', Garamond, 'Iowan Old Style', Georgia, serif;
-
-    /* Garamond runs small and open, so it wants a larger size and tighter
-       leading than Literata: 20px/1.5 rather than 18px/1.75. */
-    --reading: clamp(1.13rem, 1.02rem + 0.5vw, 1.25rem);
-    --leading: 1.5;
-
-    /* One column for the masthead, the essays and the footer, with the year
-       hanging in the margin beside it. */
-    --column: 42rem;
-    --gutter-col: 6.5rem;
-    --shell: calc(var(--column) + var(--gutter-col) + 2rem);
-  }
-
-  :root:root[data-theme='dark'] {
-    --paper: #121110;
-    --raised: #121110;
-    --ink: #edeae4;
-    --muted: #9a948c;
-    --accent: #edeae4;
-    --rule: rgba(237, 234, 228, 0.18);
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root:root:not([data-theme='light']) {
-      --paper: #121110;
-      --raised: #121110;
-      --ink: #edeae4;
-      --muted: #9a948c;
-      --accent: #edeae4;
-      --rule: rgba(237, 234, 228, 0.18);
-    }
-  }
-
-  html body {
-    font-size: var(--reading);
-    /* Literata's optical-size axis does not exist on Garamond; leaving it set
-       makes the fallback render at the wrong weight while the font loads. */
-    font-variation-settings: normal;
-  }
-
-  /* The masthead becomes the reference's tracked caps over a double rule. */
-  .masthead {
-    border-bottom: 0;
-  }
-
-  .masthead-inner {
-    border-bottom: 3px double var(--ink);
-    padding-bottom: 0.5rem;
-  }
-
-  header.masthead a.wordmark,
-  header.masthead nav a {
-    font-size: 0.86rem;
-    font-weight: 400;
-    /* Literata's opsz axis again: Garamond has none, and a stale setting leaves
-       the wordmark rendering heavy. */
-    font-variation-settings: normal;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-  }
-</style>
+</Thoughts>
 
 <style>
   .thoughts {
@@ -180,7 +88,7 @@ const entries = rendered.map(({ post, Content }) => {
     display: grid;
     gap: 2rem;
     grid-template-columns: var(--gutter-col) minmax(0, var(--column));
-    margin-bottom: clamp(3rem, 6vw, 4.5rem);
+    margin-bottom: 2rem;
   }
 
   .year {
@@ -190,14 +98,17 @@ const entries = rendered.map(({ post, Content }) => {
     line-height: 2.6;
   }
 
-  /* Title and date on one line over a hairline, the way the index rows read. */
+  .column {
+    border-bottom: 1px solid var(--rule);
+    padding-bottom: 1.5rem;
+  }
+
+  /* Titles stay beside their dates, with a takeaway underneath. */
   .entry-head {
     align-items: baseline;
-    border-bottom: 1px solid var(--rule);
     display: flex;
     gap: 1.5rem;
     justify-content: space-between;
-    padding-bottom: 0.7rem;
   }
 
   .entry-head h2 {
@@ -207,6 +118,17 @@ const entries = rendered.map(({ post, Content }) => {
     line-height: 1.2;
     margin: 0;
     text-wrap: pretty;
+  }
+
+  .entry-head a {
+    color: var(--ink);
+    text-decoration: none;
+  }
+
+  .entry-head a:hover,
+  .entry-head a:focus-visible {
+    opacity: 1;
+    text-decoration: underline;
   }
 
   .entry-head time {
@@ -220,41 +142,7 @@ const entries = rendered.map(({ post, Content }) => {
   .summary {
     color: var(--muted);
     font-style: italic;
-    margin: 0.85rem 0 0;
-  }
-
-  .body {
-    margin-top: 1.5rem;
-  }
-
-  .body :global(p) {
-    margin-bottom: 1.15em;
-  }
-
-  .body :global(p:last-child) {
-    margin-bottom: 0;
-  }
-
-  .body :global(a) {
-    color: var(--ink);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 3px;
-  }
-
-  .body :global(h3) {
-    font-size: 1.1em;
-    font-weight: 400;
-    font-style: italic;
-    margin: 2em 0 0.6em;
-  }
-
-  .body :global(blockquote) {
-    border-left: 1px solid var(--rule);
-    color: var(--muted);
-    font-style: italic;
-    margin: 1.6em 0;
-    padding-left: 1.4rem;
+    margin: 0.5rem 0 0;
   }
 
   /* The margin is the first thing to go on a phone: the year moves inline,

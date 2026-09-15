@@ -1,6 +1,7 @@
 ---
 title: Guarantees, not guardrails
 date: 2026-08-01
+summary: Agent security should constrain what an agent can do, even when untrusted content persuades it to act against our intentions.
 ---
 
 In our work on multi-tool agents, the attack begins with a tool provider advertising a capability that sounds genuinely useful, more precise data or a better result, so the model comes to depend on it, and from there the tool can hijack the control flow to harvest or pollute what passes through. What makes this hard is that the model is arguably behaving correctly: if a tool really does offer more precise information, calling it is the right decision. That is why I have stopped treating prompt injection as a category with a clean boundary. There is no reliable distinction between an injected instruction and legitimate information arriving from an external source, and alignment can raise the odds that a model notices, but it cannot guarantee it. Worse, we often want external content to influence behaviour, since ignoring it defeats the point of giving an agent tools at all. So the useful question is not how to detect the bad instruction, because in the general case that detection is not decidable.
