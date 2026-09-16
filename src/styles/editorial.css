@@ -1,10 +1,11 @@
-/* Garamond and monochrome styling shared with the Thoughts pages. */
+/* Garamond and a mostly monochrome palette, with a bronze accent for awards. */
 html:root[data-design='editorial'] {
   --paper: #ffffff;
   --raised: #ffffff;
   --ink: #141414;
   --muted: #6a6a6a;
   --accent: #141414;
+  --award-ink: #8a5a12;
   --rule: rgba(20, 20, 20, 0.16);
   --font-display: 'EB Garamond Variable', Garamond, 'Iowan Old Style', Georgia, serif;
   --font-body: 'EB Garamond Variable', Garamond, 'Iowan Old Style', Georgia, serif;
@@ -41,6 +42,7 @@ html:root[data-design='editorial'][data-theme='dark'] {
   --ink: #edeae4;
   --muted: #9a948c;
   --accent: #edeae4;
+  --award-ink: #d8b46c;
   --rule: rgba(237, 234, 228, 0.18);
 }
 
@@ -51,6 +53,7 @@ html:root[data-design='editorial'][data-theme='dark'] {
     --ink: #edeae4;
     --muted: #9a948c;
     --accent: #edeae4;
+    --award-ink: #d8b46c;
     --rule: rgba(237, 234, 228, 0.18);
   }
 }
@@ -186,10 +189,15 @@ html:root[data-design='editorial'] {
   .award {
     background: transparent;
     border-radius: 0;
-    color: var(--ink);
+    color: var(--award-ink);
     font-size: 1rem;
     font-style: italic;
+    font-weight: 500;
     padding: 0;
+  }
+
+  .award .star {
+    color: inherit;
   }
 
   .media {

@@ -8,21 +8,19 @@ interface Props {
 
 const { venueKey } = Astro.props
 
-type Field = 'security' | 'ai'
-
-const FIELD: Record<string, Field> = {
-  NDSS: 'security',
-  CCS: 'security',
-  Security: 'security',
-  ACL: 'ai',
-  NAACL: 'ai',
-  CIKM: 'ai',
+const VENUE_ICON: Record<string, 'shield' | 'book' | 'database'> = {
+  NDSS: 'shield',
+  CCS: 'shield',
+  Security: 'shield',
+  ACL: 'book',
+  NAACL: 'book',
+  CIKM: 'database',
 }
 
-const field = FIELD[venueKey]
+const icon = VENUE_ICON[venueKey]
 ---
 
-{field && <span class="venue-icon"><Icon name={field === 'security' ? 'shield' : 'sparkles'} /></span>}
+{icon && <span class="venue-icon"><Icon name={icon} /></span>}
 
 <style>
   .venue-icon {
