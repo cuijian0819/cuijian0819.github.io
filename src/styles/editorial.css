@@ -187,13 +187,15 @@ html:root[data-design='editorial'] {
   }
 
   .award {
-    background: transparent;
+    background: color-mix(in srgb, var(--award-ink) 8%, transparent);
+    border-left: 2px solid var(--award-ink);
     border-radius: 0;
     color: var(--award-ink);
-    font-size: 1rem;
-    font-style: italic;
-    font-weight: 500;
-    padding: 0;
+    font-size: 1.15rem;
+    font-style: normal;
+    font-weight: 600;
+    margin-bottom: 0.6rem;
+    padding: 0.45rem 0.7rem;
   }
 
   .award .star {
