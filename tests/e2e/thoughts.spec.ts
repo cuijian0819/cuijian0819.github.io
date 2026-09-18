@@ -51,6 +51,12 @@ test('the year hangs in the margin beside the entry, not on top of it', async ({
 
 const essays = [
   {
+    title: 'Who reviews all these papers?',
+    path: '/thoughts/2026-09-18-who-reviews-all-these-papers/',
+    first: 'Imagine receiving a paper with a clear argument',
+    last: 'is one I am still thinking through.',
+  },
+  {
     title: 'Why precise information-flow control is still hard for agents',
     path: '/thoughts/2026-09-15-precise-ifc-for-agents/',
     first: 'An agent should be able to use private information',
