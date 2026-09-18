@@ -1,0 +1,127 @@
+<!DOCTYPE html><html lang="en" data-astro-cid-hkbrpulz><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="/favicon.svg" type="image/svg+xml"><title>Why precise information-flow control is still hard for agents · Jian Cui</title><meta name="description" content="An agent can enforce restrictions on its context without knowing exactly what its words reveal. Closing that gap takes more than a better dependency score."><link rel="canonical" href="https://cuijian0819.github.io/thoughts/2026-09-15-precise-ifc-for-agents/"><meta property="og:type" content="website"><meta property="og:site_name" content="Jian Cui"><meta property="og:title" content="Why precise information-flow control is still hard for agents · Jian Cui"><meta property="og:description" content="An agent can enforce restrictions on its context without knowing exactly what its words reveal. Closing that gap takes more than a better dependency score."><meta property="og:image" content="https://cuijian0819.github.io/assets/img/profile_photo.png"><meta property="og:url" content="https://cuijian0819.github.io/thoughts/2026-09-15-precise-ifc-for-agents/"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Why precise information-flow control is still hard for agents · Jian Cui"><meta name="twitter:description" content="An agent can enforce restrictions on its context without knowing exactly what its words reveal. Closing that gap takes more than a better dependency score."><meta name="twitter:image" content="https://cuijian0819.github.io/assets/img/profile_photo.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Jian Cui","url":"https://cuijian0819.github.io","image":"https://cuijian0819.github.io/assets/img/profile_photo.png","jobTitle":"PhD Candidate","affiliation":{"@type":"CollegeOrUniversity","name":"University of Illinois Urbana-Champaign"},"alumniOf":{"@type":"CollegeOrUniversity","name":"KAIST"},"knowsAbout":["Security and privacy in agentic AI systems","Cyber threat intelligence","Large language model security"],"sameAs":["https://scholar.google.com/citations?user=eepEd2kAAAAJ&hl=en"]}</script><script>
+      // Both applied before first paint: the theme so the page never flashes the
+      // wrong one, and `js` so the reveal styles only apply when they can be
+      // undone. Without JavaScript nothing is ever left invisible.
+      const saved = localStorage.getItem('theme')
+      if (saved) document.documentElement.dataset.theme = saved
+      document.documentElement.classList.add('js')
+    </script><style>.thought[data-astro-cid-efmd3dbn]{padding-block:clamp(2.5rem,6vw,4.5rem) 0}.essay[data-astro-cid-efmd3dbn]{margin-left:calc(var(--gutter-col) + 2rem);max-width:var(--column)}.back[data-astro-cid-efmd3dbn]{color:var(--muted);align-items:center;gap:.4em;margin-bottom:2rem;font-size:.95em;display:inline-flex}.essay-head[data-astro-cid-efmd3dbn]{border-bottom:1px solid var(--rule);padding-bottom:1.5rem}time[data-astro-cid-efmd3dbn]{color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:.75rem;font-size:.85rem;display:block}h1[data-astro-cid-efmd3dbn]{letter-spacing:-.01em;text-wrap:pretty;margin-bottom:0;font-size:clamp(2.4375rem,2rem + 1.1vw,2.875rem);font-weight:400;line-height:1.1}.summary[data-astro-cid-efmd3dbn]{color:var(--muted);margin:1rem 0 0;font-style:italic}.body[data-astro-cid-efmd3dbn]{margin-top:2rem}.body[data-astro-cid-efmd3dbn] p{margin-bottom:1.15em}.body[data-astro-cid-efmd3dbn] p:last-child{margin-bottom:0}.body[data-astro-cid-efmd3dbn] a{color:var(--ink);text-underline-offset:3px;text-decoration:underline 1px}.body[data-astro-cid-efmd3dbn] h2{text-wrap:pretty;margin:2em 0 .7em;font-size:1.35em;font-weight:400;line-height:1.2}.body[data-astro-cid-efmd3dbn] h3{margin:2em 0 .6em;font-size:1.1em;font-style:italic;font-weight:400}.body[data-astro-cid-efmd3dbn] blockquote{border-left:1px solid var(--rule);color:var(--muted);margin:1.6em 0;padding-left:1.4rem;font-style:italic}.body[data-astro-cid-efmd3dbn] .flow-figure{border-block:3px double var(--ink);margin:2rem 0;padding-block:.25rem 1rem}.body[data-astro-cid-efmd3dbn] .flow-case{border-bottom:1px solid var(--rule);padding-block:1rem}.body[data-astro-cid-efmd3dbn] .flow-case h3{margin:0 0 .6rem;font-size:1em;font-style:normal;font-weight:500}.body[data-astro-cid-efmd3dbn] .flow-case p{margin:0;font-size:.95em}.body[data-astro-cid-efmd3dbn] .flow-case .flow-path{flex-wrap:wrap;align-items:baseline;gap:.15em .5em;margin-bottom:.6rem;font-style:italic;display:flex}.body[data-astro-cid-efmd3dbn] .flow-figure figcaption{color:var(--muted);padding-top:1rem;font-size:.9em;line-height:1.4}.bottom[data-astro-cid-efmd3dbn]{margin:2.5rem 0 0}@media (width<=639px){.essay[data-astro-cid-efmd3dbn]{margin-left:0}}
+</style><link rel="stylesheet" href="/_astro/Base.CXUjiXR1.css"><style>:root:root{--paper:#fff;--raised:#fff;--ink:#141414;--muted:#6a6a6a;--accent:#141414;--rule:#14141429;--font-display:"EB Garamond Variable", Garamond, "Iowan Old Style", Georgia, serif;--font-body:"EB Garamond Variable", Garamond, "Iowan Old Style", Georgia, serif;--reading:clamp(1.13rem, 1.02rem + .5vw, 1.25rem);--leading:1.5;--column:42rem;--gutter-col:6.5rem;--shell:calc(var(--column) + var(--gutter-col) + 2rem)}:root:root[data-theme=dark]{--paper:#121110;--raised:#121110;--ink:#edeae4;--muted:#9a948c;--accent:#edeae4;--rule:#edeae42e}@media (prefers-color-scheme:dark){:root:root:not([data-theme=light]){--paper:#121110;--raised:#121110;--ink:#edeae4;--muted:#9a948c;--accent:#edeae4;--rule:#edeae42e}}html body{font-size:var(--reading);font-variation-settings:normal}
+</style></head><body data-astro-cid-hkbrpulz><a class="skip" href="#main" data-astro-cid-hkbrpulz>Skip to content</a><header class="masthead" data-astro-cid-hkbrpulz><div class="wrap masthead-inner" data-astro-cid-hkbrpulz><a class="wordmark" href="/" data-astro-cid-hkbrpulz>Jian Cui</a><nav aria-label="Primary" data-astro-cid-hkbrpulz><a href="/" data-astro-cid-hkbrpulz>about</a><a href="/#papers" data-astro-cid-hkbrpulz>papers</a><a href="/misc/" data-astro-cid-hkbrpulz>misc</a></nav><button id="theme-toggle" type="button" aria-label="Toggle colour theme" data-astro-cid-l6lhmie6><span aria-hidden="true" class="icon-light" data-astro-cid-l6lhmie6><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" data-astro-cid-ccg5yoga><path d="M18.8 15.1A7.8 7.8 0 0 1 9 5.2 7.8 7.8 0 1 0 18.8 15.1Z" data-astro-cid-ccg5yoga></path><path d="M18 3.5v4M16 5.5h4" data-astro-cid-ccg5yoga></path></svg></span><span aria-hidden="true" class="icon-dark" data-astro-cid-l6lhmie6><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" data-astro-cid-ccg5yoga><path d="M16.5 12a4.5 4.5 0 1 1-9 0 4.5 4.5 0 0 1 9 0Z" data-astro-cid-ccg5yoga></path><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2" data-astro-cid-ccg5yoga></path><path d="m5.3 5.3 1.4 1.4m10.6 10.6 1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4" data-astro-cid-ccg5yoga></path></svg></span></button><script>
+  ;(() => {
+    const KEY = 'theme'
+    const root = document.documentElement
+
+    const apply = (value) => {
+      root.dataset.theme = value
+      localStorage.setItem(KEY, value)
+    }
+
+    const current = () =>
+      root.dataset.theme ||
+      (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+
+    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+      apply(current() === 'dark' ? 'light' : 'dark')
+    })
+  })()
+</script></div></header><main id="main" data-astro-cid-hkbrpulz><div class="thought wrap" data-astro-cid-efmd3dbn><article class="essay" data-astro-cid-efmd3dbn><a class="back" href="/thoughts/" data-astro-cid-efmd3dbn><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" data-astro-cid-ccg5yoga><path d="M19.5 15.5v-1a4 4 0 0 0-4-4h-11" data-astro-cid-ccg5yoga></path><path d="m9 6-4.5 4.5L9 15" data-astro-cid-ccg5yoga></path></svg><span data-astro-cid-efmd3dbn>All thoughts</span></a><header class="essay-head" data-astro-cid-efmd3dbn><time datetime="2026-09-15" data-astro-cid-efmd3dbn>15 September 2026</time><h1 data-astro-cid-efmd3dbn>Why precise information-flow control is still hard for agents</h1><p class="summary" data-astro-cid-efmd3dbn>An agent can enforce restrictions on its context without knowing exactly what its words reveal. Closing that gap takes more than a better dependency score.</p></header><div class="body" data-astro-cid-efmd3dbn><p>An agent should be able to use private information without passing all of it to every tool it calls. A scheduling agent might need both my appointment time and my email address when talking to a clinic. A reminder service might be allowed to receive only the time. Both interactions are legitimate. The difficulty is keeping the information from the first conversation from slipping into the second.</p>
+<p>Information-flow control, or IFC, governs where information may go after a program reads it. Labels carry restrictions such as “only the user and the clinic may receive this.”</p>
+<h2 id="what-i-want-to-do">What I want to do</h2>
+<p>I want to track sensitive information through the messages an agent generates. If a reply depends on the appointment time but not the email, I want its label to reflect that distinction. The agent could then reuse that reply with a recipient allowed to know only the time.</p>
+<p>My starting point is a policy specifying which sensitive items each recipient may receive. Before each generation, the runtime supplies the permitted data and filters the history. The next step is to estimate which of those items influenced the resulting message.</p>
+<p>One simple experiment is <em>leave-one-out generation</em>: generate a baseline message, remove one sensitive item, and generate again. Repeat for each item. If removing the appointment time changes the answer while removing the email does not, that gives us evidence about their different roles. A semantic similarity function could score those changes, and the scores could inform candidate dependency labels.</p>
+<p>This is an exploratory proposal. I do not yet have an implementation or evidence that these labels justify safe release. The difficult step is going from “this test detected little influence” to “the runtime may remove this restriction.” Deliberately releasing information that remains protected—<em>declassification</em>—would need separate policy authorization.</p>
+<p>For a comparison with FIDES, RTBAS, and related work, see the <a href="#appendix-how-this-relates-to-existing-work">appendix</a>.</p>
+<h2 id="natural-language-mixes-the-things-we-want-to-separate">Natural language mixes the things we want to separate</h2>
+<p>In ordinary code, <a href="https://www.cs.cornell.edu/andru/papers/jsac/sm-jsac03.pdf">IFC analyses</a> can follow assignments and other operations to propagate labels, although they can still overtaint. With LLMs, we need useful propagation rules for a generation that mixes many inputs into natural language.</p>
+<p>Consider a prompt containing records, instructions, tool results, and conversation history. Ask an LLM to write the reminder.</p>
+<p>The output might mention only the time. Yet a sensitive input could also affect a choice of words, an omission, or the decision to call a particular tool. The fact that the email address does not appear in the message does not establish independence from it.</p>
+<p>We can conservatively give the output every restriction attached to its inputs. That makes the rule straightforward to enforce, but it can overtaint a harmless reminder. In a long-running conversation, these restrictions accumulate: <em>label creep</em>. Eventually, useful communication may require clearing context, blocking an action, or asking for permission.</p>
+<p>Natural language can still carry labels. The problem is that it does not supply a trustworthy account of its own dependencies. Even with access to a model’s computation, tracking every numerical dependency need not tell us which facts a sentence conveys. By “precise,” I mean getting closer to those relevant dependencies while retaining a defensible security guarantee.</p>
+<figure class="flow-figure" aria-labelledby="ifc-figure-caption">
+  <div class="flow-case">
+    <h3>Generate with both inputs</h3>
+    <p class="flow-path">Time + email <span aria-hidden="true">→</span> LLM <span aria-hidden="true">→</span> “Tuesday, 3 pm.”</p>
+    <p>Conservative label: time + email. The email restriction may be unnecessary.</p>
+  </div>
+  <div class="flow-case">
+    <h3>Remove email before generation</h3>
+    <p class="flow-path">Time only <span aria-hidden="true">→</span> fresh LLM call <span aria-hidden="true">→</span> “Tuesday, 3 pm.”</p>
+    <p>This call has no access to the email, assuming it is absent from all other inputs and state.</p>
+  </div>
+  <div class="flow-case">
+    <h3>Compare the two messages</h3>
+    <p class="flow-path">“Tuesday, 3 pm.” <span aria-hidden="true">↔</span> “Tuesday, 3 pm.”</p>
+    <p>Matching outputs in these runs do not prove that the original message is independent of the email.</p>
+  </div>
+  <figcaption id="ifc-figure-caption">Same words, different evidence. A schematic example; these are not experimental results.</figcaption>
+</figure>
+<h2 id="where-the-estimate-can-fail">Where the estimate can fail</h2>
+<p><strong>History can preserve the secret.</strong> Removing an email field does nothing if an earlier message already copied or paraphrased it. A meaningful intervention must account for those derivatives too.</p>
+<p><strong>Inputs can substitute for each other.</strong> Two records might contain the same appointment time. Removing either alone may change nothing, even though the answer relies on the information they share. Testing each item’s absence is not the same as establishing independence from the information itself.</p>
+<p><strong>Similarity can miss the important difference.</strong> Two long messages that differ only in an account number can be semantically very similar. Conversely, harmless rephrasing can produce a large difference. Randomness in generation adds another source of variation. A score needs a security interpretation, not just a threshold that looks reasonable on examples.</p>
+<p><strong>One message is only part of the observation.</strong> A recipient may learn from repeated replies, tool choices, or information combined across agents. For a stochastic model, a guarantee must address possible outputs and their probabilities under stated assumptions. A few matching samples cannot establish that protected inputs leave the recipient’s observations unchanged. Token likelihoods may be useful evidence, but a likelihood difference is not automatically a bound on leaked bits.</p>
+<h2 id="the-cost-of-checking-dependencies">The cost of checking dependencies</h2>
+<p>With <strong>n sensitive items in the permitted context</strong>, basic leave-one-out requires <strong>n + 1 generations per message</strong>: one baseline and n comparisons. For 100 items, that is 101 generations. Repeating each condition r times to study variability costs r(n + 1) generations.</p>
+<p>The exponential case comes from checking <strong>every subset</strong> of those items: 2<sup>n</sup> contexts, including the full and empty sets. For 20 items, that is already 1,048,576 contexts. Leave-one-out avoids this search, but it also misses interactions such as redundant sources. Testing all subsets would still not, by itself, cover every alternative secret value or possible generated output.</p>
+<p>Call count is only part of the cost. Each comparison may carry a long conversation. Without reuse, n comparisons over a context containing n fixed-size items can require quadratic total input-token volume, even though the number of calls is linear. Repeating this at every agent step compounds the expense.</p>
+<p>Caching a shared prefix, screening candidate items, and sampling combinations are directions worth testing. Parallel calls can reduce waiting time without reducing total work. Smaller models might make comparisons cheaper, but their dependency estimates would need validation against the model whose output we want to label.</p>
+<h2 id="what-i-want-an-agent-os-to-make-possible">What I want an agent OS to make possible</h2>
+<p>An agent operating system could make the boundaries explicit: what each agent instance may read, what history it retains, and where its results may go. Separate instances for different recipients could limit unnecessary mixing. Shared memory and returned results would still need rules; spawning a fresh agent does not explain how to combine its answer with another agent’s protected knowledge.</p>
+<p>I want an agent that can use rich private context and communicate narrowly, with guarantees that hold across later interactions. The research question is what evidence would justify reusing a message under a less restrictive label, and how to obtain that evidence at a cost an agent can afford.</p>
+<hr>
+<h2 id="appendix-how-this-relates-to-existing-work">Appendix: How this relates to existing work</h2>
+<p><strong>FIDES</strong> keeps labeled values behind variable references and exposes selected information through a quarantined LLM, including schema-constrained outputs. This reduces how much sensitive or untrusted content enters the planner. Within an LLM call, however, output labels still conservatively inherit the context’s restrictions. Its specified policies guarantee integrity noninterference and a weaker confidentiality property, <em>explicit secrecy</em>, which allows leaks through data-dependent control flow. Typed outputs can support more permissive policies, but even a Boolean can disclose a protected fact. My reading is that FIDES improves control over information entering and leaving a computation; it does not recover exact semantic dependencies inside arbitrary generated text. <a href="https://arxiv.org/html/2505.23643v2#S4">FIDES, §§4–5</a>.</p>
+<p><strong>RTBAS</strong> uses an LLM judge or attention-based screener to estimate relevant history regions. It joins their labels, then redacts regions whose labels exceed that bound <strong>before</strong> generating the next action. This ordering matters: it does not simply trust a prediction that an exposed secret was unused. Selecting an unnecessarily restrictive label can cause needless confirmation; excluding a needed region can hurt task completion. Its final label bounds the context available to generation, rather than certifying precisely what the generated message reveals. The redactor also follows label compatibility, not an exact list of semantically necessary inputs. <a href="https://arxiv.org/html/2502.08966v2#S7">RTBAS, §7</a>.</p>
+<p>Both systems make useful progress on label creep. The remaining gap is clearest when we ask to retain a message written with broad access, then reuse it with a recipient who has narrower permissions.</p>
+<p>There is relevant precedent in <a href="https://arxiv.org/html/2410.03055v2#S3.SS4"><em>Permissive Information-Flow Analysis for Large Language Models</em>, §3.4</a>. It estimates a more permissive label, then regenerates the returned answer using only the corresponding context. Its safety argument rests on that restricted generation. That suggests a useful role for dependency estimates in my setting too: helping choose a context from which to generate safely. It leaves open the stronger ambition of certifying an already-generated message.</p>
+</div><a class="back bottom" href="/thoughts/" data-astro-cid-efmd3dbn><svg class="icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false" data-astro-cid-ccg5yoga><path d="M19.5 15.5v-1a4 4 0 0 0-4-4h-11" data-astro-cid-ccg5yoga></path><path d="m9 6-4.5 4.5L9 15" data-astro-cid-ccg5yoga></path></svg><span data-astro-cid-efmd3dbn>All thoughts</span></a></article></div></main><footer data-astro-cid-hkbrpulz><div class="wrap footer-inner" data-astro-cid-hkbrpulz><p data-astro-cid-hkbrpulz>Jian Cui &middot; Urbana&ndash;Champaign</p></div></footer><script>
+      // ~600 bytes, no framework. Reveals each marked block once as it enters
+      // the viewport, then stops observing it.
+      ;(() => {
+        const targets = [...document.querySelectorAll('.reveal')]
+        const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+        if (reduced || !('IntersectionObserver' in window)) {
+          targets.forEach((el) => el.classList.add('is-visible'))
+          return
+        }
+
+        const show = (el) => {
+          el.classList.add('is-visible')
+          observer.unobserve(el)
+        }
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) if (entry.isIntersecting) show(entry.target)
+          },
+          { rootMargin: '0px 0px -8% 0px', threshold: 0.05 },
+        )
+
+        targets.forEach((el) => observer.observe(el))
+
+        // Safety net. IntersectionObserver only reports a *change* in
+        // intersection, so a fast jump (an anchor link, the End key, landing on
+        // /#papers) can carry an element from below the viewport to above it
+        // without it ever intersecting, stranding it invisible forever.
+        let queued = false
+        const sweep = () => {
+          queued = false
+          for (const el of targets) {
+            if (el.classList.contains('is-visible')) continue
+            if (el.getBoundingClientRect().top < window.innerHeight) show(el)
+          }
+          if (targets.every((el) => el.classList.contains('is-visible'))) {
+            window.removeEventListener('scroll', onScroll)
+          }
+        }
+        const onScroll = () => {
+          if (queued) return
+          queued = true
+          requestAnimationFrame(sweep)
+        }
+        window.addEventListener('scroll', onScroll, { passive: true })
+      })()
+    </script></body></html><!-- These theme overrides are bundled only on pages using this layout. -->
